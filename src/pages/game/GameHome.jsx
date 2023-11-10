@@ -2,13 +2,14 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from '@mui/material'
 import graph from '../../assets/graph.png'
-import axios from 'axios';
 
 export const GameHome = () => {
   const [sessionInformation, setSessionInformation] = useState(null)
 
   const handleClick = async ({ difficulty }) => {
-    await fetch('http://localhost:8000/session/create', {
+    // on local host: https://otree-react-a8c786bd154f.herokuapp.com to http://localhost:8000
+    await fetch('https://otree-react-a8c786bd154f.herokuapp.com/session/create', {
+    
       method: 'POST', 
       body: JSON.stringify({ difficulty }),
     })
