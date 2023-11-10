@@ -8,7 +8,7 @@ export const GameHome = () => {
 
   const handleClick = async ({ difficulty }) => {
     // on local host: https://otree-react-a8c786bd154f.herokuapp.com to http://localhost:8000
-    await fetch('https://otree-react-a8c786bd154f.herokuapp.com/session/create', {
+    await fetch('https://finder-django-backend-6331eb96b282.herokuapp.com/session/create', {
     
       method: 'POST', 
       body: JSON.stringify({ difficulty }),
