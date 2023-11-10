@@ -2,33 +2,14 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { Button } from '@mui/material'
 import graph from '../../assets/graph.png'
+import axios from 'axios';
 
 export const GameHome = () => {
   const [sessionInformation, setSessionInformation] = useState(null)
 
-  const getCookie = (name) => {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        let cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-  }
-
   const handleClick = async ({ difficulty }) => {
     await fetch('http://localhost:8000/session/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken'),
-      },
-      credentials: 'include',
+      method: 'POST', 
       body: JSON.stringify({ difficulty }),
     })
     .then(async res => {
