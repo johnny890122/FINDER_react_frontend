@@ -2,18 +2,16 @@ import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { Button } from '@mui/material'
 
-export const Home = () => {
-  return (
-    <StyledContainer>
-      <StyledLink to="/tour">
-        <Button>Tour</Button>
-      </StyledLink>
-      <StyledLink to="/game">
-        <Button>Start</Button>
-      </StyledLink>
-    </StyledContainer>
-  )
-}
+export const Home = () => (
+  <StyledContainer>
+    <StyledLink to="/tour">
+      <Button>Tour</Button>
+    </StyledLink>
+    <StyledLink to="/game">
+      <Button>Start</Button>
+    </StyledLink>
+  </StyledContainer>
+)
 
 const StyledContainer = styled.div`
   display: flex;

@@ -7,7 +7,7 @@ const TourContent = [
   <div>
     歡迎來到我們所設計的一個「搗毀密謀網絡」的遊戲！
     <br />
-    在以下的遊戲中，我們會呈現某個真實的犯罪或地下組織的關係結構圖（如下），圖裡每一個「點」都代表一個人物，每一條「線」顯示人物之間有著某種合作關係。您的任務是把這些線（關係）給移除，進而搗毀整個組織網絡。'
+    在以下的遊戲中，我們會呈現某個真實的犯罪或地下組織的關係結構圖（如下），圖裡每一個「點」都代表一個人物，每一條「線」顯示人物之間有著某種合作關係。您的任務是把這些線（關係）給移除，進而搗毀整個組織網絡。
   </div>,
   <div>
     接下來我們透過一個範例來讓您體會一下遊戲的過程！
@@ -28,7 +28,7 @@ export const Tour = () => {
       <StyledPageTitle>Lesson {pageIndex + 1}</StyledPageTitle>
       <StyledContentContainer>{TourContent[pageIndex]}</StyledContentContainer>
       <StyledButtonsContainer>
-        <StyledButton hidden={pageIndex === 0} onClick={() => setPageIndex(pageIndex => pageIndex - 1)}>
+        <StyledButton hidden={pageIndex === 0} onClick={() => setPageIndex(currentIndex => currentIndex - 1)}>
           Back
         </StyledButton>
         {pageIndex === 1 ? (
@@ -36,7 +36,7 @@ export const Tour = () => {
             <StyledButton>Start Game!</StyledButton>
           </StyledLink>
         ) : (
-          <StyledButton onClick={() => setPageIndex(pageIndex => pageIndex + 1)}>Next</StyledButton>
+          <StyledButton onClick={() => setPageIndex(currentIndex => currentIndex + 1)}>Next</StyledButton>
         )}
       </StyledButtonsContainer>
     </StyledContainer>
