@@ -1,3 +1,1 @@
-export const Data = () => {
-  return <div>Data Page</div>
-}
+export const Data = () => <div>Data Page</div>

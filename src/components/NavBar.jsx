@@ -1,27 +1,23 @@
-import { Link } from 'react-router-dom';
-import styled from '@emotion/styled';
-import { AppBar, Box, Toolbar, Container, Button } from '@mui/material';
-import { menuSetting } from '../utils/menuSetting';
+import { Link } from 'react-router-dom'
+import styled from '@emotion/styled'
+import { AppBar, Box, Toolbar, Container, Button } from '@mui/material'
+import { menuSetting } from '../utils/menuSetting'
 
-export const NavBar = () => {
-  return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <StyledBox>
-            {menuSetting.map((page) => (
-              <StyledMenuLink to={page.path}>
-                <StyledMenuButton key={page.title}>
-                  {page.title}
-                </StyledMenuButton>
-              </StyledMenuLink>
-            ))}
-          </StyledBox>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
-}
+export const NavBar = () => (
+  <AppBar position="static">
+    <Container maxWidth="xl">
+      <Toolbar disableGutters>
+        <StyledBox>
+          {menuSetting.map(page => (
+            <StyledMenuLink id={page.title} to={page.path}>
+              <StyledMenuButton key={page.title}>{page.title}</StyledMenuButton>
+            </StyledMenuLink>
+          ))}
+        </StyledBox>
+      </Toolbar>
+    </Container>
+  </AppBar>
+)
 
 const StyledBox = styled(Box)`
   display: flex;

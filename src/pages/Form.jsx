@@ -1,43 +1,42 @@
-import { useState, useEffect } from "react"
-import axios from "axios"
-
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 export const Form = () => {
   const [testingData, setTestingData] = useState([])
 
-  const getCookie = (name) => {
-    let cookieValue = null;
+  const getCookie = name => {
+    let cookieValue = null
     if (document.cookie && document.cookie !== '') {
-        let cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+      const cookies = document.cookie.split(';')
+      for (let i = 0; i < cookies.length; i += 1) {
+        const cookie = cookies[i].trim()
+        if (cookie.substring(0, name.length + 1) === `${name}=`) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+          break
         }
+      }
     }
-    return cookieValue;
+    return cookieValue
   }
 
   useEffect(() => {
     axios
       .get('http://localhost:8000/api/', {
-        params: { pk: "abc" },
+        params: { pk: 'abc' },
       })
-      .then((response) => response)
-      .then((data) => {
-        setTestingData(data['data']['test'])
+      .then(response => response)
+      .then(data => {
+        setTestingData(data.data.test)
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err.message)
       })
   }, [])
 
-  function submit(event) {
+  function submit() {
     // axios.post(
-    //   'http://localhost:8000/post/', 
-    //   JSON.stringify({"aaa": "bbb"}), 
+    //   'http://localhost:8000/post/',
+    //   JSON.stringify({"aaa": "bbb"}),
     //   {
     //     headers: {
     //       "Content-Type": "application/json",
@@ -49,61 +48,52 @@ export const Form = () => {
     // .then((response) => console.log(response))
     // .catch((err) => console.log(err))
 
-    fetch("http://localhost:8000/post/", {
-      method: "POST",
+    fetch('http://localhost:8000/post/', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": getCookie('csrftoken')
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken'),
       },
-      credentials: "include",
-      body: JSON.stringify({"aaa": "bbb"}),
+      credentials: 'include',
+      body: JSON.stringify({ aaa: 'bbb' }),
     })
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .then(data => {
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
-    <div class="otree-body container">
-      <button type="submit" className="FooterRegisterForm__registerButton" onClick={submit}>submit</button>
-      <h2 class="otree-title page-header">Survey</h2>
-      <form
-        class="otree-form"
-        method="post"
-        id="form"
-        autocomplete="off"
-      >
+    <div className="otree-body container">
+      <button type="submit" className="FooterRegisterForm__registerButton" onClick={submit}>
+        submit
+      </button>
+      <h2 className="otree-title page-header">Survey</h2>
+      <form className="otree-form" method="post" id="form" autoComplete="off">
         <input
           type="hidden"
           name="csrfmiddlewaretoken"
           value="XrBNGM0QHb1P0dLEcfI6CvA1kS0W00m4lCGX2TyZ5pw9QgVqQmVUh67lbtpEdcLs"
         />
-        <div class="_otree-content">
+        <div className="_otree-content">
           <p>Please answer the following questions.</p>
 
           <p>{testingData}</p>
 
-          <div class="form-group required">
-            <label class="col-form-label" for="id_age">
+          <div className="form-group required">
+            <label className="col-form-label" htmlFor="id_age">
               What is your age?
+              <div className="controls  field-age">
+                <input type="number" name="age" min="13" max="125" required id="id_age" className="form-control" />
+              </div>
             </label>
-            <div class="controls  field-age">
-              <input
-                type="number"
-                name="age"
-                min="13"
-                max="125"
-                required
-                id="id_age"
-                class="form-control"
-              />
-            </div>
           </div>
           <p>
-            <button class="otree-btn-next btn btn-primary">Next</button>
+            <button className="otree-btn-next btn btn-primary" type="button">
+              Next
+            </button>
           </p>
         </div>
       </form>
