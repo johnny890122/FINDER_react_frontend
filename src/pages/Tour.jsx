@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Button } from '@mui/material'
+import { Button } from '../components/Button'
 
 const TourContent = [
   <div>
@@ -32,7 +32,7 @@ export const Tour = () => {
           Back
         </StyledButton>
         {pageIndex === 1 ? (
-          <StyledLink to="/game">
+          <StyledLink to="/network-selection">
             <StyledButton>Start Game!</StyledButton>
           </StyledLink>
         ) : (
