@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
+import { API_ROOT } from '../../api.config'
 import { Button } from '../../components/Button'
 import { ForceGraph } from './ForceGraph'
 
@@ -8,7 +9,7 @@ export const GameHome = () => {
 
   const handleClick = async ({ difficulty }) => {
     // on local host: https://otree-react-a8c786bd154f.herokuapp.com to http://localhost:8000
-    await fetch('https://finder-django-backend-6331eb96b282.herokuapp.com/session/create', {
+    await fetch(`${API_ROOT}/session/create`, {
       method: 'POST',
       body: JSON.stringify({ difficulty }),
     }).then(async res => {
