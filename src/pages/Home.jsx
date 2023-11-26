@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Button } from '@mui/material'
+import { Button } from '../components/Button'
 
 export const Home = () => (
   <StyledContainer>
     <StyledLink to="/tour">
       <Button>Tour</Button>
     </StyledLink>
-    <StyledLink to="/game">
+    <StyledLink to="/network-selection">
       <Button>Start</Button>
     </StyledLink>
   </StyledContainer>

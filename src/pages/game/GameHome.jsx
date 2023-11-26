@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
-import { Button } from '@mui/material'
+import { Button } from '../../components/Button'
 import { ForceGraph } from './ForceGraph'
 
 export const GameHome = () => {

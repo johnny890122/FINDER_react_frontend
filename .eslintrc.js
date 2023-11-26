@@ -24,6 +24,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-uses-react': 'off',
     'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
     'react/function-component-definition': [
       'error',
       {
