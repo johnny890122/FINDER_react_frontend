@@ -1,13 +1,21 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useMachine } from '@xstate/react'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+
 import { API_ROOT } from '../../api.config'
 import { Button } from '../../components/Button'
+
+import { gameMachine } from './gameMachine'
 import { networksIntroduction } from './network.config'
+import { generateRandomTree } from './graph.utils'
 
 export const NetworkSelectionPage = () => {
+  const navigate = useNavigate()
+  const [state, send] = useMachine(gameMachine)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
   const [isStartButtonClick, setIsStartButtonClick] = useState(false)
 
@@ -78,7 +86,15 @@ export const NetworkSelectionPage = () => {
         })}
       </StyledOptionsContainer>
 
-      <Button onClick={() => setIsStartButtonClick(true)}>開始遊玩</Button>
+      <Button
+        onClick={() => {
+          setIsStartButtonClick(true)
+          send('START_GAME', { graph: generateRandomTree(5) }) // TODO: send the action and event only when api success
+          navigate('/game')
+        }}
+      >
+        開始遊玩
+      </Button>
     </div>
   )
 }
