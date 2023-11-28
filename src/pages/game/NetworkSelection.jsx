@@ -10,7 +10,6 @@ import { API_ROOT } from '../../api.config'
 import { Button } from '../../components/Button'
 
 import { gameMachine } from './gameMachine'
-import { networksIntroduction } from './network.config'
 import { generateRandomTree } from './graph.utils'
 
 export const NetworkSelectionPage = () => {
@@ -26,7 +25,7 @@ export const NetworkSelectionPage = () => {
   } = useQuery({
     queryKey: ['networkAvailable'],
     queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/networks`, {
+      const response = await fetch(`${API_ROOT}/networks/`, {
         method: 'GET',
       })
       if (!response.ok) {
@@ -35,13 +34,12 @@ export const NetworkSelectionPage = () => {
       return response.json()
     },
   })
-
   const { data: networkGraphData } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/game_start`, {
         method: 'POST',
-        body: JSON.stringify({ chosen_network_id: networksIntroduction[expandedNetworkKey].code }),
+        body: JSON.stringify({ chosen_network_id: networksAvailable[expandedNetworkKey].code }),
       })
       if (!response.ok) {
         throw new Error('Failed to start a game')
@@ -51,25 +49,23 @@ export const NetworkSelectionPage = () => {
     enabled: !!isStartButtonClick,
   })
 
-  // TODO: deal with isPending and isError UI
-  // if (isPending) {
-  //   return 'loading...'
-  // }
+  if (isPending) {
+    return 'loading...'
+  }
 
-  // if (isError) {
-  //   return 'Faile to fetch available networks'
-  // }
+  if (isError) {
+    return 'Faile to fetch available networks'
+  }
 
   return (
     <div>
       <div>請選擇您要破壞的網路</div>
 
       <StyledOptionsContainer>
-        {/* TODO: use networksAvailable to map */}
-        {Object.keys(networksIntroduction).map(networkKey => {
-          const { displayName, introduction, node, link } = networksIntroduction[networkKey]
+        {Object.keys(networksAvailable).map(networkKey => {
+          const { displayName, introduction, node, link } = networksAvailable[networkKey]
           return (
-            <StyledOptionContainer>
+            <StyledOptionContainer key={networkKey}>
               <Accordion
                 expanded={expandedNetworkKey === networkKey}
                 onChange={() => setExpandedNetworkKey(networkKey)}
