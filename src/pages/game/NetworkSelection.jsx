@@ -37,7 +37,7 @@ export const NetworkSelectionPage = () => {
   const { data: networkGraphData } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/game_start`, {
+      const response = await fetch(`${API_ROOT}/game_start/`, {
         method: 'POST',
         body: JSON.stringify({ chosen_network_id: networksAvailable[expandedNetworkKey].code }),
       })
