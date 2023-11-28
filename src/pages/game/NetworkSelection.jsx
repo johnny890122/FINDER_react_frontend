@@ -26,12 +26,14 @@ export const NetworkSelectionPage = () => {
   } = useQuery({
     queryKey: ['networkAvailable'],
     queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/networks`, {
+      const response = await fetch(`${API_ROOT}/networks/`, {
         method: 'GET',
       })
       if (!response.ok) {
         throw new Error('Failed to fetch available networks')
       }
+      // 這邊可以看到 api 順利回傳的 response
+      console.log('response', response)
       return response.json()
     },
   })
