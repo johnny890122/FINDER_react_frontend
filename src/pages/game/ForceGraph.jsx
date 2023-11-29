@@ -1,19 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
-import { useMachine } from '@xstate/react'
+import { useQuery } from '@tanstack/react-query'
 
-import { gameMachine, GameStages } from './gameMachine'
-import { generateRandomTree } from './graph.utils'
+import { API_ROOT } from '../../api.config'
 
 export const ForceGraph = () => {
-  const [state, send] = useMachine(gameMachine)
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
   const [removedNodeId, setRemovedNodeId] = useState(null)
 
-  // BUG: remove this
-  useEffect(() => {
-    send('START_GAME', { graph: generateRandomTree(5) })
-  }, [])
+  const { data: graphData } = useQuery({
+    queryKey: ['gameStart'],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/game_start/?chosen_network_id=1`, {
+        method: 'GET',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to start a game')
+      }
+      return response.json()
+    },
+  })
 
   const handleClickNode = node => {
     if (node.id === toBeRemovedNodeId) {
@@ -23,13 +29,13 @@ export const ForceGraph = () => {
     }
   }
 
-  if (state.context.stage !== GameStages.GRAPH || !state.context.graph) {
+  if (!graphData) {
     return 'loading'
   }
 
   return (
     <ForceGraph2D
-      graphData={state.context.graph}
+      graphData={graphData}
       nodeVisibility={node => node.id !== removedNodeId}
       linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
       nodeColor={node => (node.id === toBeRemovedNodeId ? 'red' : 'blue')}
