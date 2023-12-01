@@ -1,17 +1,19 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
+import { useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { API_ROOT } from '../../api.config'
+import { GameStages } from '../../models/GameStages'
 import { Button } from '../../components/Button'
+import { updateGameStage, updateNetworkCode } from './game.slice'
 
 export const NetworkSelectionPage = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
-  const [isStartButtonClick, setIsStartButtonClick] = useState(false)
 
   const {
     data: networksAvailable,
@@ -26,22 +28,9 @@ export const NetworkSelectionPage = () => {
       if (!response.ok) {
         throw new Error('Failed to fetch available networks')
       }
+      dispatch(updateGameStage(GameStages.GRAPH))
       return response.json()
     },
-  })
-  const { data: networkGraphData } = useQuery({
-    queryKey: ['gameStart'],
-    queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/game_start/`, {
-        method: 'POST',
-        body: JSON.stringify({ chosen_network_id: networksAvailable[expandedNetworkKey].code }),
-      })
-      if (!response.ok) {
-        throw new Error('Failed to start a game')
-      }
-      return response.json()
-    },
-    enabled: !!isStartButtonClick,
   })
 
   if (isPending) {
@@ -49,7 +38,7 @@ export const NetworkSelectionPage = () => {
   }
 
   if (isError) {
-    return 'Faile to fetch available networks'
+    return 'Failed to fetch available networks'
   }
 
   return (
@@ -79,7 +68,7 @@ export const NetworkSelectionPage = () => {
 
       <Button
         onClick={() => {
-          setIsStartButtonClick(true)
+          dispatch(updateNetworkCode(networksAvailable[expandedNetworkKey].code))
           navigate('/game')
         }}
       >

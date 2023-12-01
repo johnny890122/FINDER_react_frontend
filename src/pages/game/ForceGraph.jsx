@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import ForceGraph2D from 'react-force-graph-2d'
 import { useQuery } from '@tanstack/react-query'
+import { useSelector } from 'react-redux'
 
 import { API_ROOT } from '../../api.config'
+import { selectNetworkCode } from './game.slice'
 
 export const ForceGraph = () => {
+  const networkCode = useSelector(selectNetworkCode)
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
   const [removedNodeId, setRemovedNodeId] = useState(null)
 
   const { data: graphData } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/game_start/?chosen_network_id=1`, {
+      const response = await fetch(`${API_ROOT}/game_start/?chosen_network_id=${networkCode}`, {
         method: 'GET',
       })
       if (!response.ok) {
