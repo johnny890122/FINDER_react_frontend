@@ -18,10 +18,15 @@ const gameSlice = createSlice({
     updateNetworkCode: (state, action) => {
       state.networkCode = action.payload
     },
+
+    resetGameData: state => {
+      state.gameStage = GameStages.NETWORK_SELECTION
+      state.networkCode = null
+    },
   },
 })
 
-export const { updateGameStage, updateNetworkCode } = gameSlice.actions
+export const { updateGameStage, updateNetworkCode, resetGameData } = gameSlice.actions
 export default gameSlice.reducer
 
 export const selectGameStage = state => state.gameReducer.gameStage
