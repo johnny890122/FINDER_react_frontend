@@ -31,6 +31,7 @@ export const ForceGraph = () => {
   const handleClickNode = node => {
     if (node.id === toBeRemovedNodeId) {
       setRemovedNodeId(node.id)
+      setToBeRemovedNodeId(null)
     } else {
       setToBeRemovedNodeId(node.id)
     }
@@ -52,7 +53,11 @@ export const ForceGraph = () => {
       graphData={graphData}
       nodeVisibility={node => node.id !== removedNodeId}
       linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
-      nodeColor={node => (node.id === toBeRemovedNodeId ? 'red' : getNodeColorByRanking({ ranking: ranking[node.id] }))}
+      nodeColor={node => {
+        if (node.id === toBeRemovedNodeId) return '#311B92'
+        if (toBeRemovedNodeId) return '#EDE7F6'
+        return getNodeColorByRanking({ ranking: ranking[node.id] })
+      }}
       onNodeClick={handleClickNode}
       width={width - 8 * 14}
       height={height - 8 * 14}
