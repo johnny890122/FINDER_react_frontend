@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { API_ROOT } from '../../api.config'
 import { getViewport } from '../../utils'
 import { selectNetworkCode } from './game.slice'
+import { getNodeColorByRanking } from './game.utils'
 
 export const ForceGraph = () => {
   const networkCode = useSelector(selectNetworkCode)
@@ -35,6 +36,13 @@ export const ForceGraph = () => {
     }
   }
 
+  const ranking = graphData
+    ? graphData.nodes.reduce(
+        (previous, current) => ({ ...previous, [current.id]: Math.floor(Math.random() * 8) + 1 }),
+        {},
+      )
+    : {}
+
   if (!graphData) {
     return 'loading'
   }
@@ -44,7 +52,7 @@ export const ForceGraph = () => {
       graphData={graphData}
       nodeVisibility={node => node.id !== removedNodeId}
       linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
-      nodeColor={node => (node.id === toBeRemovedNodeId ? 'red' : 'blue')}
+      nodeColor={node => (node.id === toBeRemovedNodeId ? 'red' : getNodeColorByRanking({ ranking: ranking[node.id] }))}
       onNodeClick={handleClickNode}
       width={width - 8 * 14}
       height={height - 8 * 14}
