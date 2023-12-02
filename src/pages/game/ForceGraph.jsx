@@ -4,10 +4,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useSelector } from 'react-redux'
 
 import { API_ROOT } from '../../api.config'
+import { getViewport } from '../../utils'
 import { selectNetworkCode } from './game.slice'
 
 export const ForceGraph = () => {
   const networkCode = useSelector(selectNetworkCode)
+  const { width, height } = getViewport()
+
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
   const [removedNodeId, setRemovedNodeId] = useState(null)
 
@@ -43,6 +46,8 @@ export const ForceGraph = () => {
       linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
       nodeColor={node => (node.id === toBeRemovedNodeId ? 'red' : 'blue')}
       onNodeClick={handleClickNode}
+      width={width - 8 * 14}
+      height={height - 8 * 14}
     />
   )
 }
