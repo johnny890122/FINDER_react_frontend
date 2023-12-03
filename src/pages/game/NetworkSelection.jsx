@@ -67,6 +67,7 @@ export const NetworkSelectionPage = () => {
       </StyledOptionsContainer>
 
       <Button
+        disabled={!expandedNetworkKey}
         onClick={() => {
           dispatch(updateNetworkCode(networksAvailable[expandedNetworkKey].code))
           navigate('/game')
