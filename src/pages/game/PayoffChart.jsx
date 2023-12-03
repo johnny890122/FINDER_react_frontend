@@ -2,10 +2,11 @@ import { useSelector } from 'react-redux'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from 'recharts'
 
 import { selectPayoff } from './game.slice'
+import { parsePayoffDataForChart } from './game.utils'
 
 export const PayoffChart = () => {
   const payoffRawData = useSelector(selectPayoff)
-  const data = payoffRawData.map((round, index) => ({ ...round, name: `${index + 1}` }))
+  const data = parsePayoffDataForChart({ payoffRawData })
 
   return (
     <LineChart width={400} height={300} data={data}>

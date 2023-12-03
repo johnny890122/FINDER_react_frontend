@@ -7,7 +7,7 @@ const initialState = {
   networkCode: null,
   graphData: null,
   graphRanking: null,
-  payoff: [],
+  payoff: null,
 }
 
 const gameSlice = createSlice({
@@ -31,7 +31,10 @@ const gameSlice = createSlice({
     },
 
     updatePayoff: (state, action) => {
-      state.payoff = [...state.payoff, action.payload]
+      state.payoff = {
+        payoffHuman: [...(state?.payoff?.payoffHuman ?? []), action.payload.payoffHuman],
+        payoffFinder: action.payload.payoffFinder,
+      }
     },
 
     resetGameData: state => {
@@ -39,7 +42,7 @@ const gameSlice = createSlice({
       state.networkCode = null
       state.graphData = null
       state.graphRanking = null
-      state.payoff = []
+      state.payoff = null
     },
   },
 })

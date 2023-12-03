@@ -55,7 +55,9 @@ export const GamePage = () => {
 
   const onRemoveNode = () => {
     // TODO: call payoff api to get human and finder payoff
-    dispatch(updatePayoff({ payoffHuman: Math.random(), payoffFinder: Math.random() }))
+    dispatch(
+      updatePayoff({ payoffHuman: Math.random(), payoffFinder: Array.from({ length: 10 }, () => Math.random()) }),
+    )
     setTimeout(() => {
       setIsDialogOpen(true)
     }, 1000)
