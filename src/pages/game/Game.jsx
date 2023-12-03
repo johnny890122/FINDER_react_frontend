@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
+import { API_ROOT } from '../../api.config'
 import { Button } from '../../components/Button'
-import { resetGameData } from './game.slice'
+import { selectNetworkCode, resetGameData } from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { ForceGraph } from './ForceGraph'
 
 export const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const networkCode = useSelector(selectNetworkCode)
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   useEffect(() => {
@@ -21,10 +25,30 @@ export const GamePage = () => {
     }
   }, [])
 
+  const { data: graphData } = useQuery({
+    queryKey: ['gameStart'],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/game_start/?chosen_network_id=${networkCode}`, {
+        method: 'GET',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to start a game')
+      }
+      return response.json()
+    },
+  })
+
   const onSelectTool = () => {
     setIsDialogOpen(false)
     // TODO: call node_ranking api to get rank -> put in redux
   }
+
+  const graphRanking = graphData
+    ? graphData.nodes.reduce(
+        (previous, current) => ({ ...previous, [current.id]: Math.floor(Math.random() * 8) + 1 }),
+        {},
+      )
+    : {}
 
   return (
     <StyledGamePageContainer>
@@ -38,7 +62,7 @@ export const GamePage = () => {
       </StyledQuitGameButton>
       <ToolSelectionDialog open={isDialogOpen} onConfirm={onSelectTool} />
       <StyledForceGraphContainer>
-        <ForceGraph />
+        <ForceGraph graphData={graphData} graphRanking={graphRanking} />
       </StyledForceGraphContainer>
     </StyledGamePageContainer>
   )
