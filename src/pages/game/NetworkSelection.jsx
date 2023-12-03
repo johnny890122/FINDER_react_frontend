@@ -7,7 +7,7 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { API_ROOT } from '../../api.config'
 import { GameStages } from '../../models/GameStages'
-import { Button } from '../../components/Button'
+import { Button } from '../../components'
 import { updateGameStage, updateNetworkCode } from './game.slice'
 
 export const NetworkSelectionPage = () => {

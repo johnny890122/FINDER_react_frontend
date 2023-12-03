@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Button } from '../components/Button'
+import { Button } from '../components'
 
 export const Home = () => (
   <StyledContainer>

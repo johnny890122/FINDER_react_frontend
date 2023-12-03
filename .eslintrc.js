@@ -31,5 +31,6 @@ module.exports = {
         namedComponents: ['function-declaration', 'arrow-function', 'function-expression'],
       },
     ],
+    'react/forbid-prop-types': 'off',
   },
 }

@@ -5,9 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
 import { API_ROOT } from '../../api.config'
-import { Button } from '../../components/Button'
+import { Button } from '../../components'
 import { selectNetworkCode, updateGraphRanking, updatePayoff, resetGameData } from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
+import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
 
 export const GamePage = () => {
@@ -15,10 +16,11 @@ export const GamePage = () => {
   const navigate = useNavigate()
   const networkCode = useSelector(selectNetworkCode)
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
+  const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsDialogOpen(true), 3000)
+    const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
 
     return () => {
       clearTimeout(timer)
@@ -40,7 +42,7 @@ export const GamePage = () => {
   })
 
   const onSelectTool = () => {
-    setIsDialogOpen(false)
+    setIsToolSelectionDialogOpen(false)
     dispatch(
       updateGraphRanking(
         graphData
@@ -59,21 +61,25 @@ export const GamePage = () => {
       updatePayoff({ payoffHuman: Math.random(), payoffFinder: Array.from({ length: 10 }, () => Math.random()) }),
     )
     setTimeout(() => {
-      setIsDialogOpen(true)
+      setIsToolSelectionDialogOpen(true)
     }, 1000)
   }
 
   return (
     <StyledGamePageContainer>
-      <StyledQuitGameButton
-        onClick={() => {
+      <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
+
+      <ToolSelectionDialog open={isToolSelectionDialogOpen} onConfirm={onSelectTool} />
+      <QuitGameDialog
+        open={isQuitGameDialogOpen}
+        onConfirm={() => {
           dispatch(resetGameData())
+          setIsQuitGameDialogOpen(false)
           navigate('/')
         }}
-      >
-        結束遊戲
-      </StyledQuitGameButton>
-      <ToolSelectionDialog open={isDialogOpen} onConfirm={onSelectTool} />
+        onCancel={() => setIsQuitGameDialogOpen(false)}
+      />
+
       <StyledForceGraphContainer>
         <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />
       </StyledForceGraphContainer>
