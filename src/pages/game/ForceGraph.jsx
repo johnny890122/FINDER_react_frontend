@@ -8,7 +8,7 @@ import { getViewport } from '../../utils'
 import { getNodeColorByRanking } from './game.utils'
 import { selectGraphRanking } from './game.slice'
 
-export const ForceGraph = ({ graphData = { nodes: [], links: [] } }) => {
+export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode = () => {} }) => {
   const { width, height } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
 
@@ -19,6 +19,7 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] } }) => {
     if (node.id === toBeRemovedNodeId) {
       setRemovedNodeId(node.id)
       setToBeRemovedNodeId(null)
+      onRemoveNode()
     } else {
       setToBeRemovedNodeId(node.id)
     }
@@ -48,4 +49,5 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] } }) => {
 
 ForceGraph.propTypes = {
   graphData: PropTypes.object.isRequired,
+  onRemoveNode: PropTypes.func.isRequired,
 }

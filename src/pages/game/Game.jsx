@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 
 import { API_ROOT } from '../../api.config'
 import { Button } from '../../components/Button'
-import { selectNetworkCode, updateGraphRanking, resetGameData } from './game.slice'
+import { selectNetworkCode, updateGraphRanking, updatePayoff, resetGameData } from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { ForceGraph } from './ForceGraph'
 
@@ -52,6 +52,14 @@ export const GamePage = () => {
     ) // TODO: call node_ranking api to get rank -> put in redux
   }
 
+  const onRemoveNode = () => {
+    // TODO: call payoff api to get human and finder payoff
+    dispatch(updatePayoff({ payoffHuman: Math.random(), payoffFinder: Math.random() }))
+    setTimeout(() => {
+      setIsDialogOpen(true)
+    }, 1000)
+  }
+
   return (
     <StyledGamePageContainer>
       <StyledQuitGameButton
@@ -64,7 +72,7 @@ export const GamePage = () => {
       </StyledQuitGameButton>
       <ToolSelectionDialog open={isDialogOpen} onConfirm={onSelectTool} />
       <StyledForceGraphContainer>
-        <ForceGraph graphData={graphData} />
+        <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />
       </StyledForceGraphContainer>
     </StyledGamePageContainer>
   )
