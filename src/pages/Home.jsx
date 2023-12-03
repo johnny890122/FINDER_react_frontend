@@ -5,10 +5,10 @@ import { Button } from '../components/Button'
 export const Home = () => (
   <StyledContainer>
     <StyledLink to="/tour">
-      <Button>Tour</Button>
+      <Button width="10rem">Tour</Button>
     </StyledLink>
     <StyledLink to="/network-selection">
-      <Button>Start</Button>
+      <Button width="10rem">Start</Button>
     </StyledLink>
   </StyledContainer>
 )
