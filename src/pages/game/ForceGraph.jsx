@@ -16,6 +16,7 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
   const [removedNodeId, setRemovedNodeId] = useState(null)
 
   const handleClickNode = node => {
+    if (!graphRanking) return
     if (node.id === toBeRemovedNodeId) {
       setRemovedNodeId(node.id)
       setToBeRemovedNodeId(null)

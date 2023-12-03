@@ -22,6 +22,7 @@ export const GamePage = () => {
 
     return () => {
       clearTimeout(timer)
+      dispatch(resetGameData())
     }
   }, [])
 

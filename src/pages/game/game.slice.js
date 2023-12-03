@@ -37,6 +37,9 @@ const gameSlice = createSlice({
     resetGameData: state => {
       state.gameStage = GameStages.NETWORK_SELECTION
       state.networkCode = null
+      state.graphData = null
+      state.graphRanking = null
+      state.payoff = []
     },
   },
 })
