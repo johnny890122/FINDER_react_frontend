@@ -1,23 +1,23 @@
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
-import { Dialog, DialogTitle, DialogContent } from '@mui/material'
 
 import { Tools } from '../../models/Tools'
 import { selectGraphRanking } from './game.slice'
-import { Button } from '../../components/Button'
+import { Button, Dialog } from '../../components'
 import { PayoffChart } from './PayoffChart'
 
 export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
   const graphRanking = useSelector(selectGraphRanking)
 
   return (
-    <Dialog open={open}>
-      <DialogTitle>選擇輔助指標</DialogTitle>
+    <Dialog open={open} title="選擇輔助指標">
       <StyledDialogContent>
         <StyledOptionsContainer>
-          {Object.keys(Tools).map(tool => (
-            <Button onClick={onConfirm}>{tool}</Button>
+          {Object.values(Tools).map(tool => (
+            <Button key={tool} onClick={onConfirm}>
+              {tool}
+            </Button>
           ))}
         </StyledOptionsContainer>
         {!!graphRanking && (
@@ -36,7 +36,7 @@ ToolSelectionDialog.propTypes = {
   onConfirm: PropTypes.func.isRequired,
 }
 
-const StyledDialogContent = styled(DialogContent)`
+const StyledDialogContent = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -44,7 +44,9 @@ const StyledDialogContent = styled(DialogContent)`
 const StyledOptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
+  width: 100%;
 `
 const StyledChartContainer = styled.div`
   display: flex;

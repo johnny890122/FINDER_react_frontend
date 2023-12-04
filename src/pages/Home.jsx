@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Button } from '../components/Button'
+import { Button } from '../components'
 
 export const Home = () => (
   <StyledContainer>
     <StyledLink to="/tour">
-      <Button>Tour</Button>
+      <Button width="15rem">Tour</Button>
     </StyledLink>
     <StyledLink to="/network-selection">
-      <Button>Start</Button>
+      <Button width="15rem">Start</Button>
     </StyledLink>
   </StyledContainer>
 )
