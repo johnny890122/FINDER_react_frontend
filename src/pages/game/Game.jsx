@@ -69,7 +69,7 @@ export const GamePage = () => {
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
-      <ToolSelectionDialog open={isToolSelectionDialogOpen} onConfirm={onSelectTool} />
+      <ToolSelectionDialog open={isToolSelectionDialogOpen && !isQuitGameDialogOpen} onConfirm={onSelectTool} />
       <QuitGameDialog
         open={isQuitGameDialogOpen}
         onConfirm={() => {
