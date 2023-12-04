@@ -14,8 +14,10 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
     <Dialog open={open} title="選擇輔助指標">
       <StyledDialogContent>
         <StyledOptionsContainer>
-          {Object.keys(Tools).map(tool => (
-            <Button onClick={onConfirm}>{tool}</Button>
+          {Object.values(Tools).map(tool => (
+            <Button key={tool} onClick={onConfirm}>
+              {tool}
+            </Button>
           ))}
         </StyledOptionsContainer>
         {!!graphRanking && (
