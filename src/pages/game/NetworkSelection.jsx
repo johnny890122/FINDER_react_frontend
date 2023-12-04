@@ -7,6 +7,7 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { API_ROOT } from '../../api.config'
 import { GameStages } from '../../models/GameStages'
+import { color } from '../../styles'
 import { Button } from '../../components'
 import { updateGameStage, updateNetworkCode } from './game.slice'
 
@@ -42,15 +43,15 @@ export const NetworkSelectionPage = () => {
   }
 
   return (
-    <div>
-      <div>請選擇您要破壞的網路</div>
+    <StyledContainer>
+      <StyledPageTitle>請選擇您要破壞的網絡</StyledPageTitle>
 
       <StyledOptionsContainer>
         {Object.keys(networksAvailable).map(networkKey => {
           const { displayName, introduction, node, link } = networksAvailable[networkKey]
           return (
             <StyledOptionContainer key={networkKey}>
-              <Accordion
+              <StyledAccordion
                 expanded={expandedNetworkKey === networkKey}
                 onChange={() => setExpandedNetworkKey(networkKey)}
               >
@@ -60,34 +61,62 @@ export const NetworkSelectionPage = () => {
                   <div>一個節點代表一個{node}</div>
                   <div>一條連線代表一個{link}</div>
                 </StyledAccordionDetails>
-              </Accordion>
+              </StyledAccordion>
             </StyledOptionContainer>
           )
         })}
       </StyledOptionsContainer>
 
-      <Button
-        disabled={!expandedNetworkKey}
-        onClick={() => {
-          dispatch(updateNetworkCode(networksAvailable[expandedNetworkKey].code))
-          navigate('/game')
-        }}
-      >
-        開始遊玩
-      </Button>
-    </div>
+      <StyledButtonContainer>
+        <StyledConfirmButton
+          disabled={!expandedNetworkKey}
+          onClick={() => {
+            dispatch(updateNetworkCode(networksAvailable[expandedNetworkKey].code))
+            navigate('/game')
+          }}
+        >
+          開始遊玩
+        </StyledConfirmButton>
+      </StyledButtonContainer>
+    </StyledContainer>
   )
 }
 
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  height: calc(100vh - 4rem);
+`
+const StyledPageTitle = styled.h1`
+  font-size: 2rem;
+  font-weight: 400;
+`
 const StyledOptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 `
 const StyledOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
 `
+const StyledAccordion = styled(Accordion)`
+  background-color: ${props => props.expanded && color.primaryColor400};
+  color: ${props => props.expanded && color.neutralsColor0};
+  & .MuiAccordionSummary-content {
+    font-size: ${props => props.expanded && '1.25rem'};
+  }
+`
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
+`
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+const StyledConfirmButton = styled(Button)`
+  margin-top: 2rem;
 `
