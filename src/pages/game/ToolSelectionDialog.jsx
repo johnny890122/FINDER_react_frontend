@@ -15,7 +15,7 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
       <StyledDialogContent>
         <StyledOptionsContainer>
           {Object.values(Tools).map(tool => (
-            <Button key={tool} onClick={onConfirm}>
+            <Button key={tool} onClick={() => onConfirm(tool)}>
               {tool}
             </Button>
           ))}

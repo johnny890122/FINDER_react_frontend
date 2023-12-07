@@ -42,7 +42,7 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
         return getNodeColorByRanking({ ranking: graphRanking[node.id] })
       }}
       onNodeClick={handleClickNode}
-      width={width - 8 * 14}
+      width={width - 8 * 14 - 470}
       height={height - 8 * 14}
     />
   )
