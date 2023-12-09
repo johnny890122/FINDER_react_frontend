@@ -44,6 +44,7 @@ Dialog.defaultProps = {
 const StyledDialog = styled(MuiDialog)`
   & .MuiDialog-paper {
     min-width: 20rem;
+    max-width: 50rem;
   }
 `
 const StyledDialogTitle = styled(DialogTitle)`

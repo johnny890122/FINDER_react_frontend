@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 
 import { Tools } from '../../models/Tools'
+import { Button, Dialog, Chip } from '../../components'
 import { selectGraphRanking } from './game.slice'
-import { Button, Dialog } from '../../components'
 import { PayoffChart } from './PayoffChart'
 
 export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
@@ -22,7 +22,7 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
         </StyledOptionsContainer>
         {!!graphRanking && (
           <StyledChartContainer>
-            <StyledChartTitle>累積報酬</StyledChartTitle>
+            <Chip label="累積報酬" />
             <PayoffChart />
           </StyledChartContainer>
         )}
@@ -53,7 +53,6 @@ const StyledChartContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-`
-const StyledChartTitle = styled.span`
-  padding-left: 2rem;
+  padding: 1rem;
+  padding-top: 0;
 `
