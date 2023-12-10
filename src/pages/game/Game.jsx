@@ -67,6 +67,7 @@ export const GamePage = () => {
     setIsInformationBlockShown(false)
     setTimeout(() => {
       setIsToolSelectionDialogOpen(true)
+      dispatch(updateGraphRanking(null))
     }, 1000)
   }
 

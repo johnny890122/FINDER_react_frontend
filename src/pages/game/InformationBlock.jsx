@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Card } from '@mui/material'
 
-import { Chip } from '../../components'
+import { Chip, HoverTooltip } from '../../components'
 import { selectSelectedTool, selectPayoff } from './game.slice'
 import { PayoffChart } from './PayoffChart'
 
@@ -20,7 +20,8 @@ export const InformationBlock = ({ visible }) => {
       </StyledRow>
       <StyledRow>
         <Chip label="本回合輔助指標" />
-        <div>{selectedTool[selectedTool.length - 1]}</div>
+        <div>{selectedTool[selectedTool.length - 1]?.displayName ?? ''}</div>
+        <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
       </StyledRow>
       {round > 1 && (
         <>
