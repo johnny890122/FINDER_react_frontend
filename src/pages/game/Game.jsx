@@ -6,8 +6,9 @@ import styled from '@emotion/styled'
 
 import { API_ROOT } from '../../api.config'
 import { Button } from '../../components'
-import { selectNetworkCode, updateGraphRanking, updatePayoff, resetGameData } from './game.slice'
+import { selectNetworkCode, updateGraphRanking, updateSelectedTool, updatePayoff, resetGameData } from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
+import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
 
@@ -17,6 +18,7 @@ export const GamePage = () => {
   const networkCode = useSelector(selectNetworkCode)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
+  const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
 
   useEffect(() => {
@@ -41,8 +43,9 @@ export const GamePage = () => {
     },
   })
 
-  const onSelectTool = () => {
+  const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
+    setIsInformationBlockShown(true)
     dispatch(
       updateGraphRanking(
         graphData
@@ -53,6 +56,7 @@ export const GamePage = () => {
           : {},
       ),
     ) // TODO: call node_ranking api to get rank -> put in redux
+    dispatch(updateSelectedTool(tool))
   }
 
   const onRemoveNode = () => {
@@ -60,8 +64,10 @@ export const GamePage = () => {
     dispatch(
       updatePayoff({ payoffHuman: Math.random(), payoffFinder: Array.from({ length: 10 }, () => Math.random()) }),
     )
+    setIsInformationBlockShown(false)
     setTimeout(() => {
       setIsToolSelectionDialogOpen(true)
+      dispatch(updateGraphRanking(null))
     }, 1000)
   }
 
@@ -80,9 +86,10 @@ export const GamePage = () => {
         onCancel={() => setIsQuitGameDialogOpen(false)}
       />
 
-      <StyledForceGraphContainer>
+      <StyledGameContainer>
+        <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />
         <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />
-      </StyledForceGraphContainer>
+      </StyledGameContainer>
     </StyledGamePageContainer>
   )
 }
@@ -91,8 +98,10 @@ const StyledGamePageContainer = styled.div`
   padding: 2rem 4rem;
   position: relative;
 `
-const StyledForceGraphContainer = styled.div`
+const StyledGameContainer = styled.div`
   padding-top: 3rem;
+  display: flex;
+  align-items: flex-start;
 `
 const StyledQuitGameButton = styled(Button)`
   position: absolute;

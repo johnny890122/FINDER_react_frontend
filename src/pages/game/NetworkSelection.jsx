@@ -1,25 +1,34 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { API_ROOT } from '../../api.config'
 import { GameStages } from '../../models/GameStages'
+import { toolsAvailable } from '../../models/Tools'
 import { color } from '../../styles'
 import { Button } from '../../components'
-import { updateGameStage, updateNetworkCode } from './game.slice'
+import {
+  selectNetworksAvailable,
+  updateToolsAvailable,
+  updateGameStage,
+  updateNetworkCode,
+  updateNetworksAvailable,
+} from './game.slice'
 
 export const NetworkSelectionPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
 
   const {
-    data: networksAvailable,
-    isPending,
-    isError,
+    data: networksAvailableResponse,
+    isPending: isNetworksApiPending,
+    isError: isNetworksApiError,
   } = useQuery({
     queryKey: ['networkAvailable'],
     queryFn: async () => {
@@ -30,16 +39,37 @@ export const NetworkSelectionPage = () => {
         throw new Error('Failed to fetch available networks')
       }
       dispatch(updateGameStage(GameStages.GRAPH))
+
       return response.json()
     },
   })
 
-  if (isPending) {
+  const { isPending: isToolsApiPending, isError: isToolsApiError } = useQuery({
+    queryKey: ['toolsAvailable'],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/tools/`, {
+        method: 'GET',
+      })
+      dispatch(updateToolsAvailable(toolsAvailable)) // TODO: update redux state only when api response ok
+      if (!response.ok) {
+        throw new Error('Failed to fetch available tools')
+      }
+      return response.json()
+    },
+  })
+
+  if (isNetworksApiPending) {
+    // TODO: || isToolsApiPending
     return 'loading...'
   }
 
-  if (isError) {
+  if (isNetworksApiError) {
+    // TODO: || isToolsApiError
     return 'Failed to fetch available networks'
+  }
+
+  if (networksAvailableResponse) {
+    dispatch(updateNetworksAvailable(networksAvailableResponse))
   }
 
   return (

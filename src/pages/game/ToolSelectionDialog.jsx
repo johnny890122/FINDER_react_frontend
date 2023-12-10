@@ -1,28 +1,47 @@
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
+import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
-import { Tools } from '../../models/Tools'
-import { selectGraphRanking } from './game.slice'
-import { Button, Dialog } from '../../components'
+import { color } from '../../styles'
+import { Dialog, DialogTypes, Chip } from '../../components'
+import { selectToolsAvailable, selectPayoff } from './game.slice'
 import { PayoffChart } from './PayoffChart'
 
 export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
-  const graphRanking = useSelector(selectGraphRanking)
+  const toolsAvailable = useSelector(selectToolsAvailable)
+  const payoff = useSelector(selectPayoff)
+  const [expandedTool, setExpandedTool] = useState(null)
 
   return (
-    <Dialog open={open} title="選擇輔助指標">
+    <Dialog
+      open={open}
+      title="選擇下一回合輔助指標"
+      type={DialogTypes.CONFIRM}
+      disabled={!expandedTool}
+      onConfirm={() => {
+        onConfirm(expandedTool)
+        setExpandedTool(null)
+      }}
+    >
       <StyledDialogContent>
         <StyledOptionsContainer>
-          {Object.values(Tools).map(tool => (
-            <Button key={tool} onClick={onConfirm}>
-              {tool}
-            </Button>
+          {Object.values(toolsAvailable).map(tool => (
+            <StyledOptionContainer key={tool.code}>
+              <StyledAccordion
+                expanded={(expandedTool?.code ?? '') === tool.code}
+                onChange={() => setExpandedTool(tool)}
+              >
+                <AccordionSummary>{tool.displayName}</AccordionSummary>
+                <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
+              </StyledAccordion>
+            </StyledOptionContainer>
           ))}
         </StyledOptionsContainer>
-        {!!graphRanking && (
+        {!!payoff && (
           <StyledChartContainer>
-            <StyledChartTitle>累積報酬</StyledChartTitle>
+            <Chip label="累積報酬" />
             <PayoffChart />
           </StyledChartContainer>
         )}
@@ -48,12 +67,26 @@ const StyledOptionsContainer = styled.div`
   gap: 0.5rem;
   width: 100%;
 `
+const StyledOptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 17rem;
+`
+const StyledAccordion = styled(Accordion)`
+  background-color: ${props => props.expanded && color.primaryColor400};
+  color: ${props => props.expanded && color.neutralsColor0};
+`
+const StyledAccordionDetails = styled(AccordionDetails)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+`
 const StyledChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-`
-const StyledChartTitle = styled.span`
-  padding-left: 2rem;
+  padding: 1rem;
+  padding-top: 0;
 `
