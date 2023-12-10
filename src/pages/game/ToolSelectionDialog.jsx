@@ -19,6 +19,7 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
       open={open}
       title="選擇下一回合輔助指標"
       type={DialogTypes.CONFIRM}
+      disabled={!expandedTool}
       onConfirm={() => {
         onConfirm(expandedTool)
         setExpandedTool(null)
@@ -69,7 +70,7 @@ const StyledOptionsContainer = styled.div`
 const StyledOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 10rem;
+  width: 17rem;
 `
 const StyledAccordion = styled(Accordion)`
   background-color: ${props => props.expanded && color.primaryColor400};
@@ -79,6 +80,7 @@ const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  font-size: 0.75rem;
 `
 const StyledChartContainer = styled.div`
   display: flex;

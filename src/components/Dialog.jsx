@@ -9,18 +9,22 @@ export const DialogTypes = {
   SIMPLE: 'SIMPLE',
 }
 
-export const Dialog = ({ title, type, children, onConfirm, onCancel, ...dialogProps }) => (
+export const Dialog = ({ title, type, children, onConfirm, onCancel, disabled, ...dialogProps }) => (
   <StyledDialog {...dialogProps}>
     <StyledDialogTitle>{title}</StyledDialogTitle>
     <DialogContent>{children}</DialogContent>
     {type === DialogTypes.CONFIRM && (
       <DialogActions>
-        <Button width="5rem" onClick={onCancel}>
-          取消
-        </Button>
-        <Button width="5rem" onClick={onConfirm}>
-          確認
-        </Button>
+        {onCancel && (
+          <Button width="5rem" disabled={disabled} onClick={onCancel}>
+            取消
+          </Button>
+        )}
+        {onConfirm && (
+          <Button width="5rem" disabled={disabled} onClick={onConfirm}>
+            確認
+          </Button>
+        )}
       </DialogActions>
     )}
   </StyledDialog>
@@ -30,15 +34,17 @@ Dialog.propTypes = {
   title: PropTypes.string,
   type: PropTypes.oneOf(Object.keys(DialogTypes)),
   children: PropTypes.any,
-  onConfirm: PropTypes.func,
-  onCancel: PropTypes.func,
+  onConfirm: PropTypes.oneOf([PropTypes.func, null]),
+  onCancel: PropTypes.oneOf([PropTypes.func, null]),
+  disabled: PropTypes.bool,
 }
 Dialog.defaultProps = {
   title: '',
   type: DialogTypes.SIMPLE,
   children: null,
-  onConfirm: () => {},
-  onCancel: () => {},
+  onConfirm: null,
+  onCancel: null,
+  disabled: false,
 }
 
 const StyledDialog = styled(MuiDialog)`
