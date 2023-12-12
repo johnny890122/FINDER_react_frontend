@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
@@ -23,19 +24,27 @@ export const GamePage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
+    const sessionId = uuidv4()
+    localStorage.setItem('sessionId', sessionId)
 
     return () => {
       clearTimeout(timer)
       dispatch(resetGameData())
+      localStorage.setItem('sessionId', null)
     }
   }, [])
 
   const { data: graphData } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/game_start/?chosen_network_id=${networkCode}`, {
-        method: 'GET',
-      })
+      const playerId = localStorage.getItem('playerId')
+      const sessionId = localStorage.getItem('sessionId')
+      const response = await fetch(
+        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`,
+        {
+          method: 'GET',
+        },
+      )
       if (!response.ok) {
         throw new Error('Failed to start a game')
       }
