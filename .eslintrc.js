@@ -33,4 +33,5 @@ module.exports = {
     ],
     'react/forbid-prop-types': 'off',
   },
+  ignorePatterns: ['heroku-start.js'],
 }
