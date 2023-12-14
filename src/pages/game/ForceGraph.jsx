@@ -1,11 +1,11 @@
-/* eslint-disable react/forbid-prop-types */
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import ForceGraph2D from 'react-force-graph-2d'
 import PropTypes from 'prop-types'
 
 import { getViewport } from '../../utils'
-import { getNodeColorByRanking } from './game.utils'
+import { color } from '../../styles'
+import { getNodeValue } from './game.utils'
 import { selectGraphRanking } from './game.slice'
 
 export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode = () => {} }) => {
@@ -35,11 +35,13 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
       graphData={graphData}
       nodeVisibility={node => node.id !== removedNodeId}
       linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
+      nodeVal={node => {
+        if (!graphRanking) return 1
+        return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
+      }}
       nodeColor={node => {
-        if (!graphRanking) return '#311B92'
-        if (node.id === toBeRemovedNodeId) return '#311B92'
-        if (toBeRemovedNodeId) return '#EDE7F6'
-        return getNodeColorByRanking({ ranking: graphRanking[node.id] })
+        if (node.id === toBeRemovedNodeId) return color.neutralsColor400
+        return color.primaryColor600
       }}
       onNodeClick={handleClickNode}
       width={width - 8 * 14 - 470}
