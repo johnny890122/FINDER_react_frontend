@@ -1,6 +1,4 @@
-import { NodeColors } from '../../models/NodeColors'
-
-export const getNodeColorByRanking = ({ ranking }) => NodeColors[ranking]
+export const getNodeValue = ({ nodeCount, ranking }) => nodeCount / (10 * ranking)
 
 export const parsePayoffDataForChart = ({ payoffRawData }) => {
   if (!payoffRawData) return []

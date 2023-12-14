@@ -86,3 +86,4 @@ export const selectGraphData = state => state.gameReducer.graphData
 export const selectGraphRanking = state => state.gameReducer.graphRanking
 export const selectSelectedTool = state => state.gameReducer.selectedTool
 export const selectPayoff = state => state.gameReducer.payoff
+export const selectRound = state => (state.gameReducer.payoff?.payoffHuman ?? []).length + 1
