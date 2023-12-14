@@ -13,12 +13,12 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
   const graphRanking = useSelector(selectGraphRanking)
 
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
-  const [removedNodeId, setRemovedNodeId] = useState(null)
+  const [removedNodeIds, setRemovedNodeIds] = useState([])
 
   const handleClickNode = node => {
     if (!graphRanking) return
     if (node.id === toBeRemovedNodeId) {
-      setRemovedNodeId(node.id)
+      setRemovedNodeIds([...removedNodeIds, node.id])
       setToBeRemovedNodeId(null)
       onRemoveNode()
     } else {
@@ -33,8 +33,8 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
   return (
     <ForceGraph2D
       graphData={graphData}
-      nodeVisibility={node => node.id !== removedNodeId}
-      linkVisibility={link => link.source.id !== removedNodeId && link.target.id !== removedNodeId}
+      nodeVisibility={node => !removedNodeIds.includes(node.id)}
+      linkVisibility={link => !removedNodeIds.includes(link.source.id) && !removedNodeIds.includes(link.target.id)}
       nodeVal={node => {
         if (!graphRanking) return 1
         return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
