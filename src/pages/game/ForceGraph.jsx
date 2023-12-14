@@ -6,11 +6,13 @@ import PropTypes from 'prop-types'
 import { getViewport } from '../../utils'
 import { color } from '../../styles'
 import { getNodeValue } from './game.utils'
-import { selectGraphRanking } from './game.slice'
+import { selectGraphRanking, selectSelectedTool, selectRound } from './game.slice'
 
 export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode = () => {} }) => {
   const { width, height } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
+  const selectedTool = useSelector(selectSelectedTool)
+  const round = useSelector(selectRound)
 
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
   const [removedNodeIds, setRemovedNodeIds] = useState([])
@@ -42,6 +44,10 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
       nodeColor={node => {
         if (node.id === toBeRemovedNodeId) return color.neutralsColor400
         return color.primaryColor600
+      }}
+      nodeLabel={node => {
+        if (!graphRanking || selectedTool.length < round) return `#${node.id}`
+        return `#${node.id}，${selectedTool[round - 1].displayName}排名第 ${graphRanking[node.id]}`
       }}
       onNodeClick={handleClickNode}
       width={width - 8 * 14 - 470}

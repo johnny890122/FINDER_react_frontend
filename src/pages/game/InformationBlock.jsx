@@ -4,13 +4,12 @@ import styled from '@emotion/styled'
 import { Card } from '@mui/material'
 
 import { Chip, HoverTooltip } from '../../components'
-import { selectSelectedTool, selectPayoff } from './game.slice'
+import { selectSelectedTool, selectRound } from './game.slice'
 import { PayoffChart } from './PayoffChart'
 
 export const InformationBlock = ({ visible }) => {
   const selectedTool = useSelector(selectSelectedTool)
-  const payoff = useSelector(selectPayoff)
-  const round = (payoff?.payoffHuman ?? []).length + 1
+  const round = useSelector(selectRound)
 
   return (
     <StyledCard visible={visible}>
