@@ -20,7 +20,9 @@ export const InformationBlock = ({ visible }) => {
       <StyledRow>
         <Chip label="本回合輔助指標" />
         <div>{selectedTool[selectedTool.length - 1]?.displayName ?? ''}</div>
-        <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
+        {selectedTool[selectedTool.length - 1]?.introduction && (
+          <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
+        )}
       </StyledRow>
       {round > 1 && (
         <>

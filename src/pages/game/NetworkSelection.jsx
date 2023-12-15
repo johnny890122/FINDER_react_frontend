@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -8,7 +7,6 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { API_ROOT } from '../../api.config'
 import { GameStages } from '../../models/GameStages'
-import { toolsAvailable } from '../../models/Tools'
 import { color } from '../../styles'
 import { Button } from '../../components'
 import {
@@ -44,13 +42,16 @@ export const NetworkSelectionPage = () => {
     },
   })
 
-  const { isPending: isToolsApiPending, isError: isToolsApiError } = useQuery({
+  const {
+    data: toolsAvailableResponse,
+    isPending: isToolsApiPending,
+    isError: isToolsApiError,
+  } = useQuery({
     queryKey: ['toolsAvailable'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/tools/`, {
         method: 'GET',
       })
-      dispatch(updateToolsAvailable(toolsAvailable)) // TODO: update redux state only when api response ok
       if (!response.ok) {
         throw new Error('Failed to fetch available tools')
       }
@@ -58,18 +59,19 @@ export const NetworkSelectionPage = () => {
     },
   })
 
-  if (isNetworksApiPending) {
-    // TODO: || isToolsApiPending
+  if (isNetworksApiPending || isToolsApiPending) {
     return 'loading...'
   }
 
-  if (isNetworksApiError) {
-    // TODO: || isToolsApiError
-    return 'Failed to fetch available networks'
+  if (isNetworksApiError || isToolsApiError) {
+    return 'Failed to fetch available networks or tools'
   }
 
   if (networksAvailableResponse) {
     dispatch(updateNetworksAvailable(networksAvailableResponse))
+  }
+  if (toolsAvailableResponse) {
+    dispatch(updateToolsAvailable(toolsAvailableResponse))
   }
 
   return (
