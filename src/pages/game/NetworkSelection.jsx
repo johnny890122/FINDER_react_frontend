@@ -119,6 +119,9 @@ const StyledContainer = styled.div`
   flex-direction: column;
   padding: 2rem 4rem;
   height: calc(100vh - 4rem);
+  @media screen and (max-width: 767px) {
+    padding: 2rem;
+  }
 `
 const StyledPageTitle = styled.h1`
   font-size: 2rem;
@@ -151,4 +154,8 @@ const StyledButtonContainer = styled.div`
 `
 const StyledConfirmButton = styled(Button)`
   margin-top: 2rem;
+  @media screen and (max-width: 767px) {
+    position: absolute;
+    bottom: 2rem;
+  }
 `

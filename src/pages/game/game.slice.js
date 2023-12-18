@@ -8,7 +8,6 @@ const initialState = {
 
   gameStage: GameStages.NETWORK_SELECTION,
   networkCode: null,
-  graphData: null,
   graphRanking: null,
   selectedTool: [],
   payoff: null,
@@ -34,10 +33,6 @@ const gameSlice = createSlice({
       state.networkCode = action.payload
     },
 
-    updateGraphData: (state, action) => {
-      state.graphData = action.payload
-    },
-
     updateGraphRanking: (state, action) => {
       state.graphRanking = action.payload
     },
@@ -56,7 +51,6 @@ const gameSlice = createSlice({
     resetGameData: state => {
       state.gameStage = GameStages.NETWORK_SELECTION
       state.networkCode = null
-      state.graphData = null
       state.graphRanking = null
       state.payoff = null
     },
@@ -69,7 +63,6 @@ export const {
 
   updateGameStage,
   updateNetworkCode,
-  updateGraphData,
   updateGraphRanking,
   updateSelectedTool,
   updatePayoff,
@@ -82,7 +75,6 @@ export const selectToolsAvailable = state => state.gameReducer.toolsAvailable
 
 export const selectGameStage = state => state.gameReducer.gameStage
 export const selectNetworkCode = state => state.gameReducer.networkCode
-export const selectGraphData = state => state.gameReducer.graphData
 export const selectGraphRanking = state => state.gameReducer.graphRanking
 export const selectSelectedTool = state => state.gameReducer.selectedTool
 export const selectPayoff = state => state.gameReducer.payoff

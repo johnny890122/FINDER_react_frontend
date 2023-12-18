@@ -6,20 +6,24 @@ import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
 import { API_ROOT } from '../../api.config'
+import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import { selectNetworkCode, updateGraphRanking, updateSelectedTool, updatePayoff, resetGameData } from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
+import { InformationDialog } from './InformationDialog'
 
 export const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const networkCode = useSelector(selectNetworkCode)
+  const { width } = getViewport()
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
+  const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
 
   useEffect(() => {
@@ -94,9 +98,17 @@ export const GamePage = () => {
         }}
         onCancel={() => setIsQuitGameDialogOpen(false)}
       />
+      {width <= 767 && (
+        <InformationDialog open={isInformationDialogShown} onClose={() => setIsInformationDialogShown(false)} />
+      )}
 
       <StyledGameContainer>
-        <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />
+        {width > 767 && <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />}
+        {width <= 767 && (
+          <Button width="100%" onClick={() => setIsInformationDialogShown(true)}>
+            本回合資訊及累積報酬
+          </Button>
+        )}
         <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />
       </StyledGameContainer>
     </StyledGamePageContainer>
@@ -111,6 +123,11 @@ const StyledGameContainer = styled.div`
   padding-top: 3rem;
   display: flex;
   align-items: flex-start;
+  @media screen and (max-width: 767px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: space-around;
+  }
 `
 const StyledQuitGameButton = styled(Button)`
   position: absolute;

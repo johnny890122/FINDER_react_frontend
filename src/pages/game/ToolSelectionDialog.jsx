@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
+import { getViewport } from '../../utils'
 import { color } from '../../styles'
 import { Dialog, DialogTypes, Chip } from '../../components'
 import { selectToolsAvailable, selectPayoff } from './game.slice'
@@ -12,6 +13,8 @@ import { PayoffChart } from './PayoffChart'
 export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
   const toolsAvailable = useSelector(selectToolsAvailable)
   const payoff = useSelector(selectPayoff)
+  const { width } = getViewport()
+
   const [expandedTool, setExpandedTool] = useState(null)
 
   return (
@@ -39,7 +42,7 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
             </StyledOptionContainer>
           ))}
         </StyledOptionsContainer>
-        {!!payoff && (
+        {!!payoff && width > 767 && (
           <StyledChartContainer>
             <Chip label="累積報酬" />
             <PayoffChart />

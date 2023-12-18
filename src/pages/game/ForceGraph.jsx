@@ -50,8 +50,8 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
         return `#${node.id}，${selectedTool[round - 1].displayName}排名第 ${graphRanking[node.id]}`
       }}
       onNodeClick={handleClickNode}
-      width={width - 8 * 14 - 470}
-      height={height - 8 * 14}
+      width={width > 768 ? width - 8 * 14 - 470 : width - 28}
+      height={width > 768 ? height - 8 * 14 : height - 12 * 14}
     />
   )
 }
