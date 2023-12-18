@@ -51,6 +51,10 @@ const StyledCard = styled(Card)`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    @media screen and (max-width: 767px) {
+      width: auto;
+    }
   }
 `
 const StyledRow = styled.div`
