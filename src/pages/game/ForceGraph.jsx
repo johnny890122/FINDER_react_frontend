@@ -47,7 +47,7 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
       }}
       nodeLabel={node => {
         if (!graphRanking || selectedTool.length < round) return `#${node.id}`
-        return `#${node.id}，${selectedTool[round - 1].displayName}排名第 ${graphRanking[node.id]}`
+        return `#${node.id}，${selectedTool[selectedTool.length - 1].displayName}排名第 ${graphRanking[node.id]}`
       }}
       onNodeClick={handleClickNode}
       width={width > 768 ? width - 8 * 14 - 470 : width - 28}

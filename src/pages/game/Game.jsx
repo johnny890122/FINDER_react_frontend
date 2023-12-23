@@ -5,10 +5,18 @@ import { v4 as uuidv4 } from 'uuid'
 import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
-import { API_ROOT } from '../../api.config'
+import { API_ROOT, postHeaders } from '../../api.config'
 import { getViewport } from '../../utils'
 import { Button } from '../../components'
-import { selectNetworkCode, updateGraphRanking, updateSelectedTool, updatePayoff, resetGameData } from './game.slice'
+import {
+  selectNetworkCode,
+  selectSelectedTool,
+  selectPayoff,
+  updateGraphRanking,
+  updateSelectedTool,
+  updatePayoff,
+  resetGameData,
+} from './game.slice'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
@@ -20,11 +28,14 @@ export const GamePage = () => {
   const navigate = useNavigate()
   const networkCode = useSelector(selectNetworkCode)
   const { width } = getViewport()
+  const selectedTool = useSelector(selectSelectedTool)
+  const payoff = useSelector(selectPayoff)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
   const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
+  const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
@@ -44,7 +55,7 @@ export const GamePage = () => {
       const playerId = localStorage.getItem('playerId')
       const sessionId = localStorage.getItem('sessionId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=1&player_id=${playerId}&session_id=${sessionId}`,
         {
           method: 'GET',
         },
@@ -56,20 +67,40 @@ export const GamePage = () => {
     },
   })
 
+  const { data: nodeRanking } = useQuery({
+    enabled: isReadyGetNodeRanking,
+    queryKey: ['nodeRanking'],
+    queryFn: async () => {
+      const playerId = localStorage.getItem('playerId')
+      const response = await fetch(`${API_ROOT}/node_ranking/`, {
+        ...postHeaders,
+        method: 'POST',
+        body: JSON.stringify({
+          chosen_network_id: networkCode.toString(),
+          chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
+          player_id: playerId,
+          round: (payoff?.payoffHuman ?? []).length + 1,
+          graphData,
+        }),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to get node ranking')
+      }
+      setIsReadyGetNodeRanking(false)
+
+      return response.json()
+    },
+  })
+
+  useEffect(() => {
+    dispatch(updateGraphRanking(nodeRanking))
+  }, [nodeRanking])
+
   const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
     setIsInformationBlockShown(true)
-    dispatch(
-      updateGraphRanking(
-        graphData
-          ? graphData.nodes.reduce(
-              (previous, current) => ({ ...previous, [current.id]: Math.floor(Math.random() * 8) + 1 }),
-              {},
-            )
-          : {},
-      ),
-    ) // TODO: call node_ranking api to get rank -> put in redux
     dispatch(updateSelectedTool(tool))
+    setIsReadyGetNodeRanking(true)
   }
 
   const onRemoveNode = () => {
