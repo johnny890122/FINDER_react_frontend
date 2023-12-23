@@ -34,8 +34,8 @@ Dialog.propTypes = {
   title: PropTypes.string,
   type: PropTypes.oneOf(Object.keys(DialogTypes)),
   children: PropTypes.any,
-  onConfirm: PropTypes.oneOf([PropTypes.func, null]),
-  onCancel: PropTypes.oneOf([PropTypes.func, null]),
+  onConfirm: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
+  onCancel: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
   disabled: PropTypes.bool,
 }
 Dialog.defaultProps = {
