@@ -12,7 +12,7 @@ export const InformationBlock = ({ visible }) => {
   const round = useSelector(selectRound)
 
   return (
-    <StyledCard visible={visible}>
+    <StyledCard visible={visible.toString()}>
       <StyledRow>
         <Chip label="回合" />
         <div>{round}</div>
@@ -45,7 +45,7 @@ InformationBlock.defaultProps = {
 
 const StyledCard = styled(Card)`
   &.MuiPaper-root {
-    visibility: ${props => (props.visible ? 'visible' : 'hidden')};
+    visibility: ${props => (props.visible === 'true' ? 'visible' : 'hidden')};
     width: calc(400px + 4rem);
     padding: 1.5rem 3rem 1.5rem 2rem;
     display: flex;
