@@ -12,7 +12,7 @@ export const Home = () => {
 
   return (
     <StyledContainer>
-      <StyledLink to="/tour">
+      <StyledLink to="/tour/1">
         <Button width="15rem">Tour</Button>
       </StyledLink>
       <StyledLink to="/network-selection">
