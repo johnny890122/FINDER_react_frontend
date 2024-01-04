@@ -140,7 +140,13 @@ export const GamePage = () => {
             本回合資訊及累積報酬
           </Button>
         )}
-        {graphData && <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />}
+        {graphData && (
+          <ForceGraph
+            graphData={graphData}
+            selectedTool={selectedTool[selectedTool.length - 1]}
+            onRemoveNode={onRemoveNode}
+          />
+        )}
       </StyledGameContainer>
     </StyledGamePageContainer>
   )

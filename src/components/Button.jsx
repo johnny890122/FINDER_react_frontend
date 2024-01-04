@@ -17,7 +17,7 @@ Button.propTypes = {
 const StyledButton = styled(MuiButton)`
   &.MuiButton-root {
     min-width: 0;
-    width: ${props => props.width ?? '10rem'};
+    width: ${props => props.width ?? 'fit-content'};
     text-transform: none;
     background-color: ${color.primaryColor300};
     box-shadow: none;

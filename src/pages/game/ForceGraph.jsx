@@ -7,13 +7,18 @@ import styled from '@emotion/styled'
 import { getViewport } from '../../utils'
 import { color } from '../../styles'
 import { getNodeValue } from './game.utils'
-import { selectGraphRanking, selectSelectedTool, selectRound } from './game.slice'
+import { selectGraphRanking } from './game.slice'
 
-export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode = () => {}, width, height }) => {
+export const ForceGraph = ({
+  isDemoGraph = false,
+  graphData = { nodes: [], links: [] },
+  selectedTool,
+  onRemoveNode = () => {},
+  width,
+  height,
+}) => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
-  const selectedTool = useSelector(selectSelectedTool)
-  const round = useSelector(selectRound)
 
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
   const [removedNodeIds, setRemovedNodeIds] = useState([])
@@ -36,6 +41,27 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
     return 'loading'
   }
 
+  if (isDemoGraph) {
+    return (
+      <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
+        <ForceGraph2D
+          graphData={graphData}
+          nodeVal={node => {
+            if (!graphRanking) return 1
+            return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
+          }}
+          nodeColor={() => color.primaryColor600}
+          nodeLabel={node => {
+            if (!graphRanking) return `#${node.id}`
+            return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
+          }}
+          width={graphWidth}
+          height={graphHeight}
+        />
+      </StyledForceGraphContainer>
+    )
+  }
+
   return (
     <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
       <ForceGraph2D
@@ -51,8 +77,8 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
           return color.primaryColor600
         }}
         nodeLabel={node => {
-          if (!graphRanking || selectedTool.length < round) return `#${node.id}`
-          return `#${node.id}，${selectedTool[selectedTool.length - 1].displayName}排名第 ${graphRanking[node.id]}`
+          if (!graphRanking) return `#${node.id}`
+          return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
         }}
         onNodeClick={handleClickNode}
         width={graphWidth}
@@ -63,12 +89,15 @@ export const ForceGraph = ({ graphData = { nodes: [], links: [] }, onRemoveNode 
 }
 
 ForceGraph.propTypes = {
+  isDemoGraph: PropTypes.bool,
   graphData: PropTypes.object.isRequired,
+  selectedTool: PropTypes.object.isRequired,
   onRemoveNode: PropTypes.func.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
 }
 ForceGraph.defaultProps = {
+  isDemoGraph: false,
   width: 0,
   height: 0,
 }
