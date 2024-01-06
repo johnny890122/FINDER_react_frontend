@@ -1,6 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useQuery } from '@tanstack/react-query'
+import { useDispatch } from 'react-redux'
+
+import { API_ROOT } from './api.config'
+import { GameStages } from './models/GameStages'
+import { updateNetworksAvailable, updateToolsAvailable, updateGameStage } from './pages/game/game.slice'
+
 import { Home } from './pages/Home'
 import { TourIntroduction } from './pages/tour/TourIntroduction'
 import { TourTools } from './pages/tour/TourTools'
@@ -8,20 +13,72 @@ import { TourActions } from './pages/tour/TourActions'
 import { NetworkSelectionPage } from './pages/game/NetworkSelection'
 import { GamePage } from './pages/game/Game'
 
-const queryClient = new QueryClient()
+const App = () => {
+  const dispatch = useDispatch()
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+  const {
+    data: networksAvailableResponse,
+    isPending: isNetworksApiPending,
+    isError: isNetworksApiError,
+  } = useQuery({
+    queryKey: ['networkAvailable'],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/networks/`, {
+        method: 'GET',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to fetch available networks')
+      }
+      dispatch(updateGameStage(GameStages.GRAPH))
+
+      return response.json()
+    },
+  })
+
+  const {
+    data: toolsAvailableResponse,
+    isPending: isToolsApiPending,
+    isError: isToolsApiError,
+  } = useQuery({
+    queryKey: ['toolsAvailable'],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/tools/`, {
+        method: 'GET',
+      })
+      if (!response.ok) {
+        throw new Error('Failed to fetch available tools')
+      }
+      return response.json()
+    },
+  })
+
+  if (networksAvailableResponse) {
+    dispatch(updateNetworksAvailable(networksAvailableResponse))
+  }
+  if (toolsAvailableResponse) {
+    dispatch(updateToolsAvailable(toolsAvailableResponse))
+  }
+
+  return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/tour/introduction" element={<TourIntroduction />} />
       <Route path="/tour/tools" element={<TourTools />} />
       <Route path="/tour/actions" element={<TourActions />} />
-      <Route path="/network-selection" element={<NetworkSelectionPage />} />
+      <Route
+        path="/network-selection"
+        element={
+          <NetworkSelectionPage
+            isNetworksApiPending={isNetworksApiPending}
+            isNetworksApiError={isNetworksApiError}
+            isToolsApiPending={isToolsApiPending}
+            isToolsApiError={isToolsApiError}
+          />
+        }
+      />
       <Route path="/game" element={<GamePage />} />
     </Routes>
-    <ReactQueryDevtools />
-  </QueryClientProvider>
-)
+  )
+}
 
 export default App

@@ -1,63 +1,24 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
+import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
-import { API_ROOT } from '../../api.config'
-import { GameStages } from '../../models/GameStages'
 import { color } from '../../styles'
 import { Button } from '../../components'
-import {
-  selectNetworksAvailable,
-  updateToolsAvailable,
-  updateGameStage,
-  updateNetworkCode,
-  updateNetworksAvailable,
-} from './game.slice'
+import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
 
-export const NetworkSelectionPage = () => {
+export const NetworkSelectionPage = ({
+  isNetworksApiPending,
+  isNetworksApiError,
+  isToolsApiPending,
+  isToolsApiError,
+}) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
-
-  const {
-    data: networksAvailableResponse,
-    isPending: isNetworksApiPending,
-    isError: isNetworksApiError,
-  } = useQuery({
-    queryKey: ['networkAvailable'],
-    queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/networks/`, {
-        method: 'GET',
-      })
-      if (!response.ok) {
-        throw new Error('Failed to fetch available networks')
-      }
-      dispatch(updateGameStage(GameStages.GRAPH))
-
-      return response.json()
-    },
-  })
-
-  const {
-    data: toolsAvailableResponse,
-    isPending: isToolsApiPending,
-    isError: isToolsApiError,
-  } = useQuery({
-    queryKey: ['toolsAvailable'],
-    queryFn: async () => {
-      const response = await fetch(`${API_ROOT}/tools/`, {
-        method: 'GET',
-      })
-      if (!response.ok) {
-        throw new Error('Failed to fetch available tools')
-      }
-      return response.json()
-    },
-  })
 
   if (isNetworksApiPending || isToolsApiPending) {
     return 'loading...'
@@ -65,13 +26,6 @@ export const NetworkSelectionPage = () => {
 
   if (isNetworksApiError || isToolsApiError) {
     return 'Failed to fetch available networks or tools'
-  }
-
-  if (networksAvailableResponse) {
-    dispatch(updateNetworksAvailable(networksAvailableResponse))
-  }
-  if (toolsAvailableResponse) {
-    dispatch(updateToolsAvailable(toolsAvailableResponse))
   }
 
   return (
@@ -112,6 +66,12 @@ export const NetworkSelectionPage = () => {
       </StyledButtonContainer>
     </StyledContainer>
   )
+}
+NetworkSelectionPage.propTypes = {
+  isNetworksApiPending: PropTypes.bool.isRequired,
+  isNetworksApiError: PropTypes.bool.isRequired,
+  isToolsApiPending: PropTypes.bool.isRequired,
+  isToolsApiError: PropTypes.bool.isRequired,
 }
 
 const StyledContainer = styled.div`
