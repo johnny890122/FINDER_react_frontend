@@ -91,13 +91,14 @@ export const TourTools = () => {
               </StyledOptionContainer>
             ))}
         </StyledOptionsContainer>
-        <StyledLink to="/network-selection">
-          <Button>準備好了，開始遊戲！</Button>
+        <StyledLink to="/tour/actions">
+          <Button width="10rem">下一步</Button>
         </StyledLink>
       </StyledContainer>
       <div>
         {graphData && (
           <ForceGraph
+            isDemoGraph
             graphData={graphData}
             selectedTool={expandedTool}
             width={viewportWidth / 2}

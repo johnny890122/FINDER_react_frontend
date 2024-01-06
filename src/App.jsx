@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Home } from './pages/Home'
 import { TourIntroduction } from './pages/tour/TourIntroduction'
 import { TourTools } from './pages/tour/TourTools'
+import { TourActions } from './pages/tour/TourActions'
 import { NetworkSelectionPage } from './pages/game/NetworkSelection'
 import { GamePage } from './pages/game/Game'
 
@@ -15,6 +16,7 @@ const App = () => (
       <Route path="/" element={<Home />} />
       <Route path="/tour/introduction" element={<TourIntroduction />} />
       <Route path="/tour/tools" element={<TourTools />} />
+      <Route path="/tour/actions" element={<TourActions />} />
       <Route path="/network-selection" element={<NetworkSelectionPage />} />
       <Route path="/game" element={<GamePage />} />
     </Routes>
