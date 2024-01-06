@@ -55,7 +55,7 @@ export const GamePage = () => {
       const playerId = localStorage.getItem('playerId')
       const sessionId = localStorage.getItem('sessionId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`, // TODO: session_id -> gameId
         {
           method: 'GET',
         },
@@ -71,14 +71,13 @@ export const GamePage = () => {
     enabled: isReadyGetNodeRanking,
     queryKey: ['nodeRanking'],
     queryFn: async () => {
-      const playerId = localStorage.getItem('playerId')
       const response = await fetch(`${API_ROOT}/node_ranking/`, {
         ...postHeaders,
         method: 'POST',
         body: JSON.stringify({
-          chosen_network_id: networkCode.toString(),
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
-          player_id: playerId,
+          gameId: localStorage.getItem('sessionId'), // TODO: change to gameId
+          roundId: localStorage.getItem('sessionId'), // TODO: change to roundId
           round: (payoff?.payoffHuman ?? []).length + 1,
           graphData,
         }),
