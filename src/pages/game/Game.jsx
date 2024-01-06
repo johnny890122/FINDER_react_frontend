@@ -55,7 +55,7 @@ export const GamePage = () => {
       const playerId = localStorage.getItem('playerId')
       const sessionId = localStorage.getItem('sessionId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=1&player_id=${playerId}&session_id=${sessionId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`,
         {
           method: 'GET',
         },
@@ -140,7 +140,13 @@ export const GamePage = () => {
             本回合資訊及累積報酬
           </Button>
         )}
-        {graphData && <ForceGraph graphData={graphData} onRemoveNode={onRemoveNode} />}
+        {graphData && (
+          <ForceGraph
+            graphData={graphData}
+            selectedTool={selectedTool[selectedTool.length - 1]}
+            onRemoveNode={onRemoveNode}
+          />
+        )}
       </StyledGameContainer>
     </StyledGamePageContainer>
   )
@@ -154,6 +160,7 @@ const StyledGameContainer = styled.div`
   padding-top: 3rem;
   display: flex;
   align-items: flex-start;
+  gap: 1rem;
   @media screen and (max-width: 767px) {
     flex-direction: column-reverse;
     align-items: center;
