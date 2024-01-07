@@ -39,13 +39,13 @@ export const GamePage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
-    const sessionId = uuidv4()
-    localStorage.setItem('sessionId', sessionId)
+    const gameId = uuidv4()
+    localStorage.setItem('gameId', gameId)
 
     return () => {
       clearTimeout(timer)
       dispatch(resetGameData())
-      localStorage.setItem('sessionId', null)
+      localStorage.setItem('gameId', null)
     }
   }, [])
 
@@ -53,9 +53,9 @@ export const GamePage = () => {
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
-      const sessionId = localStorage.getItem('sessionId')
+      const gameId = localStorage.getItem('gameId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${sessionId}`, // TODO: session_id -> gameId
+        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${gameId}`,
         {
           method: 'GET',
         },
@@ -76,9 +76,8 @@ export const GamePage = () => {
         method: 'POST',
         body: JSON.stringify({
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
-          gameId: localStorage.getItem('sessionId'), // TODO: change to gameId
-          roundId: localStorage.getItem('sessionId'), // TODO: change to roundId
-          round: (payoff?.payoffHuman ?? []).length + 1,
+          gameId: localStorage.getItem('gameId'),
+          roundId: (payoff?.payoffHuman ?? []).length + 1,
           graphData,
         }),
       })

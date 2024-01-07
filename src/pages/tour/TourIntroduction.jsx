@@ -15,9 +15,9 @@ export const TourIntroduction = () => {
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
-      const sessionId = localStorage.getItem('sessionId')
+      const gameId = localStorage.getItem('gameId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=0&player_id=${playerId}&session_id=${sessionId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=0&player_id=${playerId}&game_id=${gameId}`,
         {
           method: 'GET',
         },
