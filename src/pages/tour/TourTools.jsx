@@ -24,9 +24,9 @@ export const TourTools = () => {
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
-      const sessionId = localStorage.getItem('sessionId')
+      const gameId = localStorage.getItem('gameId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=0&player_id=${playerId}&session_id=${sessionId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=0&player_id=${playerId}&session_id=${gameId}`,
         {
           method: 'GET',
         },
@@ -50,7 +50,7 @@ export const TourTools = () => {
           chosen_network_id: '0',
           chosen_tool_id: expandedTool.code.toString(),
           player_id: playerId,
-          round: 0,
+          round_id: 0,
           graphData,
         }),
       })
