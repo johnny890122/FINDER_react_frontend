@@ -36,6 +36,8 @@ export const GamePage = () => {
   const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
+  const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
+  const [removedNodeIds, setRemovedNodeIds] = useState([])
 
   useEffect(() => {
     const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
@@ -90,6 +92,29 @@ export const GamePage = () => {
     },
   })
 
+  const { data: payoffResponse } = useQuery({
+    enabled: isReadyGetPayoff,
+    queryKey: ['payoff', removedNodeIds],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROOT}/payoff/`, {
+        ...postHeaders,
+        method: 'POST',
+        body: JSON.stringify({
+          chosen_network_id: networkCode.toString(),
+          graphData,
+          chosen_node_id: removedNodeIds[removedNodeIds.length - 1],
+          round_id: (payoff?.payoffHuman ?? []).length + 1,
+        }),
+      })
+      if (!response.ok) {
+        throw new Error('Failed to get payoff')
+      }
+      setIsReadyGetPayoff(false)
+
+      return response.json()
+    },
+  })
+
   useEffect(() => {
     dispatch(updateGraphRanking(nodeRanking))
   }, [nodeRanking])
@@ -102,10 +127,7 @@ export const GamePage = () => {
   }
 
   const onRemoveNode = () => {
-    // TODO: call payoff api to get human and finder payoff
-    dispatch(
-      updatePayoff({ payoffHuman: Math.random(), payoffFinder: Array.from({ length: 10 }, () => Math.random()) }),
-    )
+    dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
     setIsInformationBlockShown(false)
     setTimeout(() => {
       setIsToolSelectionDialogOpen(true)
@@ -142,6 +164,9 @@ export const GamePage = () => {
           <ForceGraph
             graphData={graphData}
             selectedTool={selectedTool[selectedTool.length - 1]}
+            removedNodeIds={removedNodeIds}
+            setRemovedNodeIds={setRemovedNodeIds}
+            setIsReadyGetPayoff={setIsReadyGetPayoff}
             onRemoveNode={onRemoveNode}
           />
         )}

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useSelector } from 'react-redux'
@@ -14,6 +15,8 @@ export const TourActions = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const toolsAvailable = useSelector(selectToolsAvailable)
   const demoTool = toolsAvailable.HDA
+
+  const [removedNodeIds, setRemovedNodeIds] = useState([])
 
   const { data: graphData } = useQuery({
     queryKey: ['gameStart'],
@@ -52,6 +55,8 @@ export const TourActions = () => {
           <ForceGraph
             graphData={graphData}
             selectedTool={demoTool}
+            removedNodeIds={removedNodeIds}
+            setRemovedNodeIds={setRemovedNodeIds}
             width={viewportWidth / 2}
             height={viewportHeight - 200}
           />
