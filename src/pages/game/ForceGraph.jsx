@@ -11,13 +11,22 @@ import { color } from '../../styles'
 import { getNodeValue } from './game.utils'
 import { selectGraphRanking } from './game.slice'
 
-export const ForceGraph = ({ isDemoGraph = false, graphData, selectedTool, onRemoveNode, width, height }) => {
+export const ForceGraph = ({
+  isDemoGraph = false,
+  graphData,
+  selectedTool,
+  removedNodeIds,
+  setRemovedNodeIds,
+  setIsReadyGetPayoff,
+  onRemoveNode,
+  width,
+  height,
+}) => {
   const graphRef = useRef(null)
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
 
   const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
-  const [removedNodeIds, setRemovedNodeIds] = useState([])
   const [zoomPan, setZoomPan] = useState({ k: 1, x: 0, y: 0 })
 
   const graphWidth = width || (viewportWidth > 768 ? viewportWidth - 8 * 14 - 470 : viewportWidth - 28)
@@ -28,6 +37,7 @@ export const ForceGraph = ({ isDemoGraph = false, graphData, selectedTool, onRem
     if (node.id === toBeRemovedNodeId) {
       setRemovedNodeIds([...removedNodeIds, node.id])
       setToBeRemovedNodeId(null)
+      setIsReadyGetPayoff(true)
       onRemoveNode()
     } else {
       setToBeRemovedNodeId(node.id)
@@ -107,6 +117,9 @@ ForceGraph.propTypes = {
   isDemoGraph: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]).isRequired,
   selectedTool: PropTypes.object,
+  removedNodeIds: PropTypes.array,
+  setRemovedNodeIds: PropTypes.func,
+  setIsReadyGetPayoff: PropTypes.func,
   onRemoveNode: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -115,6 +128,9 @@ ForceGraph.defaultProps = {
   isDemoGraph: false,
   selectedTool: {},
   onRemoveNode: () => {},
+  removedNodeIds: [],
+  setRemovedNodeIds: () => {},
+  setIsReadyGetPayoff: () => {},
   width: 0,
   height: 0,
 }

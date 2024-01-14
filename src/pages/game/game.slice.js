@@ -44,7 +44,7 @@ const gameSlice = createSlice({
     updatePayoff: (state, action) => {
       state.payoff = {
         payoffHuman: [...(state?.payoff?.payoffHuman ?? []), action.payload.payoffHuman],
-        payoffFinder: action.payload.payoffFinder,
+        payoffFinder: [...(state?.payoff?.payoffFinder ?? []), action.payload.payoffFinder],
       }
     },
 
