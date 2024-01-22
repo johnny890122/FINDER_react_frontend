@@ -43,7 +43,7 @@ export const TourActions = () => {
         <StyledParagraph>
           首先，您可以使用滑鼠滾輪放大或縮小網絡，也可以使用網絡右下角的按鈕控制。
           <br />
-          連續點選一個點兩次，就可以將它從網絡上移除，您可以在右邊的圖上嘗試看看！
+          將游標停在一個點上，會提示您和它連接的點，此時按下該點就可以將它從網絡上移除，您可以在右邊的圖上嘗試看看！
         </StyledParagraph>
         <StyledParagraph>如果您準備好了，就讓我們開始遊戲吧！</StyledParagraph>
         <StyledLink to="/network-selection">

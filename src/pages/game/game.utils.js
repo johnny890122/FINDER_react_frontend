@@ -9,3 +9,24 @@ export const parsePayoffDataForChart = ({ payoffRawData }) => {
   }
   return payoff
 }
+
+export const getNeighborNodeIds = ({ graphData, hoverNodeId }) => {
+  const neighborNodeIds = new Set()
+  for (let i = 0; i < graphData.links.length; i += 1) {
+    const link = graphData.links[i]
+    if (link.source.id === hoverNodeId) neighborNodeIds.add(link.target.id)
+    if (link.target.id === hoverNodeId) neighborNodeIds.add(link.source.id)
+  }
+  return [...neighborNodeIds]
+}
+
+export const getNeighborLinks = ({ graphData, hoveredNodeId }) => {
+  const neighborLinks = new Set()
+  for (let i = 0; i < graphData.links.length; i += 1) {
+    const link = graphData.links[i]
+    if (link.source.id === hoveredNodeId || link.target.id === hoveredNodeId) {
+      neighborLinks.add(link)
+    }
+  }
+  return [...neighborLinks]
+}
