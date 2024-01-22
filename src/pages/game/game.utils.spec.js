@@ -1,4 +1,4 @@
-import { getNodeValue, parsePayoffDataForChart } from './game.utils'
+import { getNodeValue, parsePayoffDataForChart, getNeighborNodeIds, getNeighborLinks } from './game.utils'
 
 describe('getNodeValue', () => {
   it('should get correct node value', () => {
@@ -33,5 +33,54 @@ describe('parsePayoffDataForChart', () => {
     const expectPayoff = [{ name: 1, payoffHuman: 0.1, payoffFinder: 0.3 }]
 
     expect(parsePayoffDataForChart({ payoffRawData })).toEqual(expectPayoff)
+  })
+})
+
+describe('getNeighborNodeIds', () => {
+  it('should get corrent neighbor node ids array given graphData and hovered node id', () => {
+    const graphData = {
+      nodes: [{ id: 0 }, { id: 1 }],
+      links: [
+        {
+          source: { id: 0 },
+          target: { id: 1 },
+        },
+        {
+          source: { id: 1 },
+          target: { id: 0 },
+        },
+      ],
+    }
+    const hoverNodeId = 0
+    expect(getNeighborNodeIds({ graphData, hoverNodeId })).toEqual([1])
+  })
+})
+
+describe('getNeighborLinks', () => {
+  it('should get correct neighbor links array given graphData and hovered node id', () => {
+    const graphData = {
+      nodes: [{ id: 0 }, { id: 1 }],
+      links: [
+        {
+          source: { id: 0 },
+          target: { id: 1 },
+        },
+        {
+          source: { id: 1 },
+          target: { id: 0 },
+        },
+      ],
+    }
+    const hoveredNodeId = 0
+    expect(getNeighborLinks({ graphData, hoveredNodeId })).toEqual([
+      {
+        source: { id: 0 },
+        target: { id: 1 },
+      },
+      {
+        source: { id: 1 },
+        target: { id: 0 },
+      },
+    ])
   })
 })

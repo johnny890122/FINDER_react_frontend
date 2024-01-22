@@ -8,7 +8,7 @@ import { ButtonGroup } from '@mui/material'
 import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import { color } from '../../styles'
-import { getNodeValue } from './game.utils'
+import { getNodeValue, getNeighborNodeIds, getNeighborLinks } from './game.utils'
 import { selectGraphRanking } from './game.slice'
 
 export const ForceGraph = ({
@@ -26,22 +26,40 @@ export const ForceGraph = ({
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
 
-  const [toBeRemovedNodeId, setToBeRemovedNodeId] = useState(null)
+  const [hoveredNode, setHoveredNode] = useState(null)
+  const [hoveredLink, setHoveredLink] = useState(null)
+  const [neighborNodeIds, setNeighborNodeIds] = useState([])
+  const [neighborLinks, setNeighborLinks] = useState([])
   const [zoomPan, setZoomPan] = useState({ k: 1, x: 0, y: 0 })
 
   const graphWidth = width || (viewportWidth > 768 ? viewportWidth - 8 * 14 - 470 : viewportWidth - 28)
   const graphHeight = height || (viewportWidth > 768 ? viewportHeight - 8 * 14 : viewportHeight - 12 * 14)
 
-  const handleClickNode = node => {
-    if (!graphRanking) return
-    if (node.id === toBeRemovedNodeId) {
-      setRemovedNodeIds([...removedNodeIds, node.id])
-      setToBeRemovedNodeId(null)
-      setIsReadyGetPayoff(true)
-      onRemoveNode()
+  const handleNodeHover = node => {
+    setHoveredNode(node || null)
+
+    if (node) {
+      setNeighborNodeIds(getNeighborNodeIds({ graphData, hoverNodeId: node.id }))
+      setNeighborLinks(getNeighborLinks({ graphData, hoveredNodeId: node.id }))
     } else {
-      setToBeRemovedNodeId(node.id)
+      setNeighborNodeIds([])
+      setNeighborLinks([])
     }
+  }
+
+  const handleLinkHover = link => {
+    if (link) {
+      setHoveredLink(link)
+    } else {
+      setHoveredLink(null)
+    }
+  }
+
+  const handleNodeClick = node => {
+    setRemovedNodeIds([...removedNodeIds, node.id])
+    setHoveredNode(null)
+    setIsReadyGetPayoff(true)
+    onRemoveNode()
   }
 
   if (!graphData) {
@@ -57,7 +75,7 @@ export const ForceGraph = ({
             if (!graphRanking) return 1
             return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
           }}
-          nodeColor={() => color.primaryColor600}
+          nodeColor={() => color.primaryColor300}
           nodeLabel={node => {
             if (!graphRanking) return `#${node.id}`
             return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
@@ -76,19 +94,20 @@ export const ForceGraph = ({
         graphData={graphData}
         nodeVisibility={node => !removedNodeIds.includes(node.id)}
         linkVisibility={link => !removedNodeIds.includes(link.source.id) && !removedNodeIds.includes(link.target.id)}
+        nodeRelSize={8}
         nodeVal={node => {
           if (!graphRanking) return 1
           return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
         }}
         nodeColor={node => {
-          if (node.id === toBeRemovedNodeId) return color.neutralsColor400
-          return color.primaryColor600
+          if (hoveredNode?.id === node.id) return color.primaryColor600
+          if (neighborNodeIds.includes(node.id)) return color.neutralsColor700
+          return color.primaryColor300
         }}
         nodeLabel={node => {
           if (!graphRanking) return `#${node.id}`
           return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
         }}
-        onNodeClick={handleClickNode}
         width={graphWidth}
         height={graphHeight}
         onZoomEnd={({ k }) => {
@@ -96,6 +115,12 @@ export const ForceGraph = ({
             setZoomPan(k)
           }
         }}
+        linkWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 5 : 1)}
+        linkDirectionalParticles={4}
+        linkDirectionalParticleWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 4 : 0)}
+        onNodeHover={handleNodeHover}
+        onLinkHover={handleLinkHover}
+        onNodeClick={handleNodeClick}
       />
       <StyledButtonGroupContainer>
         <StyledButtonGroup>
