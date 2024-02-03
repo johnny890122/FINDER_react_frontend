@@ -11,7 +11,7 @@ import { Button } from '../../components'
 import {
   selectNetworkCode,
   selectSelectedTool,
-  selectPayoff,
+  selectRound,
   updateGraphRanking,
   updateSelectedTool,
   updatePayoff,
@@ -29,7 +29,7 @@ export const GamePage = () => {
   const networkCode = useSelector(selectNetworkCode)
   const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
-  const payoff = useSelector(selectPayoff)
+  const round = useSelector(selectRound)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
@@ -79,7 +79,7 @@ export const GamePage = () => {
         body: JSON.stringify({
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
           gameId: localStorage.getItem('gameId'),
-          roundId: (payoff?.payoffHuman ?? []).length + 1,
+          roundId: round,
           graphData,
         }),
       })
@@ -103,7 +103,7 @@ export const GamePage = () => {
           chosen_network_id: networkCode.toString(),
           graphData,
           chosen_node_id: removedNodeIds[removedNodeIds.length - 1],
-          round_id: (payoff?.payoffHuman ?? []).length + 1,
+          round_id: round,
         }),
       })
       if (!response.ok) {
@@ -117,7 +117,7 @@ export const GamePage = () => {
 
   useEffect(() => {
     dispatch(updateGraphRanking(nodeRanking))
-  }, [nodeRanking])
+  }, [nodeRanking, isReadyGetNodeRanking])
 
   const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
