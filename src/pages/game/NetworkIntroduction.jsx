@@ -9,7 +9,7 @@ import { color } from '../../styles'
 import { Button } from '../../components'
 import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
 
-export const NetworkSelectionPage = ({
+export const NetworkIntroduction = ({
   isNetworksApiPending,
   isNetworksApiError,
   isToolsApiPending,
@@ -67,7 +67,7 @@ export const NetworkSelectionPage = ({
     </StyledContainer>
   )
 }
-NetworkSelectionPage.propTypes = {
+NetworkIntroduction.propTypes = {
   isNetworksApiPending: PropTypes.bool.isRequired,
   isNetworksApiError: PropTypes.bool.isRequired,
   isToolsApiPending: PropTypes.bool.isRequired,
