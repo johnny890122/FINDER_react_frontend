@@ -30,3 +30,14 @@ export const getNeighborLinks = ({ graphData, hoveredNodeId }) => {
   }
   return [...neighborLinks]
 }
+
+export const getRandomNumber = ({ totalCount, excludeNumbers = [] }) => {
+  const numbers = Array.from({ length: totalCount }, (_, i) => i)
+  const possibleNumbers = numbers.filter(num => !excludeNumbers.includes(num))
+
+  if (possibleNumbers.length > 0) {
+    const randomSeed = Math.floor(Math.random() * possibleNumbers.length)
+    return possibleNumbers[randomSeed]
+  }
+  return 0
+}
