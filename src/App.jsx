@@ -10,7 +10,7 @@ import { Home } from './pages/Home'
 import { TourIntroduction } from './pages/tour/TourIntroduction'
 import { TourTools } from './pages/tour/TourTools'
 import { TourActions } from './pages/tour/TourActions'
-import { NetworkSelectionPage } from './pages/game/NetworkSelection'
+import { NetworkIntroduction } from './pages/game/NetworkIntroduction'
 import { GamePage } from './pages/game/Game'
 
 const App = () => {
@@ -68,7 +68,7 @@ const App = () => {
       <Route
         path="/network-selection"
         element={
-          <NetworkSelectionPage
+          <NetworkIntroduction
             isNetworksApiPending={isNetworksApiPending}
             isNetworksApiError={isNetworksApiError}
             isToolsApiPending={isToolsApiPending}

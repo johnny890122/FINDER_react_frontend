@@ -1,4 +1,10 @@
-import { getNodeValue, parsePayoffDataForChart, getNeighborNodeIds, getNeighborLinks } from './game.utils'
+import {
+  getNodeValue,
+  parsePayoffDataForChart,
+  getNeighborNodeIds,
+  getNeighborLinks,
+  getRandomNumber,
+} from './game.utils'
 
 describe('getNodeValue', () => {
   it('should get correct node value', () => {
@@ -82,5 +88,18 @@ describe('getNeighborLinks', () => {
         target: { id: 0 },
       },
     ])
+  })
+})
+
+describe('getRandomNumber', () => {
+  it('should get random number between 0 and total count', () => {
+    expect(getRandomNumber({ totalCount: 5 })).toBeLessThanOrEqual(4)
+    expect(getRandomNumber({ totalCount: 5 })).toBeGreaterThanOrEqual(0)
+  })
+  it('should not be exclude numbers', () => {
+    expect(getRandomNumber({ totalCount: 2, excludeNumbers: [0] })).not.toBe(0)
+  })
+  it('should return 0 if all numbers are excluded', () => {
+    expect(getRandomNumber({ totalCount: 2, excludeNumbers: [0, 1] })).toBe(0)
   })
 })

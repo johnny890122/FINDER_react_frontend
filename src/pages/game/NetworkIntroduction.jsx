@@ -8,8 +8,9 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 import { color } from '../../styles'
 import { Button } from '../../components'
 import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
+import { getRandomNumber } from './game.utils'
 
-export const NetworkSelectionPage = ({
+export const NetworkIntroduction = ({
   isNetworksApiPending,
   isNetworksApiError,
   isToolsApiPending,
@@ -19,6 +20,7 @@ export const NetworkSelectionPage = ({
   const dispatch = useDispatch()
   const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
+  const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
   if (isNetworksApiPending || isToolsApiPending) {
     return 'loading...'
@@ -30,7 +32,8 @@ export const NetworkSelectionPage = ({
 
   return (
     <StyledContainer>
-      <StyledPageTitle>請選擇您要破壞的網絡</StyledPageTitle>
+      <StyledPageTitle>請查看各網絡的介紹</StyledPageTitle>
+      <StyledPageSubtitle>查看完各網絡的介紹後，按下開始遊玩，系統將會隨機挑選一個網絡給您</StyledPageSubtitle>
 
       <StyledOptionsContainer>
         {Object.keys(networksAvailable).map(networkKey => {
@@ -57,7 +60,15 @@ export const NetworkSelectionPage = ({
         <StyledConfirmButton
           disabled={!expandedNetworkKey}
           onClick={() => {
-            dispatch(updateNetworkCode(networksAvailable[expandedNetworkKey].code))
+            const randomNetworkCodeNumber = getRandomNumber({
+              totalCount: Object.keys(networksAvailable).length,
+              excludeNumbers: excludeNetworkCodeNumbers,
+            })
+            dispatch(updateNetworkCode(randomNetworkCodeNumber.toString()))
+            sessionStorage.setItem(
+              'excludeNetworkCodeNumbers',
+              JSON.stringify([...excludeNetworkCodeNumbers, randomNetworkCodeNumber]),
+            )
             navigate('/game')
           }}
         >
@@ -67,7 +78,7 @@ export const NetworkSelectionPage = ({
     </StyledContainer>
   )
 }
-NetworkSelectionPage.propTypes = {
+NetworkIntroduction.propTypes = {
   isNetworksApiPending: PropTypes.bool.isRequired,
   isNetworksApiError: PropTypes.bool.isRequired,
   isToolsApiPending: PropTypes.bool.isRequired,
@@ -86,6 +97,12 @@ const StyledContainer = styled.div`
 const StyledPageTitle = styled.h1`
   font-size: 2rem;
   font-weight: 400;
+  margin-bottom: 0;
+`
+const StyledPageSubtitle = styled.h2`
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
 `
 const StyledOptionsContainer = styled.div`
   display: flex;
