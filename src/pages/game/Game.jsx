@@ -12,11 +12,14 @@ import {
   selectNetworkCode,
   selectSelectedTool,
   selectRound,
+  selectRealGraphData,
   updateGraphRanking,
   updateSelectedTool,
   updatePayoff,
+  updateRealGraphData,
   resetGameData,
 } from './game.slice'
+import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
@@ -30,6 +33,7 @@ export const GamePage = () => {
   const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
+  const realGraphData = useSelector(selectRealGraphData)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
@@ -80,7 +84,7 @@ export const GamePage = () => {
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
           gameId: localStorage.getItem('gameId'),
           roundId: round,
-          graphData,
+          graphData: realGraphData,
         }),
       })
       if (!response.ok) {
@@ -126,7 +130,9 @@ export const GamePage = () => {
     setIsReadyGetNodeRanking(true)
   }
 
-  const onRemoveNode = () => {
+  const onRemoveNode = removedNode => {
+    dispatch(updateRealGraphData(removeNodeAndRelatedLinksFromGraphData({ graphData: realGraphData, removedNode })))
+
     dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
     setIsInformationBlockShown(false)
     setTimeout(() => {

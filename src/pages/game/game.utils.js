@@ -41,3 +41,32 @@ export const getRandomNumber = ({ totalCount, excludeNumbers = [] }) => {
   }
   return 0
 }
+
+export const removeNodeAndRelatedLinksFromGraphData = ({ graphData, removedNode }) => {
+  if (!graphData) return graphData
+  if (!removedNode) return graphData
+  const { nodes, links } = graphData
+
+  const remainNodes = nodes.filter(node => node.id !== removedNode.id)
+  const remainLinks = links.filter(link => link.source.id !== removedNode.id && link.target.id !== removedNode.id)
+
+  return { nodes: remainNodes, links: remainLinks }
+}
+
+export const deepCloneGraphData = ({ graphData }) => {
+  if (!graphData) return {}
+
+  const { nodes, links } = graphData
+  if (!nodes || !links) return {}
+
+  const clonedGraphData = { nodes: [], links: [] }
+  for (let i = 0; i < nodes.length; i += 1) {
+    const { id } = nodes[i]
+    clonedGraphData.nodes = [...clonedGraphData.nodes, { id }]
+  }
+  for (let i = 0; i < links.length; i += 1) {
+    const { target: targetId, source: sourceId } = links[i]
+    clonedGraphData.links = [...clonedGraphData.links, { target: { id: targetId }, source: { id: sourceId } }]
+  }
+  return clonedGraphData
+}
