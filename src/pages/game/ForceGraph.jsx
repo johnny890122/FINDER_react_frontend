@@ -12,7 +12,8 @@ import { getNodeValue, getNeighborNodeIds, getNeighborLinks, deepCloneGraphData 
 import { selectGraphRanking, updateRealGraphData } from './game.slice'
 
 export const ForceGraph = ({
-  isDemoGraph = false,
+  withAction = true,
+  withPayoff = true,
   graphData,
   selectedTool,
   removedNodeIds,
@@ -64,7 +65,7 @@ export const ForceGraph = ({
   }
 
   useEffect(() => {
-    if (graphData) {
+    if (graphData && withAction && withPayoff) {
       dispatch(updateRealGraphData(deepCloneGraphData({ graphData })))
     }
   }, [graphData])
@@ -73,7 +74,7 @@ export const ForceGraph = ({
     return 'loading'
   }
 
-  if (isDemoGraph) {
+  if (!withAction) {
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
         <ForceGraph2D
@@ -146,7 +147,8 @@ export const ForceGraph = ({
 }
 
 ForceGraph.propTypes = {
-  isDemoGraph: PropTypes.bool,
+  withAction: PropTypes.bool,
+  withPayoff: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]).isRequired,
   selectedTool: PropTypes.object,
   removedNodeIds: PropTypes.array,
@@ -157,7 +159,8 @@ ForceGraph.propTypes = {
   height: PropTypes.number,
 }
 ForceGraph.defaultProps = {
-  isDemoGraph: false,
+  withAction: true,
+  withPayoff: true,
   selectedTool: {},
   onRemoveNode: () => {},
   removedNodeIds: [],

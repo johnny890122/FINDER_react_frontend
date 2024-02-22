@@ -53,6 +53,7 @@ export const TourActions = () => {
       <div>
         {graphData && (
           <ForceGraph
+            withPayoff={false}
             graphData={graphData}
             selectedTool={demoTool}
             removedNodeIds={removedNodeIds}
