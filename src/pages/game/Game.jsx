@@ -12,11 +12,14 @@ import {
   selectNetworkCode,
   selectSelectedTool,
   selectRound,
+  selectRealGraphData,
   updateGraphRanking,
   updateSelectedTool,
   updatePayoff,
+  updateRealGraphData,
   resetGameData,
 } from './game.slice'
+import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
@@ -30,6 +33,7 @@ export const GamePage = () => {
   const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
+  const realGraphData = useSelector(selectRealGraphData)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
@@ -80,7 +84,7 @@ export const GamePage = () => {
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
           gameId: localStorage.getItem('gameId'),
           roundId: round,
-          graphData,
+          graphData: realGraphData,
         }),
       })
       if (!response.ok) {
@@ -101,7 +105,7 @@ export const GamePage = () => {
         method: 'POST',
         body: JSON.stringify({
           chosen_network_id: networkCode.toString(),
-          graphData,
+          graphData: realGraphData,
           chosen_node_id: removedNodeIds[removedNodeIds.length - 1],
           round_id: round,
         }),
@@ -110,6 +114,14 @@ export const GamePage = () => {
         throw new Error('Failed to get payoff')
       }
       setIsReadyGetPayoff(false)
+      dispatch(
+        updateRealGraphData(
+          removeNodeAndRelatedLinksFromGraphData({
+            graphData: realGraphData,
+            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
+          }),
+        ),
+      )
 
       return response.json()
     },

@@ -55,7 +55,13 @@ export const TourIntroduction = () => {
       </StyledContainer>
       <div>
         {graphData && (
-          <ForceGraph isDemoGraph graphData={graphData} width={viewportWidth / 2} height={viewportHeight - 200} />
+          <ForceGraph
+            withAction={false}
+            withPayoff={false}
+            graphData={graphData}
+            width={viewportWidth / 2}
+            height={viewportHeight - 200}
+          />
         )}
       </div>
     </TourLayout>

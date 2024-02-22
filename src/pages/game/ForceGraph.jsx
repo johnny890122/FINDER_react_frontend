@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useState, useRef, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import ForceGraph2D from 'react-force-graph-2d'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
@@ -8,11 +8,12 @@ import { ButtonGroup } from '@mui/material'
 import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import { color } from '../../styles'
-import { getNodeValue, getNeighborNodeIds, getNeighborLinks } from './game.utils'
-import { selectGraphRanking } from './game.slice'
+import { getNodeValue, getNeighborNodeIds, getNeighborLinks, deepCloneGraphData } from './game.utils'
+import { selectGraphRanking, updateRealGraphData } from './game.slice'
 
 export const ForceGraph = ({
-  isDemoGraph = false,
+  withAction = true,
+  withPayoff = true,
   graphData,
   selectedTool,
   removedNodeIds,
@@ -23,6 +24,7 @@ export const ForceGraph = ({
   height,
 }) => {
   const graphRef = useRef(null)
+  const dispatch = useDispatch()
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
 
@@ -59,14 +61,20 @@ export const ForceGraph = ({
     setRemovedNodeIds([...removedNodeIds, node.id])
     setHoveredNode(null)
     setIsReadyGetPayoff(true)
-    onRemoveNode()
+    onRemoveNode(node)
   }
+
+  useEffect(() => {
+    if (graphData && withAction && withPayoff) {
+      dispatch(updateRealGraphData(deepCloneGraphData({ graphData })))
+    }
+  }, [graphData])
 
   if (!graphData) {
     return 'loading'
   }
 
-  if (isDemoGraph) {
+  if (!withAction) {
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
         <ForceGraph2D
@@ -139,7 +147,8 @@ export const ForceGraph = ({
 }
 
 ForceGraph.propTypes = {
-  isDemoGraph: PropTypes.bool,
+  withAction: PropTypes.bool,
+  withPayoff: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]).isRequired,
   selectedTool: PropTypes.object,
   removedNodeIds: PropTypes.array,
@@ -150,7 +159,8 @@ ForceGraph.propTypes = {
   height: PropTypes.number,
 }
 ForceGraph.defaultProps = {
-  isDemoGraph: false,
+  withAction: true,
+  withPayoff: true,
   selectedTool: {},
   onRemoveNode: () => {},
   removedNodeIds: [],

@@ -98,7 +98,8 @@ export const TourTools = () => {
       <div>
         {graphData && (
           <ForceGraph
-            isDemoGraph
+            withAction={false}
+            withPayoff={false}
             graphData={graphData}
             selectedTool={expandedTool}
             width={viewportWidth / 2}
