@@ -42,13 +42,13 @@ export const getRandomNumber = ({ totalCount, excludeNumbers = [] }) => {
   return 0
 }
 
-export const removeNodeAndRelatedLinksFromGraphData = ({ graphData, removedNode }) => {
+export const removeNodeAndRelatedLinksFromGraphData = ({ graphData, removedNodeId }) => {
   if (!graphData) return graphData
-  if (!removedNode) return graphData
+  if (!removedNodeId) return graphData
   const { nodes, links } = graphData
 
-  const remainNodes = nodes.filter(node => node.id !== removedNode.id)
-  const remainLinks = links.filter(link => link.source.id !== removedNode.id && link.target.id !== removedNode.id)
+  const remainNodes = nodes.filter(node => node.id !== removedNodeId)
+  const remainLinks = links.filter(link => link.source.id !== removedNodeId && link.target.id !== removedNodeId)
 
   return { nodes: remainNodes, links: remainLinks }
 }

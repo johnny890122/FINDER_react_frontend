@@ -105,7 +105,7 @@ export const GamePage = () => {
         method: 'POST',
         body: JSON.stringify({
           chosen_network_id: networkCode.toString(),
-          graphData,
+          graphData: realGraphData,
           chosen_node_id: removedNodeIds[removedNodeIds.length - 1],
           round_id: round,
         }),
@@ -114,6 +114,14 @@ export const GamePage = () => {
         throw new Error('Failed to get payoff')
       }
       setIsReadyGetPayoff(false)
+      dispatch(
+        updateRealGraphData(
+          removeNodeAndRelatedLinksFromGraphData({
+            graphData: realGraphData,
+            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
+          }),
+        ),
+      )
 
       return response.json()
     },
@@ -130,9 +138,7 @@ export const GamePage = () => {
     setIsReadyGetNodeRanking(true)
   }
 
-  const onRemoveNode = removedNode => {
-    dispatch(updateRealGraphData(removeNodeAndRelatedLinksFromGraphData({ graphData: realGraphData, removedNode })))
-
+  const onRemoveNode = () => {
     dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
     setIsInformationBlockShown(false)
     setTimeout(() => {

@@ -125,10 +125,10 @@ describe('removeNodeAndRelatedLinksFromGraphData', () => {
     ],
   }
   it('no removedNode, should return original graphData', () => {
-    expect(removeNodeAndRelatedLinksFromGraphData({ graphData, removedNode: null })).toEqual(graphData)
+    expect(removeNodeAndRelatedLinksFromGraphData({ graphData, removedNodeId: null })).toEqual(graphData)
   })
   it('should return graphData with node and related links removed', () => {
-    const removedNode = { id: 2 }
+    const removedNodeId = 2
     const expectReturnGraphData = {
       nodes: [{ id: 0 }, { id: 1 }],
       links: [
@@ -143,7 +143,7 @@ describe('removeNodeAndRelatedLinksFromGraphData', () => {
       ],
     }
 
-    expect(removeNodeAndRelatedLinksFromGraphData({ graphData, removedNode })).toEqual(expectReturnGraphData)
+    expect(removeNodeAndRelatedLinksFromGraphData({ graphData, removedNodeId })).toEqual(expectReturnGraphData)
   })
 })
 
