@@ -73,7 +73,7 @@ export const GamePage = () => {
     },
   })
 
-  const { data: nodeRanking } = useQuery({
+  useQuery({
     enabled: isReadyGetNodeRanking,
     queryKey: ['nodeRanking'],
     queryFn: async () => {
@@ -94,9 +94,12 @@ export const GamePage = () => {
 
       return response.json()
     },
+    onSuccess: nodeRanking => {
+      dispatch(updateGraphRanking(nodeRanking))
+    },
   })
 
-  const { data: payoffResponse } = useQuery({
+  useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -125,11 +128,10 @@ export const GamePage = () => {
 
       return response.json()
     },
+    onSuccess: payoffResponse => {
+      dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
+    },
   })
-
-  useEffect(() => {
-    dispatch(updateGraphRanking(nodeRanking))
-  }, [nodeRanking, isReadyGetNodeRanking])
 
   const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
@@ -139,7 +141,6 @@ export const GamePage = () => {
   }
 
   const onRemoveNode = () => {
-    dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
     setIsInformationBlockShown(false)
     setTimeout(() => {
       setIsToolSelectionDialogOpen(true)

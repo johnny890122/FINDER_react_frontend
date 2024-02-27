@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
@@ -38,7 +38,7 @@ export const TourTools = () => {
     },
   })
 
-  const { data: nodeRanking } = useQuery({
+  useQuery({
     enabled: !!expandedTool,
     queryKey: ['nodeRanking', expandedTool],
     queryFn: async () => {
@@ -60,11 +60,10 @@ export const TourTools = () => {
 
       return response.json()
     },
+    onSuccess: nodeRanking => {
+      dispatch(updateGraphRanking(nodeRanking))
+    },
   })
-
-  useEffect(() => {
-    dispatch(updateGraphRanking(nodeRanking))
-  }, [nodeRanking])
 
   return (
     <TourLayout pageTitle="輔助工具">
