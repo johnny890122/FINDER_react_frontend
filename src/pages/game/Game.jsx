@@ -73,7 +73,7 @@ export const GamePage = () => {
     },
   })
 
-  const { data: nodeRanking } = useQuery({
+  useQuery({
     enabled: isReadyGetNodeRanking,
     queryKey: ['nodeRanking'],
     queryFn: async () => {
@@ -93,6 +93,9 @@ export const GamePage = () => {
       setIsReadyGetNodeRanking(false)
 
       return response.json()
+    },
+    onSuccess: nodeRanking => {
+      dispatch(updateGraphRanking(nodeRanking))
     },
   })
 
@@ -126,10 +129,6 @@ export const GamePage = () => {
       return response.json()
     },
   })
-
-  useEffect(() => {
-    dispatch(updateGraphRanking(nodeRanking))
-  }, [nodeRanking, isReadyGetNodeRanking])
 
   const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
