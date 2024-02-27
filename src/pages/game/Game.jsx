@@ -99,7 +99,7 @@ export const GamePage = () => {
     },
   })
 
-  const { data: payoffResponse } = useQuery({
+  useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -128,6 +128,9 @@ export const GamePage = () => {
 
       return response.json()
     },
+    onSuccess: payoffResponse => {
+      dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
+    },
   })
 
   const onSelectTool = tool => {
@@ -138,7 +141,6 @@ export const GamePage = () => {
   }
 
   const onRemoveNode = () => {
-    dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
     setIsInformationBlockShown(false)
     setTimeout(() => {
       setIsToolSelectionDialogOpen(true)
