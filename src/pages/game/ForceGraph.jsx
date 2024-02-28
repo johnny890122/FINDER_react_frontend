@@ -19,7 +19,6 @@ export const ForceGraph = ({
   removedNodeIds,
   setRemovedNodeIds,
   setIsReadyGetPayoff,
-  onRemoveNode,
   width,
   height,
 }) => {
@@ -61,7 +60,6 @@ export const ForceGraph = ({
     setRemovedNodeIds([...removedNodeIds, node.id])
     setHoveredNode(null)
     setIsReadyGetPayoff(true)
-    onRemoveNode(node)
   }
 
   useEffect(() => {
@@ -154,7 +152,6 @@ ForceGraph.propTypes = {
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
   setIsReadyGetPayoff: PropTypes.func,
-  onRemoveNode: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
 }
@@ -162,7 +159,6 @@ ForceGraph.defaultProps = {
   withAction: true,
   withPayoff: true,
   selectedTool: {},
-  onRemoveNode: () => {},
   removedNodeIds: [],
   setRemovedNodeIds: () => {},
   setIsReadyGetPayoff: () => {},

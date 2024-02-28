@@ -9,20 +9,30 @@ export const DialogTypes = {
   SIMPLE: 'SIMPLE',
 }
 
-export const Dialog = ({ title, type, children, onConfirm, onCancel, disabled, ...dialogProps }) => (
+export const Dialog = ({
+  title,
+  type,
+  children,
+  onConfirm,
+  onCancel,
+  confirmText,
+  cancelText,
+  disabled,
+  ...dialogProps
+}) => (
   <StyledDialog {...dialogProps}>
     <StyledDialogTitle>{title}</StyledDialogTitle>
     <DialogContent>{children}</DialogContent>
     {type === DialogTypes.CONFIRM && (
       <DialogActions>
         {onCancel && (
-          <Button width="5rem" disabled={disabled} onClick={onCancel}>
-            取消
+          <Button disabled={disabled} onClick={onCancel}>
+            {cancelText}
           </Button>
         )}
         {onConfirm && (
-          <Button width="5rem" disabled={disabled} onClick={onConfirm}>
-            確認
+          <Button disabled={disabled} onClick={onConfirm}>
+            {confirmText}
           </Button>
         )}
       </DialogActions>
@@ -36,6 +46,8 @@ Dialog.propTypes = {
   children: PropTypes.any,
   onConfirm: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
   onCancel: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
+  confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
   disabled: PropTypes.bool,
 }
 Dialog.defaultProps = {
@@ -44,6 +56,8 @@ Dialog.defaultProps = {
   children: null,
   onConfirm: null,
   onCancel: null,
+  confirmText: '確定',
+  cancelText: '取消',
   disabled: false,
 }
 
