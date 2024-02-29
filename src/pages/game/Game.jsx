@@ -25,6 +25,7 @@ import { InformationBlock } from './InformationBlock'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
 import { InformationDialog } from './InformationDialog'
+import { GameEndDialog } from './GameEndDialog'
 
 export const GamePage = () => {
   const dispatch = useDispatch()
@@ -36,6 +37,7 @@ export const GamePage = () => {
   const realGraphData = useSelector(selectRealGraphData)
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
+  const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
   const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
   const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
@@ -130,6 +132,15 @@ export const GamePage = () => {
     },
     onSuccess: payoffResponse => {
       dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
+      if (payoffResponse?.isEnd) {
+        setIsGameEndDialogOpen(true)
+      } else {
+        setIsInformationBlockShown(false)
+        setTimeout(() => {
+          setIsToolSelectionDialogOpen(true)
+          dispatch(updateGraphRanking(null))
+        }, 1000)
+      }
     },
   })
 
@@ -140,19 +151,16 @@ export const GamePage = () => {
     setIsReadyGetNodeRanking(true)
   }
 
-  const onRemoveNode = () => {
-    setIsInformationBlockShown(false)
-    setTimeout(() => {
-      setIsToolSelectionDialogOpen(true)
-      dispatch(updateGraphRanking(null))
-    }, 1000)
-  }
-
   return (
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
       <ToolSelectionDialog open={isToolSelectionDialogOpen && !isQuitGameDialogOpen} onConfirm={onSelectTool} />
+      <GameEndDialog
+        open={isGameEndDialogOpen && !isQuitGameDialogOpen}
+        onConfirm={() => navigate('/questionnaire')}
+        onCancel={() => navigate('/network-selection')}
+      />
       <QuitGameDialog
         open={isQuitGameDialogOpen}
         onConfirm={() => {
@@ -180,7 +188,6 @@ export const GamePage = () => {
             removedNodeIds={removedNodeIds}
             setRemovedNodeIds={setRemovedNodeIds}
             setIsReadyGetPayoff={setIsReadyGetPayoff}
-            onRemoveNode={onRemoveNode}
           />
         )}
       </StyledGameContainer>

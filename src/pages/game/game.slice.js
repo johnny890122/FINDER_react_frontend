@@ -58,6 +58,7 @@ const gameSlice = createSlice({
       state.networkCode = null
       state.graphRanking = null
       state.payoff = null
+      state.realGraphData = null
     },
   },
 })
