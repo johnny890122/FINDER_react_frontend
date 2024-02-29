@@ -1,11 +1,26 @@
 import { useState } from 'react'
 import styled from '@emotion/styled'
-import { FormControlLabel, RadioGroup } from '@mui/material'
 
 import { color } from '../../styles'
-import { Button, FormControl, Radio, Input } from '../../components'
+import { Button, FormControl, Input } from '../../components'
 import Start from '../../assets/start.svg'
 import Complete from '../../assets/complete.svg'
+import { QuestionRadioGroup } from './QuestionRadioGroup'
+
+const generalIntervalOptions = [
+  { value: '0.2', label: '最低的 20%' },
+  { value: '0.4', label: '20% 至 40%' },
+  { value: '0.6', label: '40% 至 60%' },
+  { value: '0.8', label: '60% 至 80%' },
+  { value: '1', label: '最高的 20%' },
+]
+const generalPossibilityOptions = [
+  { value: '1', label: '非常不可能' },
+  { value: '2', label: '不可能' },
+  { value: '3', label: '沒意見' },
+  { value: '4', label: '可能' },
+  { value: '5', label: '非常可能' },
+]
 
 export const Questionnaire = () => {
   const [pageIndex, setPageIndex] = useState(0)
@@ -33,41 +48,33 @@ export const Questionnaire = () => {
           <StyledPageTitle>您的基本資料</StyledPageTitle>
           <StyledFormContentContainer>
             <FormControl title="請問您的性別是">
-              <RadioGroup row>
-                <FormControlLabel value="male" label="男性" control={<Radio />} />
-                <FormControlLabel value="female" label="女性" control={<Radio />} />
-                <FormControlLabel value="other" label="其他" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup
+                options={[
+                  { value: 'male', label: '男性' },
+                  { value: 'female', label: '女性' },
+                  { value: 'other', label: '其他' },
+                ]}
+              />
             </FormControl>
             <FormControl title="請輸入您的年齡">
               <Input />
             </FormControl>
             <FormControl title="請問您的教育程度是">
-              <RadioGroup row>
-                <FormControlLabel value="JUNIOR_HIGH" label="國中" control={<Radio />} />
-                <FormControlLabel value="SENIOR_HIGH" label="高中" control={<Radio />} />
-                <FormControlLabel value="BACHELOR" label="大學" control={<Radio />} />
-                <FormControlLabel value="MASTER" label="碩士" control={<Radio />} />
-                <FormControlLabel value="DOCTERAL" label="博士" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup
+                options={[
+                  { value: 'JUNIOR_HIGH', label: '國中' },
+                  { value: 'SENIOR_HIGH', label: '高中' },
+                  { value: 'BACHELOR', label: '大學' },
+                  { value: 'MASTER', label: '碩士' },
+                  { value: 'DOCTERAL', label: '博士' },
+                ]}
+              />
             </FormControl>
             <FormControl title="請問以收入而言，您個人（單身）或是家戶（已婚）的經濟狀況在全國排名中，您覺得會落在哪個區間？">
-              <RadioGroup row>
-                <FormControlLabel value="0.2" label="最低的 20%" control={<Radio />} />
-                <FormControlLabel value="0.4" label="20% 至 40%" control={<Radio />} />
-                <FormControlLabel value="0.6" label="40% 至 60%" control={<Radio />} />
-                <FormControlLabel value="0.8" label="60% 至 80%" control={<Radio />} />
-                <FormControlLabel value="1" label="最高的 20%" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalIntervalOptions} />
             </FormControl>
             <FormControl title="請問以受人尊重的程度而言，您從事的職業，在所有職業的社會地位排名中，您覺得大概會落在哪個區間？">
-              <RadioGroup row>
-                <FormControlLabel value="0.2" label="最低的 20%" control={<Radio />} />
-                <FormControlLabel value="0.4" label="20% 至 40%" control={<Radio />} />
-                <FormControlLabel value="0.6" label="40% 至 60%" control={<Radio />} />
-                <FormControlLabel value="0.8" label="60% 至 80%" control={<Radio />} />
-                <FormControlLabel value="1" label="最高的 20%" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalIntervalOptions} />
             </FormControl>
           </StyledFormContentContainer>
           <StyledButtonsContainer>
@@ -82,65 +89,47 @@ export const Questionnaire = () => {
           <StyledPageSubtitle>接下來我們會請您回答幾個關於人工智慧（AI）的問題</StyledPageSubtitle>
           <StyledFormContentContainer>
             <FormControl title="請問您在剛剛的實驗測試中，對於我們所提供的「AI 幫手」的表現，印象如何？">
-              <RadioGroup row>
-                <FormControlLabel value="1" label="表現非常差" control={<Radio />} />
-                <FormControlLabel value="2" label="表現差" control={<Radio />} />
-                <FormControlLabel value="3" label="沒感覺" control={<Radio />} />
-                <FormControlLabel value="4" label="表現好" control={<Radio />} />
-                <FormControlLabel value="5" label="表現非常好" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup
+                options={[
+                  { value: '1', label: '表現非常差' },
+                  { value: '2', label: '表現差' },
+                  { value: '3', label: '沒感覺' },
+                  { value: '4', label: '表現好' },
+                  { value: '5', label: '表現非常好' },
+                ]}
+              />
             </FormControl>
             <FormControl title="請問您支持用 AI 來協助執法單位偵察犯罪嗎？">
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不支持" control={<Radio />} />
-                <FormControlLabel value="2" label="不支持" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="支持" control={<Radio />} />
-                <FormControlLabel value="5" label="非常支持" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup
+                options={[
+                  { value: '1', label: '非常不支持' },
+                  { value: '2', label: '不支持' },
+                  { value: '3', label: '沒意見' },
+                  { value: '4', label: '支持' },
+                  { value: '5', label: '非常支持' },
+                ]}
+              />
             </FormControl>
             <FormControl title="若是用 AI 來協助執法單位偵察犯罪，您覺得可以信賴 AI 所做的決定嗎？">
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不信賴" control={<Radio />} />
-                <FormControlLabel value="2" label="不信賴" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="信賴" control={<Radio />} />
-                <FormControlLabel value="5" label="非常信賴" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup
+                options={[
+                  { value: '1', label: '非常不信賴' },
+                  { value: '2', label: '不信賴' },
+                  { value: '3', label: '沒意見' },
+                  { value: '4', label: '信賴' },
+                  { value: '5', label: '非常信賴' },
+                ]}
+              />
             </FormControl>
             <FormControl title="您覺得未來 AI 是否有可能取代真人執法人員（像是警察）來執行偵察犯罪的任務？">
               <StyledFormSubtitle>分析誰是嫌疑犯</StyledFormSubtitle>
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
-                <FormControlLabel value="2" label="不可能" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="可能" control={<Radio />} />
-                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalPossibilityOptions} />
               <StyledFormSubtitle>分析誰是主謀</StyledFormSubtitle>
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
-                <FormControlLabel value="2" label="不可能" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="可能" control={<Radio />} />
-                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalPossibilityOptions} />
               <StyledFormSubtitle>擬定破案計畫</StyledFormSubtitle>
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
-                <FormControlLabel value="2" label="不可能" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="可能" control={<Radio />} />
-                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalPossibilityOptions} />
               <StyledFormSubtitle>提供攻堅任務協助</StyledFormSubtitle>
-              <RadioGroup row>
-                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
-                <FormControlLabel value="2" label="不可能" control={<Radio />} />
-                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
-                <FormControlLabel value="4" label="可能" control={<Radio />} />
-                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
-              </RadioGroup>
+              <QuestionRadioGroup options={generalPossibilityOptions} />
             </FormControl>
           </StyledFormContentContainer>
           <StyledButtonsContainer>
