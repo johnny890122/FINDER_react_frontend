@@ -12,6 +12,7 @@ import { TourTools } from './pages/tour/TourTools'
 import { TourActions } from './pages/tour/TourActions'
 import { NetworkIntroduction } from './pages/game/NetworkIntroduction'
 import { GamePage } from './pages/game/Game'
+import { Questionnaire } from './pages/questionnaire/Questionnaire'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -77,6 +78,7 @@ const App = () => {
         }
       />
       <Route path="/game" element={<GamePage />} />
+      <Route path="/questionnaire" element={<Questionnaire />} />
     </Routes>
   )
 }
