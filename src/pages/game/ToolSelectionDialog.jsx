@@ -29,6 +29,12 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
       }}
     >
       <StyledDialogContent>
+        {!!payoff && width > 767 && (
+          <StyledChartContainer>
+            <Chip label="累積報酬" />
+            <PayoffChart />
+          </StyledChartContainer>
+        )}
         <StyledOptionsContainer>
           {Object.values(toolsAvailable).map(tool => (
             <StyledOptionContainer key={tool.code}>
@@ -42,12 +48,6 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
             </StyledOptionContainer>
           ))}
         </StyledOptionsContainer>
-        {!!payoff && width > 767 && (
-          <StyledChartContainer>
-            <Chip label="累積報酬" />
-            <PayoffChart />
-          </StyledChartContainer>
-        )}
       </StyledDialogContent>
     </Dialog>
   )
