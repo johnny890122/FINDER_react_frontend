@@ -79,6 +79,70 @@ export const Questionnaire = () => {
       {pageIndex === 2 && (
         <StyledBox>
           <StyledPageTitle>您對 AI 的看法</StyledPageTitle>
+          <StyledPageSubtitle>接下來我們會請您回答幾個關於人工智慧（AI）的問題</StyledPageSubtitle>
+          <StyledFormContentContainer>
+            <FormControl title="請問您在剛剛的實驗測試中，對於我們所提供的「AI 幫手」的表現，印象如何？">
+              <RadioGroup row>
+                <FormControlLabel value="1" label="表現非常差" control={<Radio />} />
+                <FormControlLabel value="2" label="表現差" control={<Radio />} />
+                <FormControlLabel value="3" label="沒感覺" control={<Radio />} />
+                <FormControlLabel value="4" label="表現好" control={<Radio />} />
+                <FormControlLabel value="5" label="表現非常好" control={<Radio />} />
+              </RadioGroup>
+            </FormControl>
+            <FormControl title="請問您支持用 AI 來協助執法單位偵察犯罪嗎？">
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不支持" control={<Radio />} />
+                <FormControlLabel value="2" label="不支持" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="支持" control={<Radio />} />
+                <FormControlLabel value="5" label="非常支持" control={<Radio />} />
+              </RadioGroup>
+            </FormControl>
+            <FormControl title="若是用 AI 來協助執法單位偵察犯罪，您覺得可以信賴 AI 所做的決定嗎？">
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不信賴" control={<Radio />} />
+                <FormControlLabel value="2" label="不信賴" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="信賴" control={<Radio />} />
+                <FormControlLabel value="5" label="非常信賴" control={<Radio />} />
+              </RadioGroup>
+            </FormControl>
+            <FormControl title="您覺得未來 AI 是否有可能取代真人執法人員（像是警察）來執行偵察犯罪的任務？">
+              <StyledFormSubtitle>分析誰是嫌疑犯</StyledFormSubtitle>
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
+                <FormControlLabel value="2" label="不可能" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="可能" control={<Radio />} />
+                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
+              </RadioGroup>
+              <StyledFormSubtitle>分析誰是主謀</StyledFormSubtitle>
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
+                <FormControlLabel value="2" label="不可能" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="可能" control={<Radio />} />
+                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
+              </RadioGroup>
+              <StyledFormSubtitle>擬定破案計畫</StyledFormSubtitle>
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
+                <FormControlLabel value="2" label="不可能" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="可能" control={<Radio />} />
+                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
+              </RadioGroup>
+              <StyledFormSubtitle>提供攻堅任務協助</StyledFormSubtitle>
+              <RadioGroup row>
+                <FormControlLabel value="1" label="非常不可能" control={<Radio />} />
+                <FormControlLabel value="2" label="不可能" control={<Radio />} />
+                <FormControlLabel value="3" label="沒意見" control={<Radio />} />
+                <FormControlLabel value="4" label="可能" control={<Radio />} />
+                <FormControlLabel value="5" label="非常可能" control={<Radio />} />
+              </RadioGroup>
+            </FormControl>
+          </StyledFormContentContainer>
           <StyledButtonsContainer>
             <Button onClick={() => setPageIndex(() => pageIndex + 1)}>完成填答</Button>
             <Button onClick={() => setPageIndex(() => pageIndex - 1)}>回到上一頁</Button>
@@ -113,15 +177,11 @@ const StyledContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 4rem 0;
-  height: calc(100vh - 4rem);
 `
 const StyledBox = styled.div`
-  position: relative;
   width: 60%;
   padding: 1.5rem 3rem;
   border: 1px solid ${color.primaryColor500};
-  min-height: 30rem;
-  padding-bottom: 2rem;
 `
 const StyledPageTitle = styled.h1`
   font-size: 2rem;
@@ -136,9 +196,7 @@ const StyledButtonsContainer = styled.div`
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
-  position: absolute;
-  bottom: 2rem;
-  width: calc(100% - 6rem);
+  width: 100%;
 `
 const StyledImageContainer = styled.div`
   display: flex;
@@ -150,5 +208,8 @@ const StyledFormContentContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  margin: 1.5rem 0 4rem 0;
+  margin: 1.5rem 0 2rem 0;
+`
+const StyledFormSubtitle = styled.p`
+  margin: 0.25rem 0;
 `
