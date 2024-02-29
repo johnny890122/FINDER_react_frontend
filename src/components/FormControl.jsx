@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
+import { color } from '../styles'
 
 export const FormControl = ({ title, children }) => (
   <StyledContainer>
@@ -23,4 +24,5 @@ const StyledTitle = styled.p`
   font-weight: 400;
   font-size: 1.125rem;
   margin: 0;
+  color: ${color.primaryColor800};
 `

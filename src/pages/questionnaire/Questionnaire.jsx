@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import styled from '@emotion/styled'
 
 import { color } from '../../styles'
@@ -24,9 +24,12 @@ const generalPossibilityOptions = [
 
 export const Questionnaire = () => {
   const [pageIndex, setPageIndex] = useState(0)
+  const ref = useRef(null)
+
+  const scrollToTop = () => ref.current.scrollIntoView()
 
   return (
-    <StyledContainer>
+    <StyledContainer ref={ref}>
       {pageIndex === 0 && (
         <StyledBox>
           <StyledPageTitle>恭喜您完成遊戲！</StyledPageTitle>
@@ -39,7 +42,14 @@ export const Questionnaire = () => {
             <img src={Start} style={{ height: 300, width: 250 }} alt="start" />
           </StyledImageContainer>
           <StyledButtonsContainer>
-            <Button onClick={() => setPageIndex(() => pageIndex + 1)}>開始填答</Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex + 1)
+                scrollToTop()
+              }}
+            >
+              開始填答
+            </Button>
           </StyledButtonsContainer>
         </StyledBox>
       )}
@@ -78,8 +88,22 @@ export const Questionnaire = () => {
             </FormControl>
           </StyledFormContentContainer>
           <StyledButtonsContainer>
-            <Button onClick={() => setPageIndex(() => pageIndex + 1)}>下一頁</Button>
-            <Button onClick={() => setPageIndex(() => pageIndex - 1)}>回到上一頁</Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex + 1)
+                scrollToTop()
+              }}
+            >
+              下一頁
+            </Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex - 1)
+                scrollToTop()
+              }}
+            >
+              回到上一頁
+            </Button>
           </StyledButtonsContainer>
         </StyledBox>
       )}
@@ -133,8 +157,22 @@ export const Questionnaire = () => {
             </FormControl>
           </StyledFormContentContainer>
           <StyledButtonsContainer>
-            <Button onClick={() => setPageIndex(() => pageIndex + 1)}>完成填答</Button>
-            <Button onClick={() => setPageIndex(() => pageIndex - 1)}>回到上一頁</Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex + 1)
+                scrollToTop()
+              }}
+            >
+              完成填答
+            </Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex - 1)
+                scrollToTop()
+              }}
+            >
+              回到上一頁
+            </Button>
           </StyledButtonsContainer>
         </StyledBox>
       )}
@@ -148,8 +186,22 @@ export const Questionnaire = () => {
             </FormControl>
           </StyledFormContentContainer>
           <StyledButtonsContainer>
-            <Button onClick={() => setPageIndex(() => pageIndex + 1)}>送出</Button>
-            <Button onClick={() => setPageIndex(() => pageIndex - 1)}>回到上一頁</Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex + 1)
+                scrollToTop()
+              }}
+            >
+              送出
+            </Button>
+            <Button
+              onClick={() => {
+                setPageIndex(() => pageIndex - 1)
+                scrollToTop()
+              }}
+            >
+              回到上一頁
+            </Button>
           </StyledButtonsContainer>
         </StyledBox>
       )}
