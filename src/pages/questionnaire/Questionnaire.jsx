@@ -153,6 +153,11 @@ export const Questionnaire = () => {
         <StyledBox>
           <StyledPageTitle>您的聯絡資訊</StyledPageTitle>
           <StyledPageSubtitle>請填入您的 Email 並且按下送出，我們將會將報酬相關資訊寄到您的 Email。</StyledPageSubtitle>
+          <StyledFormContentContainer>
+            <FormControl title="請輸入您的 Email">
+              <Input width="20rem" />
+            </FormControl>
+          </StyledFormContentContainer>
           <StyledButtonsContainer>
             <Button onClick={() => setPageIndex(() => pageIndex + 1)}>送出</Button>
             <Button onClick={() => setPageIndex(() => pageIndex - 1)}>回到上一頁</Button>
