@@ -69,7 +69,7 @@ export const ForceGraph = ({
     }
   }, [graphData])
 
-  if (loading || !graphData) {
+  if (loading && !graphData) {
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
         <Progress />
@@ -153,7 +153,7 @@ ForceGraph.propTypes = {
   withAction: PropTypes.bool,
   withPayoff: PropTypes.bool,
   loading: PropTypes.bool,
-  graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]).isRequired,
+  graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]),
   selectedTool: PropTypes.object,
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
@@ -165,6 +165,7 @@ ForceGraph.defaultProps = {
   withAction: true,
   withPayoff: true,
   loading: false,
+  graphData: null,
   selectedTool: {},
   removedNodeIds: [],
   setRemovedNodeIds: () => {},

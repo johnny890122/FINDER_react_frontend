@@ -31,7 +31,8 @@ export const ToolSelectionDialog = ({ open = false, loading, onConfirm = () => {
     >
       <StyledDialogContent>
         {width > 767 &&
-          (payoff && !loading ? (
+          !!payoff &&
+          (!loading ? (
             <StyledChartContainer>
               <Chip label="累積報酬" />
               <PayoffChart />

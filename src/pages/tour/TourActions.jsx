@@ -18,7 +18,7 @@ export const TourActions = () => {
 
   const [removedNodeIds, setRemovedNodeIds] = useState([])
 
-  const { data: graphData, loading: isGraphDataLoading } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')

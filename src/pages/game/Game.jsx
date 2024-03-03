@@ -57,7 +57,7 @@ export const GamePage = () => {
     }
   }, [])
 
-  const { data: graphData, loading: isGraphDataLoading } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
@@ -75,7 +75,7 @@ export const GamePage = () => {
     },
   })
 
-  const { loading: isNodeRankingLoading } = useQuery({
+  const { isLoading: isNodeRankingLoading } = useQuery({
     enabled: isReadyGetNodeRanking,
     queryKey: ['nodeRanking'],
     queryFn: async () => {
@@ -101,7 +101,7 @@ export const GamePage = () => {
     },
   })
 
-  const { loading: isPayoffLoading } = useQuery({
+  const { isLoading: isPayoffLoading } = useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {

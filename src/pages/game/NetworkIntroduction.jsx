@@ -10,20 +10,14 @@ import { Button, Progress } from '../../components'
 import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
 import { getRandomNumber } from './game.utils'
 
-export const NetworkIntroduction = ({
-  isNetworksApiPending,
-  isNetworksApiError,
-  isToolsApiPending,
-  isToolsApiError,
-  loading,
-}) => {
+export const NetworkIntroduction = ({ isNetworksApiError, isToolsApiError, loading }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
   const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
-  if (isNetworksApiPending || isToolsApiPending || loading) {
+  if (loading) {
     return (
       <StyledLoadingContainer>
         <Progress />
@@ -84,9 +78,7 @@ export const NetworkIntroduction = ({
   )
 }
 NetworkIntroduction.propTypes = {
-  isNetworksApiPending: PropTypes.bool.isRequired,
   isNetworksApiError: PropTypes.bool.isRequired,
-  isToolsApiPending: PropTypes.bool.isRequired,
   isToolsApiError: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
 }

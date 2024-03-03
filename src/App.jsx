@@ -17,11 +17,7 @@ import { Questionnaire } from './pages/questionnaire/Questionnaire'
 const App = () => {
   const dispatch = useDispatch()
 
-  const {
-    loading: isNetworksLoading,
-    isPending: isNetworksApiPending,
-    isError: isNetworksApiError,
-  } = useQuery({
+  const { isLoading: isNetworksLoading, isError: isNetworksApiError } = useQuery({
     queryKey: ['networkAvailable'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/networks/`, {
@@ -39,11 +35,7 @@ const App = () => {
     },
   })
 
-  const {
-    loading: isToolsLoading,
-    isPending: isToolsApiPending,
-    isError: isToolsApiError,
-  } = useQuery({
+  const { isLoading: isToolsLoading, isError: isToolsApiError } = useQuery({
     queryKey: ['toolsAvailable'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/tools/`, {
@@ -69,9 +61,7 @@ const App = () => {
         path="/network-selection"
         element={
           <NetworkIntroduction
-            isNetworksApiPending={isNetworksApiPending}
             isNetworksApiError={isNetworksApiError}
-            isToolsApiPending={isToolsApiPending}
             isToolsApiError={isToolsApiError}
             loading={isNetworksLoading || isToolsLoading}
           />

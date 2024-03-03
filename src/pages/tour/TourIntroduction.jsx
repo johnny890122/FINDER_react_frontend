@@ -11,7 +11,7 @@ import { ForceGraph } from '../game/ForceGraph'
 export const TourIntroduction = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
 
-  const { data: graphData, loading: isGraphDataLoading } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')

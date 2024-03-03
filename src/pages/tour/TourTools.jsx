@@ -20,7 +20,7 @@ export const TourTools = () => {
   const toolsAvailable = useSelector(selectToolsAvailable)
   const [expandedTool, setExpandedTool] = useState(toolsAvailable.HDA)
 
-  const { data: graphData, loading: isGraphDataLoading } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
@@ -38,7 +38,7 @@ export const TourTools = () => {
     },
   })
 
-  const { loading: isNodeRankingLoading } = useQuery({
+  const { isLoading: isNodeRankingLoading } = useQuery({
     enabled: !!expandedTool,
     queryKey: ['nodeRanking', expandedTool],
     queryFn: async () => {
