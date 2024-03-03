@@ -18,7 +18,7 @@ export const TourActions = () => {
 
   const [removedNodeIds, setRemovedNodeIds] = useState([])
 
-  const { data: graphData } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
@@ -54,6 +54,7 @@ export const TourActions = () => {
         {graphData && (
           <ForceGraph
             withPayoff={false}
+            loading={isGraphDataLoading}
             graphData={graphData}
             selectedTool={demoTool}
             removedNodeIds={removedNodeIds}

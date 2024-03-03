@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { ButtonGroup } from '@mui/material'
 
 import { getViewport } from '../../utils'
-import { Button } from '../../components'
+import { Button, Progress } from '../../components'
 import { color } from '../../styles'
 import { getNodeValue, getNeighborNodeIds, getNeighborLinks, deepCloneGraphData } from './game.utils'
 import { selectGraphRanking, updateRealGraphData } from './game.slice'
@@ -14,6 +14,7 @@ import { selectGraphRanking, updateRealGraphData } from './game.slice'
 export const ForceGraph = ({
   withAction = true,
   withPayoff = true,
+  loading,
   graphData,
   selectedTool,
   removedNodeIds,
@@ -68,8 +69,12 @@ export const ForceGraph = ({
     }
   }, [graphData])
 
-  if (!graphData) {
-    return 'loading'
+  if (loading && !graphData) {
+    return (
+      <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
+        <Progress />
+      </StyledForceGraphContainer>
+    )
   }
 
   if (!withAction) {
@@ -147,7 +152,8 @@ export const ForceGraph = ({
 ForceGraph.propTypes = {
   withAction: PropTypes.bool,
   withPayoff: PropTypes.bool,
-  graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]).isRequired,
+  loading: PropTypes.bool,
+  graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]),
   selectedTool: PropTypes.object,
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
@@ -158,6 +164,8 @@ ForceGraph.propTypes = {
 ForceGraph.defaultProps = {
   withAction: true,
   withPayoff: true,
+  loading: false,
+  graphData: null,
   selectedTool: {},
   removedNodeIds: [],
   setRemovedNodeIds: () => {},
@@ -169,8 +177,12 @@ ForceGraph.defaultProps = {
 const StyledForceGraphContainer = styled.div`
   position: relative;
   border: 1px solid ${color.primaryColor400};
-  width: ${props => props.width};
-  height: ${props => props.height};
+  width: ${props => `${props.width}px`};
+  height: ${props => `${props.height}px`};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 const StyledButtonGroupContainer = styled.div`
   position: absolute;

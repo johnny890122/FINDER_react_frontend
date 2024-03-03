@@ -6,24 +6,23 @@ import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { color } from '../../styles'
-import { Button } from '../../components'
+import { Button, Progress } from '../../components'
 import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
 import { getRandomNumber } from './game.utils'
 
-export const NetworkIntroduction = ({
-  isNetworksApiPending,
-  isNetworksApiError,
-  isToolsApiPending,
-  isToolsApiError,
-}) => {
+export const NetworkIntroduction = ({ isNetworksApiError, isToolsApiError, loading }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
   const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
-  if (isNetworksApiPending || isToolsApiPending) {
-    return 'loading...'
+  if (loading) {
+    return (
+      <StyledLoadingContainer>
+        <Progress />
+      </StyledLoadingContainer>
+    )
   }
 
   if (isNetworksApiError || isToolsApiError) {
@@ -79,12 +78,19 @@ export const NetworkIntroduction = ({
   )
 }
 NetworkIntroduction.propTypes = {
-  isNetworksApiPending: PropTypes.bool.isRequired,
   isNetworksApiError: PropTypes.bool.isRequired,
-  isToolsApiPending: PropTypes.bool.isRequired,
   isToolsApiError: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
+const StyledLoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+`
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;

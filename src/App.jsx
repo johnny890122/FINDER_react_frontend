@@ -17,11 +17,7 @@ import { Questionnaire } from './pages/questionnaire/Questionnaire'
 const App = () => {
   const dispatch = useDispatch()
 
-  const {
-    data: networksAvailableResponse,
-    isPending: isNetworksApiPending,
-    isError: isNetworksApiError,
-  } = useQuery({
+  const { isLoading: isNetworksLoading, isError: isNetworksApiError } = useQuery({
     queryKey: ['networkAvailable'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/networks/`, {
@@ -34,13 +30,12 @@ const App = () => {
 
       return response.json()
     },
+    onSuccess: networksAvailableResponse => {
+      dispatch(updateNetworksAvailable(networksAvailableResponse))
+    },
   })
 
-  const {
-    data: toolsAvailableResponse,
-    isPending: isToolsApiPending,
-    isError: isToolsApiError,
-  } = useQuery({
+  const { isLoading: isToolsLoading, isError: isToolsApiError } = useQuery({
     queryKey: ['toolsAvailable'],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/tools/`, {
@@ -51,14 +46,10 @@ const App = () => {
       }
       return response.json()
     },
+    onSuccess: toolsAvailableResponse => {
+      dispatch(updateToolsAvailable(toolsAvailableResponse))
+    },
   })
-
-  if (networksAvailableResponse) {
-    dispatch(updateNetworksAvailable(networksAvailableResponse))
-  }
-  if (toolsAvailableResponse) {
-    dispatch(updateToolsAvailable(toolsAvailableResponse))
-  }
 
   return (
     <Routes>
@@ -70,10 +61,9 @@ const App = () => {
         path="/network-selection"
         element={
           <NetworkIntroduction
-            isNetworksApiPending={isNetworksApiPending}
             isNetworksApiError={isNetworksApiError}
-            isToolsApiPending={isToolsApiPending}
             isToolsApiError={isToolsApiError}
+            loading={isNetworksLoading || isToolsLoading}
           />
         }
       />

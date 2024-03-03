@@ -57,7 +57,7 @@ export const GamePage = () => {
     }
   }, [])
 
-  const { data: graphData } = useQuery({
+  const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
@@ -75,7 +75,7 @@ export const GamePage = () => {
     },
   })
 
-  useQuery({
+  const { isLoading: isNodeRankingLoading } = useQuery({
     enabled: isReadyGetNodeRanking,
     queryKey: ['nodeRanking'],
     queryFn: async () => {
@@ -101,7 +101,7 @@ export const GamePage = () => {
     },
   })
 
-  useQuery({
+  const { isLoading: isPayoffLoading } = useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -155,7 +155,11 @@ export const GamePage = () => {
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
-      <ToolSelectionDialog open={isToolSelectionDialogOpen && !isQuitGameDialogOpen} onConfirm={onSelectTool} />
+      <ToolSelectionDialog
+        open={isToolSelectionDialogOpen && !isQuitGameDialogOpen}
+        loading={isPayoffLoading}
+        onConfirm={onSelectTool}
+      />
       <GameEndDialog
         open={isGameEndDialogOpen && !isQuitGameDialogOpen}
         onConfirm={() => navigate('/questionnaire')}
@@ -181,15 +185,14 @@ export const GamePage = () => {
             本回合資訊及累積報酬
           </Button>
         )}
-        {graphData && (
-          <ForceGraph
-            graphData={graphData}
-            selectedTool={selectedTool[selectedTool.length - 1]}
-            removedNodeIds={removedNodeIds}
-            setRemovedNodeIds={setRemovedNodeIds}
-            setIsReadyGetPayoff={setIsReadyGetPayoff}
-          />
-        )}
+        <ForceGraph
+          loading={isGraphDataLoading || isNodeRankingLoading}
+          graphData={graphData}
+          selectedTool={selectedTool[selectedTool.length - 1]}
+          removedNodeIds={removedNodeIds}
+          setRemovedNodeIds={setRemovedNodeIds}
+          setIsReadyGetPayoff={setIsReadyGetPayoff}
+        />
       </StyledGameContainer>
     </StyledGamePageContainer>
   )
