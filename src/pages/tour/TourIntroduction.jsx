@@ -11,7 +11,7 @@ import { ForceGraph } from '../game/ForceGraph'
 export const TourIntroduction = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
 
-  const { data: graphData } = useQuery({
+  const { data: graphData, loading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
     queryFn: async () => {
       const playerId = localStorage.getItem('playerId')
@@ -58,6 +58,7 @@ export const TourIntroduction = () => {
           <ForceGraph
             withAction={false}
             withPayoff={false}
+            loading={isGraphDataLoading}
             graphData={graphData}
             width={viewportWidth / 2}
             height={viewportHeight - 200}
