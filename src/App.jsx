@@ -18,7 +18,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   const {
-    data: networksAvailableResponse,
+    loading: isNetworksLoading,
     isPending: isNetworksApiPending,
     isError: isNetworksApiError,
   } = useQuery({
@@ -34,10 +34,13 @@ const App = () => {
 
       return response.json()
     },
+    onSuccess: networksAvailableResponse => {
+      dispatch(updateNetworksAvailable(networksAvailableResponse))
+    },
   })
 
   const {
-    data: toolsAvailableResponse,
+    loading: isToolsLoading,
     isPending: isToolsApiPending,
     isError: isToolsApiError,
   } = useQuery({
@@ -51,14 +54,10 @@ const App = () => {
       }
       return response.json()
     },
+    onSuccess: toolsAvailableResponse => {
+      dispatch(updateToolsAvailable(toolsAvailableResponse))
+    },
   })
-
-  if (networksAvailableResponse) {
-    dispatch(updateNetworksAvailable(networksAvailableResponse))
-  }
-  if (toolsAvailableResponse) {
-    dispatch(updateToolsAvailable(toolsAvailableResponse))
-  }
 
   return (
     <Routes>
@@ -74,6 +73,7 @@ const App = () => {
             isNetworksApiError={isNetworksApiError}
             isToolsApiPending={isToolsApiPending}
             isToolsApiError={isToolsApiError}
+            loading={isNetworksLoading || isToolsLoading}
           />
         }
       />
