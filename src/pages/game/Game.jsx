@@ -101,7 +101,7 @@ export const GamePage = () => {
     },
   })
 
-  useQuery({
+  const { loading: isPayoffLoading } = useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -155,7 +155,11 @@ export const GamePage = () => {
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
-      <ToolSelectionDialog open={isToolSelectionDialogOpen && !isQuitGameDialogOpen} onConfirm={onSelectTool} />
+      <ToolSelectionDialog
+        open={isToolSelectionDialogOpen && !isQuitGameDialogOpen}
+        loading={isPayoffLoading}
+        onConfirm={onSelectTool}
+      />
       <GameEndDialog
         open={isGameEndDialogOpen && !isQuitGameDialogOpen}
         onConfirm={() => navigate('/questionnaire')}

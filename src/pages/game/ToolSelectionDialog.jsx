@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -6,11 +7,11 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { getViewport } from '../../utils'
 import { color } from '../../styles'
-import { Dialog, DialogTypes, Chip } from '../../components'
+import { Dialog, DialogTypes, Chip, Progress } from '../../components'
 import { selectToolsAvailable, selectPayoff } from './game.slice'
 import { PayoffChart } from './PayoffChart'
 
-export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
+export const ToolSelectionDialog = ({ open = false, loading, onConfirm = () => {} }) => {
   const toolsAvailable = useSelector(selectToolsAvailable)
   const payoff = useSelector(selectPayoff)
   const { width } = getViewport()
@@ -29,12 +30,15 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
       }}
     >
       <StyledDialogContent>
-        {!!payoff && width > 767 && (
-          <StyledChartContainer>
-            <Chip label="累積報酬" />
-            <PayoffChart />
-          </StyledChartContainer>
-        )}
+        {width > 767 &&
+          (payoff && !loading ? (
+            <StyledChartContainer>
+              <Chip label="累積報酬" />
+              <PayoffChart />
+            </StyledChartContainer>
+          ) : (
+            <Progress />
+          ))}
         <StyledOptionsContainer>
           {Object.values(toolsAvailable).map(tool => (
             <StyledOptionContainer key={tool.code}>
@@ -55,6 +59,7 @@ export const ToolSelectionDialog = ({ open = false, onConfirm = () => {} }) => {
 
 ToolSelectionDialog.propTypes = {
   open: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   onConfirm: PropTypes.func.isRequired,
 }
 
