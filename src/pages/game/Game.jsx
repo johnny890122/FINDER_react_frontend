@@ -87,6 +87,7 @@ export const GamePage = () => {
           gameId: localStorage.getItem('gameId'),
           roundId: round,
           graphData: realGraphData,
+          chosen_network_id: networkCode.toString(),
         }),
       })
       if (!response.ok) {
