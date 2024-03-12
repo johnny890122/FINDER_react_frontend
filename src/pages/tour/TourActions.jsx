@@ -13,6 +13,8 @@ import { TourLayout } from './TourLayout'
 
 export const TourActions = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
+  const graphWidth = viewportWidth > 768 ? viewportWidth / 2 : viewportWidth - 28
+  const graphHeight = viewportWidth > 768 ? viewportHeight - 200 : viewportHeight / 2
   const toolsAvailable = useSelector(selectToolsAvailable)
   const demoTool = toolsAvailable.HDA
 
@@ -59,8 +61,8 @@ export const TourActions = () => {
             selectedTool={demoTool}
             removedNodeIds={removedNodeIds}
             setRemovedNodeIds={setRemovedNodeIds}
-            width={viewportWidth / 2}
-            height={viewportHeight - 200}
+            width={graphWidth}
+            height={graphHeight}
           />
         )}
       </div>
@@ -73,6 +75,9 @@ const StyledContainer = styled.div`
 `
 const StyledParagraph = styled.div`
   margin-top: 1rem;
+  @media screen and (max-width: 767px) {
+    margin-bottom: 1rem;
+  }
 `
 const StyledLink = styled(Link)`
   position: absolute;
@@ -80,4 +85,8 @@ const StyledLink = styled(Link)`
   bottom: 0;
   text-decoration: none;
   color: inherit;
+  @media screen and (max-width: 767px) {
+    position: static;
+    margin-top: 2rem;
+  }
 `

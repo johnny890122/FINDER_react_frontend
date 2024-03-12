@@ -10,6 +10,8 @@ import { ForceGraph } from '../game/ForceGraph'
 
 export const TourIntroduction = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
+  const graphWidth = viewportWidth > 768 ? viewportWidth / 2 : viewportWidth - 28
+  const graphHeight = viewportWidth > 768 ? viewportHeight - 200 : viewportHeight / 2
 
   const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
@@ -60,8 +62,8 @@ export const TourIntroduction = () => {
             withPayoff={false}
             loading={isGraphDataLoading}
             graphData={graphData}
-            width={viewportWidth / 2}
-            height={viewportHeight - 200}
+            width={graphWidth}
+            height={graphHeight}
           />
         )}
       </div>
@@ -85,4 +87,8 @@ const StyledLink = styled(Link)`
   bottom: 0;
   text-decoration: none;
   color: inherit;
+  @media screen and (max-width: 767px) {
+    position: static;
+    margin-top: 2rem;
+  }
 `

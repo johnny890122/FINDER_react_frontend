@@ -17,6 +17,9 @@ import { ForceGraph } from '../game/ForceGraph'
 export const TourTools = () => {
   const dispatch = useDispatch()
   const { width: viewportWidth, height: viewportHeight } = getViewport()
+  const graphWidth = viewportWidth > 768 ? viewportWidth / 2 : viewportWidth - 28
+  const graphHeight = viewportWidth > 768 ? viewportHeight - 200 : viewportHeight / 2
+
   const toolsAvailable = useSelector(selectToolsAvailable)
   const [expandedTool, setExpandedTool] = useState(toolsAvailable.HDA)
 
@@ -102,8 +105,8 @@ export const TourTools = () => {
             loading={isGraphDataLoading || isNodeRankingLoading}
             graphData={graphData}
             selectedTool={expandedTool}
-            width={viewportWidth / 2}
-            height={viewportHeight - 200}
+            width={graphWidth}
+            height={graphHeight}
           />
         )}
       </div>
@@ -124,6 +127,10 @@ const StyledLink = styled(Link)`
   bottom: 0;
   text-decoration: none;
   color: inherit;
+  @media screen and (max-width: 767px) {
+    position: static;
+    margin: 1rem 0;
+  }
 `
 const StyledOptionsContainer = styled.div`
   display: flex;
@@ -132,6 +139,9 @@ const StyledOptionsContainer = styled.div`
   gap: 0.5rem;
   margin-top: 1rem;
   width: 100%;
+  @media screen and (max-width: 767px) {
+    margin-bottom: 1rem;
+  }
 `
 const StyledOptionContainer = styled.div`
   display: flex;
