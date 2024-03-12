@@ -23,6 +23,9 @@ const StyledContainer = styled.div`
   padding: 2rem 4rem;
   height: calc(100vh - 4rem);
   position: relative;
+  @media screen and (max-width: 767px) {
+    padding: 1rem;
+  }
 `
 const StyledPageTitle = styled.h1`
   font-size: 2rem;
@@ -32,4 +35,9 @@ const StyledContentContainer = styled.div`
   line-height: 1.5rem;
   display: flex;
   gap: 1rem;
+  @media screen and (max-width: 767px) {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: space-around;
+  }
 `
