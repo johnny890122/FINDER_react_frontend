@@ -11,6 +11,7 @@ import { getViewport } from '../../utils'
 import { Button, Checkbox, CheckboxLevels } from '../../components'
 import { color } from '../../styles'
 import { selectToolsAvailable, updateGraphRanking } from '../game/game.slice'
+import { getToolImage } from './tour.utils'
 
 import { TourLayout } from './TourLayout'
 import { ForceGraph } from '../game/ForceGraph'
@@ -31,6 +32,25 @@ const StyledAccordionSummary = styled(AccordionSummary)`
     display: flex;
     align-items: center;
   }
+`
+
+const AccordionDetailWithImage = ({ text, image }) => (
+  <StyledAccordionDetails>
+    {text}
+    {image && <img src={image} alt="Tool" width="100%" />}
+  </StyledAccordionDetails>
+)
+AccordionDetailWithImage.propTypes = {
+  text: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  image: PropTypes.any,
+}
+const StyledAccordionDetails = styled(AccordionDetails)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  margin-left: 0.75rem;
 `
 
 export const TourTools = () => {
@@ -120,7 +140,10 @@ export const TourTools = () => {
                       expanded={expanded}
                       checked={checkedTools.includes(tool.code)}
                     />
-                    <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
+                    <AccordionDetailWithImage
+                      text={tool.introduction}
+                      image={getToolImage({ toolName: tool.displayName })}
+                    />
                   </StyledAccordion>
                 </StyledOptionContainer>
               )
@@ -157,9 +180,7 @@ const StyledParagraph = styled.div`
   margin-top: 1rem;
 `
 const StyledLink = styled(Link)`
-  position: absolute;
-  right: 1rem;
-  bottom: 0;
+  margin-top: 1rem;
   text-decoration: none;
   color: inherit;
   @media screen and (max-width: 767px) {
@@ -192,10 +213,4 @@ const StyledAccordion = styled(Accordion)`
   & .MuiAccordionSummary-content {
     margin: 0.75rem 0;
   }
-`
-const StyledAccordionDetails = styled(AccordionDetails)`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.75rem;
 `
