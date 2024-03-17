@@ -2,17 +2,36 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
+import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 
 import { API_ROOT, postHeaders } from '../../api.config'
 import { getViewport } from '../../utils'
-import { Button } from '../../components'
+import { Button, Checkbox, CheckboxLevels } from '../../components'
 import { color } from '../../styles'
 import { selectToolsAvailable, updateGraphRanking } from '../game/game.slice'
 
 import { TourLayout } from './TourLayout'
 import { ForceGraph } from '../game/ForceGraph'
+
+const AccordionSummaryWithCheckbox = ({ title, expanded, checked }) => (
+  <StyledAccordionSummary>
+    <Checkbox level={expanded ? CheckboxLevels.SECONDARY : CheckboxLevels.PRIMARY} checked={checked} />
+    {title}
+  </StyledAccordionSummary>
+)
+AccordionSummaryWithCheckbox.propTypes = {
+  title: PropTypes.string.isRequired,
+  expanded: PropTypes.bool.isRequired,
+  checked: PropTypes.bool.isRequired,
+}
+const StyledAccordionSummary = styled(AccordionSummary)`
+  & .MuiAccordionSummary-content {
+    display: flex;
+    align-items: center;
+  }
+`
 
 export const TourTools = () => {
   const dispatch = useDispatch()
@@ -22,6 +41,7 @@ export const TourTools = () => {
 
   const toolsAvailable = useSelector(selectToolsAvailable)
   const [expandedTool, setExpandedTool] = useState(toolsAvailable.HDA)
+  const [checkedTools, setCheckedTools] = useState([])
 
   const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
@@ -74,27 +94,42 @@ export const TourTools = () => {
         <StyledParagraph>
           為了增進您破解網絡的績效，與其用肉眼判斷該移除哪一個點，您也可以參考一些學界所發展的量化指標。
           <br />
-          我們提供了幾種指標供您參考，請點選以下指標查看他們的定義。
+          我們提供了幾種指標供您參考，請依序點選以下指標查看他們的定義。
           <br />
           同時您也可以注意到，右側網絡上的各點都依據您選擇的指標改變大小了，將滑鼠靠近他們，可以看到該點依據指標計算出的排名。
+          <br />
+          當您查看完所有指標的定義，就可以按下一步查看進階說明了！
         </StyledParagraph>
         <StyledOptionsContainer>
           {Object.values(toolsAvailable)
             .filter(tool => tool?.displayName !== '自行判斷')
-            .map(tool => (
-              <StyledOptionContainer key={tool.code}>
-                <StyledAccordion
-                  expanded={(expandedTool?.code ?? '') === tool.code}
-                  onChange={() => setExpandedTool(tool)}
-                >
-                  <AccordionSummary>{tool.displayName}</AccordionSummary>
-                  <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
-                </StyledAccordion>
-              </StyledOptionContainer>
-            ))}
+            .map(tool => {
+              const expanded = (expandedTool?.code ?? '') === tool.code
+              return (
+                <StyledOptionContainer key={tool.code}>
+                  <StyledAccordion
+                    expanded={expanded}
+                    onChange={() => {
+                      setExpandedTool(tool)
+                      if (!checkedTools.includes(tool.code))
+                        setCheckedTools(preCheckedTools => [...preCheckedTools, tool.code])
+                    }}
+                  >
+                    <AccordionSummaryWithCheckbox
+                      title={tool.displayName}
+                      expanded={expanded}
+                      checked={checkedTools.includes(tool.code)}
+                    />
+                    <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
+                  </StyledAccordion>
+                </StyledOptionContainer>
+              )
+            })}
         </StyledOptionsContainer>
         <StyledLink to="/tour/actions">
-          <Button width="10rem">下一步</Button>
+          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailable).length}>
+            下一步
+          </Button>
         </StyledLink>
       </StyledContainer>
       <div>
