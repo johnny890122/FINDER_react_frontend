@@ -2,24 +2,7 @@ export const getNodeValue = ({ nodeCount, ranking }) => nodeCount / (10 * rankin
 
 export const parsePayoffDataForChart = ({ payoffRawData }) => {
   if (!payoffRawData) return []
-  let { payoffHuman, payoffFinder } = payoffRawData
-
-
-  function cumsum(array) {
-    const result = [];
-    let sum = 0;
-    
-    for (let i = 0; i < array.length; i+=1) {
-      sum += array[i];
-      result.push(sum);
-    }
-    
-    return result;
-  }
-
-  payoffHuman = cumsum(payoffHuman)
-  payoffFinder = payoffFinder[0]
-
+  const { payoffHuman, payoffFinder } = payoffRawData
   const payoff = []
   for (let i = 0; i < payoffFinder.length; i += 1) {
     payoff.push({ name: i + 1, payoffHuman: payoffHuman[i] ?? null, payoffFinder: payoffFinder[i] })
