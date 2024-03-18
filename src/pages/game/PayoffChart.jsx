@@ -9,7 +9,7 @@ import { parsePayoffDataForChart } from './game.utils'
 export const PayoffChart = ({ width, height }) => {
   const payoffRawData = useSelector(selectPayoff)
   const data = parsePayoffDataForChart({ payoffRawData })
-
+  
   return (
     <LineChart width={width} height={height} data={data} overflow="visible">
       <Line name="您的成績" type="monotone" dataKey="payoffHuman" stroke={color.primaryColor600} />
