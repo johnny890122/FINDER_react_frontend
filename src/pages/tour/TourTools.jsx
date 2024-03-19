@@ -62,6 +62,12 @@ export const TourTools = () => {
   const toolsAvailable = useSelector(selectToolsAvailable)
   const [expandedTool, setExpandedTool] = useState(toolsAvailable.HDA)
   const [checkedTools, setCheckedTools] = useState([])
+  const toolsAvailableWithoutNoHelp = Object.entries(toolsAvailable)
+    .filter(([key]) => key !== 'NO_HELP')
+    .reduce((acc, current) => {
+      const [key, value] = current
+      return { ...acc, [key]: value }
+    }, {})
 
   const { data: graphData, isLoading: isGraphDataLoading } = useQuery({
     queryKey: ['gameStart'],
@@ -121,36 +127,34 @@ export const TourTools = () => {
           當您查看完所有指標的定義，就可以按下一步查看進階說明了！
         </StyledParagraph>
         <StyledOptionsContainer>
-          {Object.values(toolsAvailable)
-            .filter(tool => tool?.displayName !== '自行判斷')
-            .map(tool => {
-              const expanded = (expandedTool?.code ?? '') === tool.code
-              return (
-                <StyledOptionContainer key={tool.code}>
-                  <StyledAccordion
+          {Object.values(toolsAvailableWithoutNoHelp).map(tool => {
+            const expanded = (expandedTool?.code ?? '') === tool.code
+            return (
+              <StyledOptionContainer key={tool.code}>
+                <StyledAccordion
+                  expanded={expanded}
+                  onChange={() => {
+                    setExpandedTool(tool)
+                    if (!checkedTools.includes(tool.code))
+                      setCheckedTools(preCheckedTools => [...preCheckedTools, tool.code])
+                  }}
+                >
+                  <AccordionSummaryWithCheckbox
+                    title={tool.displayName}
                     expanded={expanded}
-                    onChange={() => {
-                      setExpandedTool(tool)
-                      if (!checkedTools.includes(tool.code))
-                        setCheckedTools(preCheckedTools => [...preCheckedTools, tool.code])
-                    }}
-                  >
-                    <AccordionSummaryWithCheckbox
-                      title={tool.displayName}
-                      expanded={expanded}
-                      checked={checkedTools.includes(tool.code)}
-                    />
-                    <AccordionDetailWithImage
-                      text={tool.introduction}
-                      image={getToolImage({ toolName: tool.displayName })}
-                    />
-                  </StyledAccordion>
-                </StyledOptionContainer>
-              )
-            })}
+                    checked={checkedTools.includes(tool.code)}
+                  />
+                  <AccordionDetailWithImage
+                    text={tool.introduction}
+                    image={getToolImage({ toolName: tool.displayName })}
+                  />
+                </StyledAccordion>
+              </StyledOptionContainer>
+            )
+          })}
         </StyledOptionsContainer>
         <StyledLink to="/tour/actions">
-          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailable).length}>
+          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
             下一步
           </Button>
         </StyledLink>
