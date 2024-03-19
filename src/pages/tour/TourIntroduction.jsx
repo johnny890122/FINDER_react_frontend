@@ -51,11 +51,8 @@ export const TourIntroduction = () => {
             <li>能用越短的次數（回合數）移除所有的網絡關係，分數越高！</li>
           </StyledOl>
         </StyledParagraph>
-        <StyledLink to="/tour/tools">
-          <Button width="10rem">下一步</Button>
-        </StyledLink>
       </StyledContainer>
-      <div>
+      <StyledGraphAndButtonContainer>
         {graphData && (
           <ForceGraph
             withAction={false}
@@ -66,7 +63,10 @@ export const TourIntroduction = () => {
             height={graphHeight}
           />
         )}
-      </div>
+        <StyledLink to="/tour/tools">
+          <Button width="10rem">下一步</Button>
+        </StyledLink>
+      </StyledGraphAndButtonContainer>
     </TourLayout>
   )
 }
@@ -81,14 +81,13 @@ const StyledOl = styled.ol`
   padding-left: 1.5rem;
   margin-top: 0.25rem;
 `
+const StyledGraphAndButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rem;
+`
 const StyledLink = styled(Link)`
-  position: absolute;
-  right: 1rem;
-  bottom: 0;
   text-decoration: none;
   color: inherit;
-  @media screen and (max-width: 767px) {
-    position: static;
-    margin-top: 2rem;
-  }
 `

@@ -36,7 +36,7 @@ const StyledContentContainer = styled.div`
   display: flex;
   gap: 1rem;
   @media screen and (max-width: 767px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
   }

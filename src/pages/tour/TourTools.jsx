@@ -153,13 +153,8 @@ export const TourTools = () => {
             )
           })}
         </StyledOptionsContainer>
-        <StyledLink to="/tour/actions">
-          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
-            下一步
-          </Button>
-        </StyledLink>
       </StyledContainer>
-      <div>
+      <StyledGraphAndButtonContainer>
         {graphData && (
           <ForceGraph
             withAction={false}
@@ -171,7 +166,12 @@ export const TourTools = () => {
             height={graphHeight}
           />
         )}
-      </div>
+        <StyledLink to="/tour/actions">
+          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
+            下一步
+          </Button>
+        </StyledLink>
+      </StyledGraphAndButtonContainer>
     </TourLayout>
   )
 }
@@ -183,14 +183,15 @@ const StyledContainer = styled.div`
 const StyledParagraph = styled.div`
   margin-top: 1rem;
 `
+const StyledGraphAndButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2rem;
+`
 const StyledLink = styled(Link)`
-  margin-top: 1rem;
   text-decoration: none;
   color: inherit;
-  @media screen and (max-width: 767px) {
-    position: static;
-    margin: 1rem 0;
-  }
 `
 const StyledOptionsContainer = styled.div`
   display: flex;
