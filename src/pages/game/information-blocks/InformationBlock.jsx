@@ -1,11 +1,10 @@
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import styled from '@emotion/styled'
-import { Card } from '@mui/material'
 
-import { Chip, HoverTooltip } from '../../components'
-import { selectSelectedTool, selectRound } from './game.slice'
-import { PayoffChart } from './PayoffChart'
+import { Chip, HoverTooltip } from '../../../components'
+import { selectSelectedTool, selectRound } from '../game.slice'
+import { PayoffChart } from '../PayoffChart'
+import { StyledCard, StyledRow } from './styles'
 
 export const InformationBlock = ({ visible }) => {
   const selectedTool = useSelector(selectSelectedTool)
@@ -42,23 +41,3 @@ InformationBlock.propTypes = {
 InformationBlock.defaultProps = {
   visible: false,
 }
-
-const StyledCard = styled(Card)`
-  &.MuiPaper-root {
-    visibility: ${props => (props.visible === 'true' ? 'visible' : 'hidden')};
-    width: calc(400px + 4rem);
-    padding: 1.5rem 3rem 1.5rem 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-
-    @media screen and (max-width: 767px) {
-      width: auto;
-    }
-  }
-`
-const StyledRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-`

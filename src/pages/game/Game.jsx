@@ -21,7 +21,7 @@ import {
 } from './game.slice'
 import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
-import { InformationBlock } from './InformationBlock'
+import { InformationBlock, NetworkInformationBlock } from './information-blocks'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
 import { InformationDialog } from './InformationDialog'
@@ -180,7 +180,12 @@ export const GamePage = () => {
       )}
 
       <StyledGameContainer>
-        {width > 767 && <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />}
+        {width > 767 && (
+          <StyledInformationBlocksContainer>
+            <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />
+            <NetworkInformationBlock />
+          </StyledInformationBlocksContainer>
+        )}
         {width <= 767 && (
           <Button width="100%" onClick={() => setIsInformationDialogShown(true)}>
             本回合資訊及累積報酬
@@ -213,6 +218,11 @@ const StyledGameContainer = styled.div`
     align-items: center;
     justify-content: space-around;
   }
+`
+const StyledInformationBlocksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `
 const StyledQuitGameButton = styled(Button)`
   position: absolute;
