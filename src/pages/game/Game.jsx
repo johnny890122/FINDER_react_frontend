@@ -21,7 +21,7 @@ import {
 } from './game.slice'
 import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { ToolSelectionDialog } from './ToolSelectionDialog'
-import { InformationBlock, NetworkInformationBlock } from './information-blocks'
+import { GameInformationBlock, NetworkInformationBlock } from './information-blocks'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
 import { InformationDialog } from './InformationDialog'
@@ -38,7 +38,6 @@ export const GamePage = () => {
 
   const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
-  const [isInformationBlockShown, setIsInformationBlockShown] = useState(false)
   const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
@@ -136,7 +135,6 @@ export const GamePage = () => {
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
-        setIsInformationBlockShown(false)
         setTimeout(() => {
           setIsToolSelectionDialogOpen(true)
           dispatch(updateGraphRanking(null))
@@ -147,7 +145,6 @@ export const GamePage = () => {
 
   const onSelectTool = tool => {
     setIsToolSelectionDialogOpen(false)
-    setIsInformationBlockShown(true)
     dispatch(updateSelectedTool(tool))
     setIsReadyGetNodeRanking(true)
   }
@@ -182,7 +179,7 @@ export const GamePage = () => {
       <StyledGameContainer>
         {width > 767 && (
           <StyledInformationBlocksContainer>
-            <InformationBlock visible={isInformationBlockShown || isQuitGameDialogOpen} />
+            <GameInformationBlock />
             <NetworkInformationBlock />
           </StyledInformationBlocksContainer>
         )}

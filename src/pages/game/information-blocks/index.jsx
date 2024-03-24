@@ -1,4 +1,4 @@
-import { InformationBlock } from './InformationBlock'
+import { GameInformationBlock } from './GameInformationBlock'
 import { NetworkInformationBlock } from './NetworkInformationBlock'
 
-export { InformationBlock, NetworkInformationBlock }
+export { GameInformationBlock, NetworkInformationBlock }

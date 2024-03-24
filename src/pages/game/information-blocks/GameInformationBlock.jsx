@@ -1,17 +1,16 @@
 import { useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import { Chip, HoverTooltip } from '../../../components'
 import { selectSelectedTool, selectRound } from '../game.slice'
 import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow } from './styles'
 
-export const InformationBlock = ({ visible }) => {
+export const GameInformationBlock = () => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
 
   return (
-    <StyledCard visible={visible.toString()}>
+    <StyledCard>
       <StyledRow>
         <Chip label="回合" />
         <div>{round}</div>
@@ -33,11 +32,4 @@ export const InformationBlock = ({ visible }) => {
       )}
     </StyledCard>
   )
-}
-
-InformationBlock.propTypes = {
-  visible: PropTypes.bool,
-}
-InformationBlock.defaultProps = {
-  visible: false,
 }

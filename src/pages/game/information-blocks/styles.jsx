@@ -5,7 +5,7 @@ export const StyledCard = styled(Card)`
   &.MuiPaper-root {
     width: calc(400px + 4rem);
     padding: 1.5rem 3rem 1.5rem 2rem;
-    display: ${props => (props.visible === 'true' ? 'flex' : 'none')};
+    display: flex;
     flex-direction: column;
     gap: 0.5rem;
 
