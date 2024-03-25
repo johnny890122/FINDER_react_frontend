@@ -1,5 +1,6 @@
 import {
   getNodeValue,
+  calculateCumulativeSum,
   parsePayoffDataForChart,
   getNeighborNodeIds,
   getNeighborLinks,
@@ -11,6 +12,17 @@ import {
 describe('getNodeValue', () => {
   it('should get correct node value', () => {
     expect(getNodeValue({ nodeCount: 1, ranking: 1 })).toBe(0.1)
+  })
+})
+
+describe('calculateCumulativeSum', () => {
+  it('given empty array, return empty array', () => {
+    expect(calculateCumulativeSum({ data: [] })).toEqual([])
+  })
+  it('given non-empty array, calculate cumulative sum', () => {
+    const data = [1, 2, 3]
+    const expectedResult = [1, 3, 6]
+    expect(calculateCumulativeSum({ data })).toEqual(expectedResult)
   })
 })
 

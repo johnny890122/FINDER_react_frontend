@@ -1,11 +1,22 @@
 export const getNodeValue = ({ nodeCount, ranking }) => nodeCount / (10 * ranking)
 
+export const calculateCumulativeSum = ({ data }) => {
+  if (!data.length) return []
+
+  const cumulativeData = [data[0]]
+  for (let i = 1; i < data.length; i += 1) {
+    cumulativeData[i] = cumulativeData[i - 1] + data[i]
+  }
+  return cumulativeData
+}
+
 export const parsePayoffDataForChart = ({ payoffRawData }) => {
   if (!payoffRawData) return []
   const { payoffHuman, payoffFinder } = payoffRawData
+  const cumulativePayoffHuman = calculateCumulativeSum({ data: payoffHuman })
   const payoff = []
   for (let i = 0; i < payoffFinder.length; i += 1) {
-    payoff.push({ name: i + 1, payoffHuman: payoffHuman[i] ?? null, payoffFinder: payoffFinder[i] })
+    payoff.push({ name: i + 1, payoffHuman: cumulativePayoffHuman[i] ?? null, payoffFinder: payoffFinder[i] })
   }
 
   return payoff
