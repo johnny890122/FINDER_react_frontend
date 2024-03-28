@@ -50,18 +50,16 @@ export const TourActions = () => {
         <StyledParagraph>如果您準備好了，就讓我們開始遊戲吧！</StyledParagraph>
       </StyledContainer>
       <StyledGraphAndButtonContainer>
-        {graphData && (
-          <ForceGraph
-            withPayoff={false}
-            loading={isGraphDataLoading}
-            graphData={graphData}
-            selectedTool={demoTool}
-            removedNodeIds={removedNodeIds}
-            setRemovedNodeIds={setRemovedNodeIds}
-            width={graphWidth}
-            height={graphHeight}
-          />
-        )}
+        <ForceGraph
+          withPayoff={false}
+          loading={isGraphDataLoading}
+          graphData={graphData}
+          selectedTool={demoTool}
+          removedNodeIds={removedNodeIds}
+          setRemovedNodeIds={setRemovedNodeIds}
+          width={graphWidth}
+          height={graphHeight}
+        />
         <StyledLink to="/network-selection">
           <Button>準備好了，開始遊戲！</Button>
         </StyledLink>

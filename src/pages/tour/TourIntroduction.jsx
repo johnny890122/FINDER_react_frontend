@@ -53,16 +53,14 @@ export const TourIntroduction = () => {
         </StyledParagraph>
       </StyledContainer>
       <StyledGraphAndButtonContainer>
-        {graphData && (
-          <ForceGraph
-            withAction={false}
-            withPayoff={false}
-            loading={isGraphDataLoading}
-            graphData={graphData}
-            width={graphWidth}
-            height={graphHeight}
-          />
-        )}
+        <ForceGraph
+          withAction={false}
+          withPayoff={false}
+          loading={isGraphDataLoading}
+          graphData={graphData}
+          width={graphWidth}
+          height={graphHeight}
+        />
         <StyledLink to="/tour/tools">
           <Button width="10rem">下一步</Button>
         </StyledLink>
