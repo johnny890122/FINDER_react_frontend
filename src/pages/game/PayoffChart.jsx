@@ -16,7 +16,12 @@ export const PayoffChart = ({ width, height }) => {
       <Line name="AI FINDER 的成績" type="monotone" dataKey="payoffFinder" stroke={color.neutralsColor600} />
       <CartesianGrid stroke={color.neutralsColor400} />
       <XAxis dataKey="name" label={{ value: '回合', position: 'insideBottom', offset: -15 }} />
-      <YAxis label={{ value: '報酬', angle: -90, position: 'insideLeft', offset: 5 }} />
+      <YAxis
+        type="number"
+        domain={[0, 1]}
+        label={{ value: '報酬', angle: -90, position: 'insideLeft', offset: 5 }}
+        tickFormatter={value => value.toFixed(2)}
+      />
       <Legend verticalAlign="top" height={36} />
     </LineChart>
   )
