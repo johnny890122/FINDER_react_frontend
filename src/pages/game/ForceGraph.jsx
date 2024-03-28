@@ -69,7 +69,7 @@ export const ForceGraph = ({
     }
   }, [graphData])
 
-  if (loading && !graphData) {
+  if (loading) {
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
         <Progress />
