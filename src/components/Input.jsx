@@ -5,7 +5,7 @@ import { color } from '../styles'
 
 export const Input = ({ width, ...props }) => <StyledInput width={width} {...props} />
 Input.propTypes = {
-  width: PropTypes.oneOfType([PropTypes.string, null]),
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 }
 Input.defaultProps = {
   width: null,

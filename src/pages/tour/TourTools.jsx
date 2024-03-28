@@ -155,17 +155,15 @@ export const TourTools = () => {
         </StyledOptionsContainer>
       </StyledContainer>
       <StyledGraphAndButtonContainer>
-        {graphData && (
-          <ForceGraph
-            withAction={false}
-            withPayoff={false}
-            loading={isGraphDataLoading || isNodeRankingLoading}
-            graphData={graphData}
-            selectedTool={expandedTool}
-            width={graphWidth}
-            height={graphHeight}
-          />
-        )}
+        <ForceGraph
+          withAction={false}
+          withPayoff={false}
+          loading={isGraphDataLoading || isNodeRankingLoading}
+          graphData={graphData}
+          selectedTool={expandedTool}
+          width={graphWidth}
+          height={graphHeight}
+        />
         <StyledLink to="/tour/actions">
           <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
             下一步
