@@ -10,13 +10,27 @@ export const calculateCumulativeSum = ({ data }) => {
   return cumulativeData
 }
 
+export const concatPayoffFinderWithCumulativePayoffHuman = ({ cumulativePayoffHuman, payoffFinder }) => {
+  const cumulativePayoffHumanWithoutLastElement = cumulativePayoffHuman.slice(0, -1)
+  return [...cumulativePayoffHumanWithoutLastElement, ...payoffFinder]
+}
+
 export const parsePayoffDataForChart = ({ payoffRawData }) => {
   if (!payoffRawData) return []
   const { payoffHuman, payoffFinder } = payoffRawData
   const cumulativePayoffHuman = calculateCumulativeSum({ data: payoffHuman })
+  const payoffFinderWithFutureRounds = concatPayoffFinderWithCumulativePayoffHuman({
+    cumulativePayoffHuman,
+    payoffFinder,
+  })
+
   const payoff = []
-  for (let i = 0; i < payoffFinder.length; i += 1) {
-    payoff.push({ name: i + 1, payoffHuman: cumulativePayoffHuman[i] ?? null, payoffFinder: payoffFinder[i] })
+  for (let i = 0; i < payoffFinderWithFutureRounds.length; i += 1) {
+    payoff.push({
+      name: i + 1,
+      payoffHuman: cumulativePayoffHuman[i] ?? null,
+      payoffFinder: payoffFinderWithFutureRounds[i],
+    })
   }
 
   return payoff
