@@ -62,7 +62,7 @@ export const GamePage = () => {
       const playerId = localStorage.getItem('playerId')
       const gameId = localStorage.getItem('gameId')
       const response = await fetch(
-        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&session_id=${gameId}`,
+        `${API_ROOT}/game_start/?chosen_network_id=${networkCode}&player_id=${playerId}&game_id=${gameId}`,
         {
           method: 'GET',
         },
@@ -83,7 +83,7 @@ export const GamePage = () => {
         method: 'POST',
         body: JSON.stringify({
           chosen_tool_id: selectedTool[selectedTool.length - 1].code.toString(),
-          gameId: localStorage.getItem('gameId'),
+          game_id: localStorage.getItem('gameId'),
           roundId: round,
           graphData: realGraphData,
           chosen_network_id: networkCode.toString(),
@@ -113,6 +113,7 @@ export const GamePage = () => {
           graphData: realGraphData,
           chosen_node_id: removedNodeIds[removedNodeIds.length - 1],
           round_id: round,
+          game_id: localStorage.getItem('gameId'),
         }),
       })
       if (!response.ok) {
