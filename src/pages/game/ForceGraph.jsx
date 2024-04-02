@@ -93,6 +93,7 @@ export const ForceGraph = ({
           }}
           width={graphWidth}
           height={graphHeight}
+          minZoom={1}
         />
       </StyledForceGraphContainer>
     )
@@ -126,6 +127,7 @@ export const ForceGraph = ({
             setZoomPan(k)
           }
         }}
+        minZoom={1}
         linkWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 5 : 1)}
         linkDirectionalParticles={4}
         linkDirectionalParticleWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 4 : 0)}
