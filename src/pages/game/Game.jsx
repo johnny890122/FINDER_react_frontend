@@ -120,15 +120,6 @@ export const GamePage = () => {
       if (!response.ok) {
         throw new Error('Failed to get payoff')
       }
-      setIsReadyGetPayoff(false)
-      dispatch(
-        updateRealGraphData(
-          removeNodeAndRelatedLinksFromGraphData({
-            graphData: realGraphData,
-            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
-          }),
-        ),
-      )
 
       return response.json()
     },
@@ -142,6 +133,17 @@ export const GamePage = () => {
           dispatch(updateGraphRanking(null))
         }, 1000)
       }
+    },
+    onSettled: () => {
+      setIsReadyGetPayoff(false)
+      dispatch(
+        updateRealGraphData(
+          removeNodeAndRelatedLinksFromGraphData({
+            graphData: realGraphData,
+            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
+          }),
+        ),
+      )
     },
   })
 
