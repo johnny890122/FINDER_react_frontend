@@ -46,8 +46,8 @@ export const NetworkIntroduction = ({ isNetworksApiError, isToolsApiError, loadi
                 <AccordionSummary>{displayName}</AccordionSummary>
                 <StyledAccordionDetails>
                   <div>背景：{introduction}</div>
-                  <div>一個節點代表一個{node}</div>
-                  <div>一條連線代表一個{link}</div>
+                  <div>一個節點代表{node}</div>
+                  <div>一條連線代表{link}</div>
                 </StyledAccordionDetails>
               </StyledAccordion>
             </StyledOptionContainer>
