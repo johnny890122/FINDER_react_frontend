@@ -45,12 +45,10 @@ export const GamePage = () => {
   const [removedNodeIds, setRemovedNodeIds] = useState([])
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsToolSelectionDialogOpen(true), 3000)
     const gameId = uuidv4()
     localStorage.setItem('gameId', gameId)
 
     return () => {
-      clearTimeout(timer)
       dispatch(resetGameData())
       localStorage.setItem('gameId', null)
     }
@@ -72,11 +70,14 @@ export const GamePage = () => {
       }
       return response.json()
     },
+    onSuccess: () => {
+      setIsToolSelectionDialogOpen(true)
+    },
   })
 
   const { isLoading: isNodeRankingLoading } = useQuery({
     enabled: isReadyGetNodeRanking,
-    queryKey: ['nodeRanking'],
+    queryKey: ['nodeRanking', round],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/node_ranking/`, {
         ...postHeaders,
@@ -119,15 +120,6 @@ export const GamePage = () => {
       if (!response.ok) {
         throw new Error('Failed to get payoff')
       }
-      setIsReadyGetPayoff(false)
-      dispatch(
-        updateRealGraphData(
-          removeNodeAndRelatedLinksFromGraphData({
-            graphData: realGraphData,
-            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
-          }),
-        ),
-      )
 
       return response.json()
     },
@@ -141,6 +133,17 @@ export const GamePage = () => {
           dispatch(updateGraphRanking(null))
         }, 1000)
       }
+    },
+    onSettled: () => {
+      setIsReadyGetPayoff(false)
+      dispatch(
+        updateRealGraphData(
+          removeNodeAndRelatedLinksFromGraphData({
+            graphData: realGraphData,
+            removedNodeId: removedNodeIds[removedNodeIds.length - 1],
+          }),
+        ),
+      )
     },
   })
 
@@ -190,7 +193,7 @@ export const GamePage = () => {
           </Button>
         )}
         <ForceGraph
-          loading={isGraphDataLoading || (round !== 1 && isNodeRankingLoading)}
+          loading={!isGameEndDialogOpen && (isGraphDataLoading || (round !== 1 && isNodeRankingLoading))}
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}
