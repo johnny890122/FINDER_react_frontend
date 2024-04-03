@@ -18,6 +18,9 @@ export const Home = () => {
       <StyledLink to="/network-selection">
         <Button width="15rem">Start</Button>
       </StyledLink>
+      <StyledLink to="/questionnaire">
+        <Button width="15rem">Questionnaire</Button>
+      </StyledLink>
     </StyledContainer>
   )
 }
