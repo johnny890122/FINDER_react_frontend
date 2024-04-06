@@ -1,7 +1,5 @@
 import {
   getNodeValue,
-  calculateCumulativeSum,
-  concatPayoffFinderWithCumulativePayoffHuman,
   parsePayoffDataForChart,
   getNeighborNodeIds,
   getNeighborLinks,
@@ -16,39 +14,20 @@ describe('getNodeValue', () => {
   })
 })
 
-describe('calculateCumulativeSum', () => {
-  it('given empty array, return empty array', () => {
-    expect(calculateCumulativeSum({ data: [] })).toEqual([])
-  })
-  it('given non-empty array, calculate cumulative sum', () => {
-    const data = [1, 2, 3]
-    const expectedResult = [1, 3, 6]
-    expect(calculateCumulativeSum({ data })).toEqual(expectedResult)
-  })
-})
-
-describe('concatPayoffFinderWithCumulativePayoffHuman', () => {
-  it('should concat payoff finder with cumulative payoff human', () => {
-    const cumulativePayoffHuman = [1, 3, 5]
-    const payoffFinder = [6, 7, 8]
-    expect(concatPayoffFinderWithCumulativePayoffHuman({ cumulativePayoffHuman, payoffFinder })).toEqual([
-      1, 3, 6, 7, 8,
-    ])
-  })
-})
-
 describe('parsePayoffDataForChart', () => {
   it('should return empty array if there is no input', () => {
     expect(parsePayoffDataForChart({ payoffRawData: null })).toEqual([])
   })
-  it('should combine payoffHuman and payoffFinder in return value', () => {
-    const payoffRawData = { payoffHuman: [1, 2, 3], payoffFinder: [7, 8, 9] }
+  it('should return data with payoffHuman, payoffFinder, and payoffInstantFinder', () => {
+    const payoffRawData = {
+      payoffHuman: [1, 2, 3],
+      payoffFinder: [7, 8, 9],
+      payoffInstantFinder: [4, 5, 6],
+    }
     const expectPayoff = [
-      { name: 1, payoffHuman: 1, payoffFinder: 1 },
-      { name: 2, payoffHuman: 3, payoffFinder: 3 },
-      { name: 3, payoffHuman: 6, payoffFinder: 7 },
-      { name: 4, payoffHuman: null, payoffFinder: 8 },
-      { name: 5, payoffHuman: null, payoffFinder: 9 },
+      { name: 1, payoffHuman: 1, payoffFinder: 7, payoffInstantFinder: 4 },
+      { name: 2, payoffHuman: 2, payoffFinder: 8, payoffInstantFinder: 5 },
+      { name: 3, payoffHuman: 3, payoffFinder: 9, payoffInstantFinder: 6 },
     ]
 
     expect(parsePayoffDataForChart({ payoffRawData })).toEqual(expectPayoff)
