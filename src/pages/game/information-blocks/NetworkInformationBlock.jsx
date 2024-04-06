@@ -1,12 +1,10 @@
-import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import { useContextData } from '../../../DataContext'
-import { selectNetworkCode } from '../game.slice'
 import { Chip } from '../../../components'
 import { StyledCard, StyledRow } from './styles'
 
 export const NetworkInformationBlock = () => {
-  const selectedNetworkCode = useSelector(selectNetworkCode) ?? 0
+  const selectedNetworkCode = localStorage.getItem('thisRoundNetworkCode')
 
   const contextData = useContextData()
   const {

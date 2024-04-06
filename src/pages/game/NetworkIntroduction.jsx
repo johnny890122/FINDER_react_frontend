@@ -1,18 +1,15 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { useContextData } from '../../DataContext'
 import { color } from '../../styles'
 import { Button, Progress } from '../../components'
-import { updateNetworkCode } from './game.slice'
 import { getRandomNumber } from './game.utils'
 
 export const NetworkIntroduction = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
   const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
@@ -69,7 +66,8 @@ export const NetworkIntroduction = () => {
               totalCount: Object.keys(networksAvailable).length,
               excludeNumbers: excludeNetworkCodeNumbers,
             })
-            dispatch(updateNetworkCode(randomNetworkCodeNumber.toString()))
+            const thisRoundNetworkCode = randomNetworkCodeNumber.toString()
+            localStorage.setItem('thisRoundNetworkCode', thisRoundNetworkCode)
             sessionStorage.setItem(
               'excludeNetworkCodeNumbers',
               JSON.stringify([...excludeNetworkCodeNumbers, randomNetworkCodeNumber]),
