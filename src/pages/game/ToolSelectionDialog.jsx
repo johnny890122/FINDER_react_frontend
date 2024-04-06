@@ -5,16 +5,21 @@ import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
+import { useContextData } from '../../DataContext'
 import { getViewport } from '../../utils'
 import { color } from '../../styles'
 import { Dialog, DialogTypes, Chip, Progress } from '../../components'
-import { selectToolsAvailable, selectPayoff } from './game.slice'
+import { selectPayoff } from './game.slice'
 import { PayoffChart } from './PayoffChart'
 
 export const ToolSelectionDialog = ({ open = false, loading, onConfirm = () => {} }) => {
-  const toolsAvailable = useSelector(selectToolsAvailable)
   const payoff = useSelector(selectPayoff)
   const { width } = getViewport()
+
+  const contextData = useContextData()
+  const {
+    data: { toolsAvailable = {} },
+  } = contextData
 
   const [expandedTool, setExpandedTool] = useState(null)
 

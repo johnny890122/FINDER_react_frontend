@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 
 import { API_ROOT, postHeaders } from '../../api.config'
+import { useContextData } from '../../DataContext'
 import { getViewport } from '../../utils'
 import { Button, Checkbox, CheckboxLevels } from '../../components'
 import { color } from '../../styles'
-import { selectToolsAvailable, updateGraphRanking } from '../game/game.slice'
+import { updateGraphRanking } from '../game/game.slice'
 import { getToolImage } from './tour.utils'
 
 import { TourLayout } from './TourLayout'
@@ -58,8 +59,11 @@ export const TourTools = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphWidth = viewportWidth > 768 ? viewportWidth / 2 : viewportWidth - 28
   const graphHeight = viewportWidth > 768 ? viewportHeight - 200 : viewportHeight / 2
+  const contextData = useContextData()
+  const {
+    data: { toolsAvailable = {} },
+  } = contextData
 
-  const toolsAvailable = useSelector(selectToolsAvailable)
   const [expandedTool, setExpandedTool] = useState(toolsAvailable.HDA)
   const [checkedTools, setCheckedTools] = useState([])
   const toolsAvailableWithoutNoHelp = Object.entries(toolsAvailable)

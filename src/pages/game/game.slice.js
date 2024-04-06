@@ -3,10 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import { GameStages } from '../../models/GameStages'
 
 const initialState = {
-  networksAvailable: {},
-  toolsAvailable: {},
-
-  gameStage: GameStages.NETWORK_SELECTION,
   networkCode: null,
   realGraphData: null,
   graphRanking: null,
@@ -18,18 +14,6 @@ const gameSlice = createSlice({
   name: 'gameSlice',
   initialState,
   reducers: {
-    updateNetworksAvailable: (state, action) => {
-      state.networksAvailable = action.payload
-    },
-
-    updateToolsAvailable: (state, action) => {
-      state.toolsAvailable = action.payload
-    },
-
-    updateGameStage: (state, action) => {
-      state.gameStage = action.payload
-    },
-
     updateNetworkCode: (state, action) => {
       state.networkCode = action.payload
     },
@@ -65,10 +49,6 @@ const gameSlice = createSlice({
 })
 
 export const {
-  updateNetworksAvailable,
-  updateToolsAvailable,
-
-  updateGameStage,
   updateNetworkCode,
   updateRealGraphData,
   updateGraphRanking,
@@ -78,10 +58,6 @@ export const {
 } = gameSlice.actions
 export default gameSlice.reducer
 
-export const selectNetworksAvailable = state => state.gameReducer.networksAvailable
-export const selectToolsAvailable = state => state.gameReducer.toolsAvailable
-
-export const selectGameStage = state => state.gameReducer.gameStage
 export const selectNetworkCode = state => state.gameReducer.networkCode
 export const selectRealGraphData = state => state.gameReducer.realGraphData
 export const selectGraphRanking = state => state.gameReducer.graphRanking

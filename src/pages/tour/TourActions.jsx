@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 
 import { API_ROOT } from '../../api.config'
+import { useContextData } from '../../DataContext'
 import { getViewport } from '../../utils'
-import { selectToolsAvailable } from '../game/game.slice'
 import { Button } from '../../components'
 import { ForceGraph } from '../game/ForceGraph'
 import { TourLayout } from './TourLayout'
@@ -15,7 +14,10 @@ export const TourActions = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphWidth = viewportWidth > 768 ? viewportWidth / 2 : viewportWidth - 28
   const graphHeight = viewportWidth > 768 ? viewportHeight - 200 : viewportHeight / 2
-  const toolsAvailable = useSelector(selectToolsAvailable)
+  const contextData = useContextData()
+  const {
+    data: { toolsAvailable = {} },
+  } = contextData
   const demoTool = toolsAvailable.HDA
 
   const [removedNodeIds, setRemovedNodeIds] = useState([])

@@ -1,23 +1,29 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
+import { useContextData } from '../../DataContext'
 import { color } from '../../styles'
 import { Button, Progress } from '../../components'
-import { selectNetworksAvailable, updateNetworkCode } from './game.slice'
+import { updateNetworkCode } from './game.slice'
 import { getRandomNumber } from './game.utils'
 
-export const NetworkIntroduction = ({ isNetworksApiError, isToolsApiError, loading }) => {
+export const NetworkIntroduction = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const networksAvailable = useSelector(selectNetworksAvailable)
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
   const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
-  if (loading) {
+  const contextData = useContextData()
+  const {
+    data: { networksAvailable = {} },
+    loadingStates: { isNetworksApiLoading, isToolsApiLoading },
+    errorStates: { isNetworksApiError, isToolsApiError },
+  } = contextData
+
+  if (isNetworksApiLoading || isToolsApiLoading) {
     return (
       <StyledLoadingContainer>
         <Progress />
@@ -76,11 +82,6 @@ export const NetworkIntroduction = ({ isNetworksApiError, isToolsApiError, loadi
       </StyledButtonContainer>
     </StyledContainer>
   )
-}
-NetworkIntroduction.propTypes = {
-  isNetworksApiError: PropTypes.bool.isRequired,
-  isToolsApiError: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired,
 }
 
 const StyledLoadingContainer = styled.div`
