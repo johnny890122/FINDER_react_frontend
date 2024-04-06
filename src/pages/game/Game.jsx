@@ -124,7 +124,13 @@ export const GamePage = () => {
       return response.json()
     },
     onSuccess: payoffResponse => {
-      dispatch(updatePayoff({ payoffHuman: payoffResponse?.human_payoff, payoffFinder: payoffResponse?.finder_payoff }))
+      dispatch(
+        updatePayoff({
+          payoffHuman: payoffResponse?.human_payoff,
+          payoffFinder: payoffResponse?.finder_payoff,
+          payoffInstantFinder: payoffResponse?.instant_finder_payoff,
+        }),
+      )
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
