@@ -9,7 +9,6 @@ import { API_ROOT, postHeaders } from '../../api.config'
 import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import {
-  selectNetworkCode,
   selectSelectedTool,
   selectRound,
   selectRealGraphData,
@@ -30,7 +29,7 @@ import { GameEndDialog } from './GameEndDialog'
 export const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const networkCode = useSelector(selectNetworkCode)
+  const networkCode = localStorage.getItem('thisRoundNetworkCode')
   const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
