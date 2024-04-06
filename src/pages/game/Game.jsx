@@ -189,8 +189,8 @@ export const GamePage = () => {
       <StyledGameContainer>
         {width > 767 && (
           <StyledInformationBlocksContainer>
-            <GameInformationBlock />
             <NetworkInformationBlock />
+            <GameInformationBlock />
           </StyledInformationBlocksContainer>
         )}
         {width <= 767 && (
@@ -212,7 +212,7 @@ export const GamePage = () => {
 }
 
 const StyledGamePageContainer = styled.div`
-  padding: 2rem 4rem;
+  padding: 2rem;
   position: relative;
 `
 const StyledGameContainer = styled.div`
