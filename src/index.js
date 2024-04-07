@@ -8,7 +8,13 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { store } from './store/store'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+})
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
