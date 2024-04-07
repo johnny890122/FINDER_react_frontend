@@ -55,7 +55,6 @@ export const TourIntroduction = () => {
       <StyledGraphAndButtonContainer>
         <ForceGraph
           withAction={false}
-          withPayoff={false}
           loading={isGraphDataLoading}
           graphData={graphData}
           width={graphWidth}

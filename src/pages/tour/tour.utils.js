@@ -10,3 +10,8 @@ export const getToolImage = ({ toolName }) => {
   if (toolName === '重要程度') return tourHPRA
   return null
 }
+
+export const filterDisabledNodeIds = ({ graphData, nodeIdToBeRemoved }) => {
+  if (!graphData || !nodeIdToBeRemoved) return []
+  return graphData.nodes.filter(node => node.id !== nodeIdToBeRemoved).map(node => node.id)
+}

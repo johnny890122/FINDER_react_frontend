@@ -161,7 +161,6 @@ export const TourTools = () => {
       <StyledGraphAndButtonContainer>
         <ForceGraph
           withAction={false}
-          withPayoff={false}
           loading={isGraphDataLoading || isNodeRankingLoading}
           graphData={graphData}
           selectedTool={expandedTool}

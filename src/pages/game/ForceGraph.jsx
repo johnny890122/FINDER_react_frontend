@@ -13,13 +13,14 @@ import { selectGraphRanking, updateRealGraphData } from './game.slice'
 
 export const ForceGraph = ({
   withAction = true,
-  withPayoff = true,
   loading,
   graphData,
   selectedTool,
+  disabledNodeIds,
   removedNodeIds,
   setRemovedNodeIds,
   setIsReadyGetPayoff,
+  onNodeRemoved,
   width,
   height,
 }) => {
@@ -58,13 +59,17 @@ export const ForceGraph = ({
   }
 
   const handleNodeClick = node => {
+    if (disabledNodeIds.includes(node.id)) return
     setRemovedNodeIds([...removedNodeIds, node.id])
     setHoveredNode(null)
     setIsReadyGetPayoff(true)
+    setNeighborLinks([])
+    setNeighborNodeIds([])
+    onNodeRemoved()
   }
 
   useEffect(() => {
-    if (graphData && withAction && withPayoff) {
+    if (graphData && withAction) {
       dispatch(updateRealGraphData(deepCloneGraphData({ graphData })))
     }
   }, [graphData])
@@ -153,25 +158,27 @@ export const ForceGraph = ({
 
 ForceGraph.propTypes = {
   withAction: PropTypes.bool,
-  withPayoff: PropTypes.bool,
   loading: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]),
   selectedTool: PropTypes.object,
+  disabledNodeIds: PropTypes.array,
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
   setIsReadyGetPayoff: PropTypes.func,
+  onNodeRemoved: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
 }
 ForceGraph.defaultProps = {
   withAction: true,
-  withPayoff: true,
   loading: false,
   graphData: null,
   selectedTool: {},
+  disabledNodeIds: [],
   removedNodeIds: [],
   setRemovedNodeIds: () => {},
   setIsReadyGetPayoff: () => {},
+  onNodeRemoved: () => {},
   width: 0,
   height: 0,
 }
