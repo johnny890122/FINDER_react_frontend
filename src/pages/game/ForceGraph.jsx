@@ -105,7 +105,7 @@ export const ForceGraph = ({
           }}
           nodeColor={() => color.primaryColor300}
           nodeLabel={node => {
-            if (!graphRanking) return `#${node.id}`
+            if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
             return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
           }}
           width={graphWidth}
@@ -134,7 +134,7 @@ export const ForceGraph = ({
           return color.primaryColor300
         }}
         nodeLabel={node => {
-          if (!graphRanking) return `#${node.id}`
+          if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
           return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
         }}
         width={graphWidth}
