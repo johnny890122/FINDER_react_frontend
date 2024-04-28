@@ -137,8 +137,8 @@ export const TourTools = () => {
               <StyledOptionContainer key={tool.code}>
                 <StyledAccordion
                   expanded={expanded}
-                  onChange={() => {
-                    setExpandedTool(tool)
+                  onChange={(_, isExpanded) => {
+                    setExpandedTool(isExpanded ? tool : null)
                     if (!checkedTools.includes(tool.code))
                       setCheckedTools(preCheckedTools => [...preCheckedTools, tool.code])
                   }}

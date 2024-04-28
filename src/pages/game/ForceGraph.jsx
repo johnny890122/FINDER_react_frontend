@@ -4,6 +4,7 @@ import ForceGraph2D from 'react-force-graph-2d'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { ButtonGroup } from '@mui/material'
+import { LibraryAddCheckOutlined } from '@mui/icons-material'
 
 import { getViewport } from '../../utils'
 import { Button, Progress } from '../../components'
@@ -74,6 +75,17 @@ export const ForceGraph = ({
     }
   }, [graphData])
 
+  if (!selectedTool) {
+    return (
+      <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
+        <StyledWarningContainer>
+          <LibraryAddCheckOutlined />
+          <p>請選擇輔助指標</p>
+        </StyledWarningContainer>
+      </StyledForceGraphContainer>
+    )
+  }
+
   if (loading) {
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
@@ -93,7 +105,7 @@ export const ForceGraph = ({
           }}
           nodeColor={() => color.primaryColor300}
           nodeLabel={node => {
-            if (!graphRanking) return `#${node.id}`
+            if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
             return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
           }}
           width={graphWidth}
@@ -122,7 +134,7 @@ export const ForceGraph = ({
           return color.primaryColor300
         }}
         nodeLabel={node => {
-          if (!graphRanking) return `#${node.id}`
+          if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
           return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
         }}
         width={graphWidth}
@@ -192,6 +204,20 @@ const StyledForceGraphContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`
+const StyledWarningContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  p {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  & .MuiSvgIcon-root {
+    height: 2rem;
+    width: 2rem;
+    color: ${color.primaryColor300};
+  }
 `
 const StyledButtonGroupContainer = styled.div`
   position: absolute;
