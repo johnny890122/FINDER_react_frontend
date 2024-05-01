@@ -16,6 +16,6 @@ export const StyledCard = styled(Card)`
 `
 export const StyledRow = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
 `

@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
-import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import {
   selectSelectedTool,
@@ -19,25 +18,21 @@ import {
   resetGameData,
 } from './game.slice'
 import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
-import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { GameInformationBlock, NetworkInformationBlock } from './information-blocks'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
-import { InformationDialog } from './InformationDialog'
 import { GameEndDialog } from './GameEndDialog'
 
 export const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const networkCode = localStorage.getItem('thisRoundNetworkCode')
-  const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const realGraphData = useSelector(selectRealGraphData)
 
-  const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
+  const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
-  const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
   const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
@@ -70,7 +65,7 @@ export const GamePage = () => {
       return response.json()
     },
     onSuccess: () => {
-      setIsToolSelectionDialogOpen(true)
+      setIsReadyGetNextRoundTool(true)
     },
   })
 
@@ -101,7 +96,7 @@ export const GamePage = () => {
     },
   })
 
-  const { isLoading: isPayoffLoading } = useQuery({
+  useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -133,10 +128,8 @@ export const GamePage = () => {
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
-        setTimeout(() => {
-          setIsToolSelectionDialogOpen(true)
-          dispatch(updateGraphRanking(null))
-        }, 1000)
+        setIsReadyGetNextRoundTool(true)
+        dispatch(updateGraphRanking(null))
       }
     },
     onSettled: () => {
@@ -153,7 +146,7 @@ export const GamePage = () => {
   })
 
   const onSelectTool = tool => {
-    setIsToolSelectionDialogOpen(false)
+    setIsReadyGetNextRoundTool(false)
     dispatch(updateSelectedTool(tool))
     setIsReadyGetNodeRanking(true)
   }
@@ -162,11 +155,6 @@ export const GamePage = () => {
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
-      <ToolSelectionDialog
-        open={isToolSelectionDialogOpen && !isQuitGameDialogOpen}
-        loading={isPayoffLoading}
-        onConfirm={onSelectTool}
-      />
       <GameEndDialog
         open={isGameEndDialogOpen && !isQuitGameDialogOpen}
         onConfirm={() => navigate('/questionnaire')}
@@ -181,24 +169,18 @@ export const GamePage = () => {
         }}
         onCancel={() => setIsQuitGameDialogOpen(false)}
       />
-      {width <= 767 && (
-        <InformationDialog open={isInformationDialogShown} onClose={() => setIsInformationDialogShown(false)} />
-      )}
 
       <StyledGameContainer>
-        {width > 767 && (
-          <StyledInformationBlocksContainer>
-            <NetworkInformationBlock />
-            <GameInformationBlock />
-          </StyledInformationBlocksContainer>
-        )}
-        {width <= 767 && (
-          <Button width="100%" onClick={() => setIsInformationDialogShown(true)}>
-            本回合資訊及累積報酬
-          </Button>
-        )}
+        <StyledInformationBlocksContainer>
+          <NetworkInformationBlock />
+          <GameInformationBlock
+            isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+            onSelectNextRoundTool={onSelectTool}
+          />
+        </StyledInformationBlocksContainer>
         <ForceGraph
-          loading={!isGameEndDialogOpen && (isGraphDataLoading || (round !== 1 && isNodeRankingLoading))}
+          withAction={!isNodeRankingLoading}
+          loading={!isGameEndDialogOpen && isGraphDataLoading}
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}

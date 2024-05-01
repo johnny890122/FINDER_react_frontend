@@ -70,7 +70,7 @@ export const ForceGraph = ({
   }
 
   useEffect(() => {
-    if (graphData && withAction) {
+    if (graphData) {
       dispatch(updateRealGraphData(deepCloneGraphData({ graphData })))
     }
   }, [graphData])
