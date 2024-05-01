@@ -193,7 +193,8 @@ export const GamePage = () => {
           </Button>
         )}
         <ForceGraph
-          loading={!isGameEndDialogOpen && (isGraphDataLoading || (round !== 1 && isNodeRankingLoading))}
+          withAction={!isNodeRankingLoading}
+          loading={!isGameEndDialogOpen && isGraphDataLoading}
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}
