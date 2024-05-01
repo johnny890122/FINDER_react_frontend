@@ -91,6 +91,9 @@ const StyledAccordion = styled(Accordion)`
   background-color: ${props => props.expanded && color.primaryColor400};
   color: ${props => props.expanded && color.neutralsColor0};
   width: 17rem;
+  @media screen and (max-width: 767px) {
+    width: auto;
+  }
 `
 const StyledAccordionDetails = styled(AccordionDetails)`
   display: flex;

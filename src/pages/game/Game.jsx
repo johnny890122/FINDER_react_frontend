@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
-import { getViewport } from '../../utils'
 import { Button } from '../../components'
 import {
   selectSelectedTool,
@@ -22,21 +21,18 @@ import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { GameInformationBlock, NetworkInformationBlock } from './information-blocks'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
-import { InformationDialog } from './InformationDialog'
 import { GameEndDialog } from './GameEndDialog'
 
 export const GamePage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const networkCode = localStorage.getItem('thisRoundNetworkCode')
-  const { width } = getViewport()
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const realGraphData = useSelector(selectRealGraphData)
 
   const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
-  const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
   const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
@@ -173,25 +169,15 @@ export const GamePage = () => {
         }}
         onCancel={() => setIsQuitGameDialogOpen(false)}
       />
-      {width <= 767 && (
-        <InformationDialog open={isInformationDialogShown} onClose={() => setIsInformationDialogShown(false)} />
-      )}
 
       <StyledGameContainer>
-        {width > 767 && (
-          <StyledInformationBlocksContainer>
-            <NetworkInformationBlock />
-            <GameInformationBlock
-              isReadyGetNextRoundTool={isReadyGetNextRoundTool}
-              onSelectNextRoundTool={onSelectTool}
-            />
-          </StyledInformationBlocksContainer>
-        )}
-        {width <= 767 && (
-          <Button width="100%" onClick={() => setIsInformationDialogShown(true)}>
-            本回合資訊及累積報酬
-          </Button>
-        )}
+        <StyledInformationBlocksContainer>
+          <NetworkInformationBlock />
+          <GameInformationBlock
+            isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+            onSelectNextRoundTool={onSelectTool}
+          />
+        </StyledInformationBlocksContainer>
         <ForceGraph
           withAction={!isNodeRankingLoading}
           loading={!isGameEndDialogOpen && isGraphDataLoading}
