@@ -1,4 +1,5 @@
 import { Button } from './Button'
+import { IconButton } from './IconButton'
 import { Dialog, DialogTypes } from './Dialog'
 import { Chip } from './Chip'
 import { HoverTooltip } from './HoverTooltip'
@@ -10,6 +11,7 @@ import { Checkbox, CheckboxLevels } from './Checkbox'
 
 export {
   Button,
+  IconButton,
   Dialog,
   DialogTypes,
   Chip,

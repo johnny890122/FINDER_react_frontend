@@ -19,7 +19,6 @@ import {
   resetGameData,
 } from './game.slice'
 import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
-import { ToolSelectionDialog } from './ToolSelectionDialog'
 import { GameInformationBlock, NetworkInformationBlock } from './information-blocks'
 import { QuitGameDialog } from './QuitGameDialog'
 import { ForceGraph } from './ForceGraph'
@@ -35,7 +34,7 @@ export const GamePage = () => {
   const round = useSelector(selectRound)
   const realGraphData = useSelector(selectRealGraphData)
 
-  const [isToolSelectionDialogOpen, setIsToolSelectionDialogOpen] = useState(false)
+  const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
   const [isInformationDialogShown, setIsInformationDialogShown] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
@@ -70,7 +69,7 @@ export const GamePage = () => {
       return response.json()
     },
     onSuccess: () => {
-      setIsToolSelectionDialogOpen(true)
+      setIsReadyGetNextRoundTool(true)
     },
   })
 
@@ -101,7 +100,7 @@ export const GamePage = () => {
     },
   })
 
-  const { isLoading: isPayoffLoading } = useQuery({
+  useQuery({
     enabled: isReadyGetPayoff,
     queryKey: ['payoff', removedNodeIds],
     queryFn: async () => {
@@ -133,10 +132,8 @@ export const GamePage = () => {
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
-        setTimeout(() => {
-          setIsToolSelectionDialogOpen(true)
-          dispatch(updateGraphRanking(null))
-        }, 1000)
+        setIsReadyGetNextRoundTool(true)
+        dispatch(updateGraphRanking(null))
       }
     },
     onSettled: () => {
@@ -153,7 +150,7 @@ export const GamePage = () => {
   })
 
   const onSelectTool = tool => {
-    setIsToolSelectionDialogOpen(false)
+    setIsReadyGetNextRoundTool(false)
     dispatch(updateSelectedTool(tool))
     setIsReadyGetNodeRanking(true)
   }
@@ -162,11 +159,6 @@ export const GamePage = () => {
     <StyledGamePageContainer>
       <StyledQuitGameButton onClick={() => setIsQuitGameDialogOpen(true)}>結束遊戲</StyledQuitGameButton>
 
-      <ToolSelectionDialog
-        open={isToolSelectionDialogOpen && !isQuitGameDialogOpen}
-        loading={isPayoffLoading}
-        onConfirm={onSelectTool}
-      />
       <GameEndDialog
         open={isGameEndDialogOpen && !isQuitGameDialogOpen}
         onConfirm={() => navigate('/questionnaire')}
@@ -189,7 +181,10 @@ export const GamePage = () => {
         {width > 767 && (
           <StyledInformationBlocksContainer>
             <NetworkInformationBlock />
-            <GameInformationBlock />
+            <GameInformationBlock
+              isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+              onSelectNextRoundTool={onSelectTool}
+            />
           </StyledInformationBlocksContainer>
         )}
         {width <= 767 && (
