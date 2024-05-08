@@ -15,12 +15,14 @@ import { selectGraphRanking, updateRealGraphData } from './game.slice'
 export const ForceGraph = ({
   withAction = true,
   loading,
+  isNodeRankingOrPayoffLoading,
   graphData,
   selectedTool,
   disabledNodeIds,
   removedNodeIds,
   setRemovedNodeIds,
   setIsReadyGetPayoff,
+  setIsPayoffLoading,
   onNodeRemoved,
   width,
   height,
@@ -61,6 +63,8 @@ export const ForceGraph = ({
 
   const handleNodeClick = node => {
     if (disabledNodeIds.includes(node.id)) return
+    if (!withAction || isNodeRankingOrPayoffLoading) return
+    setIsPayoffLoading(true)
     setRemovedNodeIds([...removedNodeIds, node.id])
     setHoveredNode(null)
     setIsReadyGetPayoff(true)
@@ -94,30 +98,9 @@ export const ForceGraph = ({
     )
   }
 
-  if (!withAction) {
-    return (
-      <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
-        <ForceGraph2D
-          graphData={graphData}
-          nodeVal={node => {
-            if (!graphRanking) return 1
-            return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
-          }}
-          nodeColor={() => color.primaryColor300}
-          nodeLabel={node => {
-            if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
-            return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
-          }}
-          width={graphWidth}
-          height={graphHeight}
-          minZoom={1}
-        />
-      </StyledForceGraphContainer>
-    )
-  }
-
   return (
     <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
+      {isNodeRankingOrPayoffLoading && <StyledTipContainer>請選擇輔助工具或稍等排名計算中...</StyledTipContainer>}
       <ForceGraph2D
         ref={graphRef}
         graphData={graphData}
@@ -134,7 +117,7 @@ export const ForceGraph = ({
           return color.primaryColor300
         }}
         nodeLabel={node => {
-          if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
+          if (!graphRanking || !Object.keys(graphRanking).length || !selectedTool.displayName) return `#${node.id}`
           return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
         }}
         width={graphWidth}
@@ -171,12 +154,14 @@ export const ForceGraph = ({
 ForceGraph.propTypes = {
   withAction: PropTypes.bool,
   loading: PropTypes.bool,
+  isNodeRankingOrPayoffLoading: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]),
   selectedTool: PropTypes.object,
   disabledNodeIds: PropTypes.array,
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
   setIsReadyGetPayoff: PropTypes.func,
+  setIsPayoffLoading: PropTypes.func,
   onNodeRemoved: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -184,12 +169,14 @@ ForceGraph.propTypes = {
 ForceGraph.defaultProps = {
   withAction: true,
   loading: false,
+  isNodeRankingOrPayoffLoading: false,
   graphData: null,
   selectedTool: {},
   disabledNodeIds: [],
   removedNodeIds: [],
   setRemovedNodeIds: () => {},
   setIsReadyGetPayoff: () => {},
+  setIsPayoffLoading: () => {},
   onNodeRemoved: () => {},
   width: 0,
   height: 0,
@@ -237,4 +224,12 @@ const StyledButtonGroup = styled(ButtonGroup)`
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
   }
+`
+const StyledTipContainer = styled.div`
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  border: 1px solid ${color.primaryColor100};
+  border-radius: 0.25rem;
+  padding: 0.25rem;
 `
