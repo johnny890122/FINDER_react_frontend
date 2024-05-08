@@ -21,6 +21,7 @@ export const ForceGraph = ({
   removedNodeIds,
   setRemovedNodeIds,
   setIsReadyGetPayoff,
+  setIsPayoffLoading,
   onNodeRemoved,
   width,
   height,
@@ -61,6 +62,8 @@ export const ForceGraph = ({
 
   const handleNodeClick = node => {
     if (disabledNodeIds.includes(node.id)) return
+    if (!withAction) return
+    setIsPayoffLoading(true)
     setRemovedNodeIds([...removedNodeIds, node.id])
     setHoveredNode(null)
     setIsReadyGetPayoff(true)
@@ -90,28 +93,6 @@ export const ForceGraph = ({
     return (
       <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
         <Progress />
-      </StyledForceGraphContainer>
-    )
-  }
-
-  if (!withAction) {
-    return (
-      <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
-        <ForceGraph2D
-          graphData={graphData}
-          nodeVal={node => {
-            if (!graphRanking) return 1
-            return getNodeValue({ nodeCount: Object.values(graphRanking).length, ranking: graphRanking[node.id] })
-          }}
-          nodeColor={() => color.primaryColor300}
-          nodeLabel={node => {
-            if (!graphRanking || !Object.keys(graphRanking).length) return `#${node.id}`
-            return `#${node.id}，${selectedTool.displayName}排名第 ${graphRanking[node.id]}`
-          }}
-          width={graphWidth}
-          height={graphHeight}
-          minZoom={1}
-        />
       </StyledForceGraphContainer>
     )
   }
@@ -177,6 +158,7 @@ ForceGraph.propTypes = {
   removedNodeIds: PropTypes.array,
   setRemovedNodeIds: PropTypes.func,
   setIsReadyGetPayoff: PropTypes.func,
+  setIsPayoffLoading: PropTypes.func,
   onNodeRemoved: PropTypes.func,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -190,6 +172,7 @@ ForceGraph.defaultProps = {
   removedNodeIds: [],
   setRemovedNodeIds: () => {},
   setIsReadyGetPayoff: () => {},
+  setIsPayoffLoading: () => {},
   onNodeRemoved: () => {},
   width: 0,
   height: 0,

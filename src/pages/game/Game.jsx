@@ -36,6 +36,7 @@ export const GamePage = () => {
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
   const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
+  const [isPayoffLoading, setIsPayoffLoading] = useState(false)
   const [removedNodeIds, setRemovedNodeIds] = useState([])
 
   useEffect(() => {
@@ -134,6 +135,7 @@ export const GamePage = () => {
     },
     onSettled: () => {
       setIsReadyGetPayoff(false)
+      setIsPayoffLoading(false)
       dispatch(
         updateRealGraphData(
           removeNodeAndRelatedLinksFromGraphData({
@@ -179,13 +181,14 @@ export const GamePage = () => {
           />
         </StyledInformationBlocksContainer>
         <ForceGraph
-          withAction={!isNodeRankingLoading}
+          withAction={!isNodeRankingLoading && !isPayoffLoading}
           loading={!isGameEndDialogOpen && isGraphDataLoading}
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}
           setRemovedNodeIds={setRemovedNodeIds}
           setIsReadyGetPayoff={setIsReadyGetPayoff}
+          setIsPayoffLoading={setIsPayoffLoading}
         />
       </StyledGameContainer>
     </StyledGamePageContainer>
