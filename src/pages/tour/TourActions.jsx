@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
 import { useContextData } from '../../DataContext'
-import { selectRealGraphData, updateGraphRanking, updateRealGraphData } from '../game/game.slice'
+import { selectRealGraphData, updateGraphRanking, updateRealGraphData, resetGameData } from '../game/game.slice'
 import { getViewport } from '../../utils'
 import { removeNodeAndRelatedLinksFromGraphData } from '../game/game.utils'
 import { filterDisabledNodeIds } from './tour.utils'
@@ -97,6 +97,7 @@ export const TourActions = () => {
   }
 
   const onConfirmToPlayGame = () => {
+    dispatch(resetGameData())
     navigate('/network-selection')
   }
 

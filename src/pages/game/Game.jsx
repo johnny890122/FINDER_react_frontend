@@ -181,8 +181,8 @@ export const GamePage = () => {
           />
         </StyledInformationBlocksContainer>
         <ForceGraph
-          withAction={!isNodeRankingLoading && !isPayoffLoading}
           loading={!isGameEndDialogOpen && isGraphDataLoading}
+          isNodeRankingOrPayoffLoading={!selectedTool.length || isNodeRankingLoading || isPayoffLoading}
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}
