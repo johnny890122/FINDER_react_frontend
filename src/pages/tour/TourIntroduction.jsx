@@ -48,7 +48,7 @@ export const TourIntroduction = () => {
           我們會為您的表現評分，分數的計算原則如下：
           <StyledOl>
             <li>每一次所移除的點以及相連的線，若是越能讓人物彼此之間越多斷聯，分數越高！</li>
-            <li>能用越短的次數（回合數）移除所有的網絡關係，分數越高！</li>
+            <li>能用越少的次數（回合數）移除所有的網絡關係，分數越高！</li>
           </StyledOl>
         </StyledParagraph>
       </StyledContainer>
