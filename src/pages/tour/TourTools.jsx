@@ -4,36 +4,18 @@ import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
+import { Accordion, AccordionDetails } from '@mui/material'
 
 import { API_ROOT, postHeaders } from '../../api.config'
 import { useContextData } from '../../DataContext'
 import { getViewport } from '../../utils'
-import { Button, Checkbox, CheckboxLevels } from '../../components'
+import { Button, AccordionSummaryWithCheckbox } from '../../components'
 import { color } from '../../styles'
 import { updateGraphRanking } from '../game/game.slice'
 import { getToolImage } from './tour.utils'
 
 import { TourLayout } from './TourLayout'
 import { ForceGraph } from '../game/ForceGraph'
-
-const AccordionSummaryWithCheckbox = ({ title, expanded, checked }) => (
-  <StyledAccordionSummary>
-    <Checkbox level={expanded ? CheckboxLevels.SECONDARY : CheckboxLevels.PRIMARY} checked={checked} />
-    {title}
-  </StyledAccordionSummary>
-)
-AccordionSummaryWithCheckbox.propTypes = {
-  title: PropTypes.string.isRequired,
-  expanded: PropTypes.bool.isRequired,
-  checked: PropTypes.bool.isRequired,
-}
-const StyledAccordionSummary = styled(AccordionSummary)`
-  & .MuiAccordionSummary-content {
-    display: flex;
-    align-items: center;
-  }
-`
 
 const AccordionDetailWithImage = ({ text, image }) => (
   <StyledAccordionDetails>
