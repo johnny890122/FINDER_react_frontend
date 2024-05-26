@@ -3,11 +3,10 @@ import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import PropTypes from 'prop-types'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
-import { Done } from '@mui/icons-material'
 
 import { useContextData } from '../../../DataContext'
 import { color } from '../../../styles'
-import { Chip, HoverTooltip, IconButton } from '../../../components'
+import { Chip, HoverTooltip, Button } from '../../../components'
 import { selectSelectedTool, selectRound } from '../game.slice'
 import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow } from './styles'
@@ -41,13 +40,11 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
                   <AccordionSummary>{tool.displayName}</AccordionSummary>
                   <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
                 </StyledAccordion>
-                {(expandedTool?.code ?? '') === tool.code && (
-                  <IconButton onClick={() => onSelectNextRoundTool(tool)}>
-                    <Done />
-                  </IconButton>
-                )}
               </StyledOptionContainer>
             ))}
+            <StyledConfirmButton disabled={!expandedTool} onClick={() => onSelectNextRoundTool(expandedTool)}>
+              選擇
+            </StyledConfirmButton>
           </StyledOptionsContainer>
         </StyledRow>
       ) : (
@@ -78,7 +75,7 @@ GameInformationBlock.propTypes = {
 const StyledOptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.5rem;
   width: 100%;
 `
@@ -101,3 +98,4 @@ const StyledAccordionDetails = styled(AccordionDetails)`
   gap: 0.25rem;
   font-size: 0.75rem;
 `
+const StyledConfirmButton = styled(Button)``
