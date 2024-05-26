@@ -8,6 +8,7 @@ import { Radio } from './Radio'
 import { Input } from './Input'
 import { Progress } from './Progress'
 import { Checkbox, CheckboxLevels } from './Checkbox'
+import { AccordionSummaryWithCheckbox } from './AccordionSummaryWithCheckbox'
 
 export {
   Button,
@@ -22,4 +23,5 @@ export {
   Progress,
   Checkbox,
   CheckboxLevels,
+  AccordionSummaryWithCheckbox,
 }
