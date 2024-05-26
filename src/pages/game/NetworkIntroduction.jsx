@@ -1,16 +1,17 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import { Accordion, AccordionDetails } from '@mui/material'
 
 import { useContextData } from '../../DataContext'
 import { color } from '../../styles'
-import { Button, Progress } from '../../components'
+import { Button, Progress, AccordionSummaryWithCheckbox } from '../../components'
 import { getRandomNumber } from './game.utils'
 
 export const NetworkIntroduction = () => {
   const navigate = useNavigate()
   const [expandedNetworkKey, setExpandedNetworkKey] = useState(null)
+  const [checkedNetworkKeys, setCheckedNetworkKeys] = useState([])
   const excludeNetworkCodeNumbers = JSON.parse(sessionStorage.getItem('excludeNetworkCodeNumbers')) || []
 
   const contextData = useContextData()
@@ -40,13 +41,24 @@ export const NetworkIntroduction = () => {
       <StyledOptionsContainer>
         {Object.keys(networksAvailable).map(networkKey => {
           const { displayName, introduction, node, link } = networksAvailable[networkKey]
+          const expanded = expandedNetworkKey === networkKey
+
           return (
             <StyledOptionContainer key={networkKey}>
               <StyledAccordion
-                expanded={expandedNetworkKey === networkKey}
-                onChange={() => setExpandedNetworkKey(networkKey)}
+                expanded={expanded}
+                onChange={() => {
+                  setExpandedNetworkKey(networkKey)
+                  if (!checkedNetworkKeys.includes(networkKey)) {
+                    setCheckedNetworkKeys(preCheckedNetworkKeys => [...preCheckedNetworkKeys, networkKey])
+                  }
+                }}
               >
-                <AccordionSummary>{displayName}</AccordionSummary>
+                <AccordionSummaryWithCheckbox
+                  title={displayName}
+                  expanded={expanded}
+                  checked={checkedNetworkKeys.includes(networkKey)}
+                />
                 <StyledAccordionDetails>
                   <div>背景：{introduction}</div>
                   <div>一個節點代表{node}</div>
@@ -60,7 +72,7 @@ export const NetworkIntroduction = () => {
 
       <StyledButtonContainer>
         <StyledConfirmButton
-          disabled={!expandedNetworkKey}
+          disabled={!expandedNetworkKey || checkedNetworkKeys.length !== Object.keys(networksAvailable).length}
           onClick={() => {
             const randomNetworkCodeNumber = getRandomNumber({
               totalCount: Object.keys(networksAvailable).length,
