@@ -60,7 +60,7 @@ export const TourIntroduction = () => {
           width={graphWidth}
           height={graphHeight}
         />
-        <StyledLink to="/tour/tools">
+        <StyledLink to="/tour/calculation">
           <Button width="10rem">下一步</Button>
         </StyledLink>
       </StyledGraphAndButtonContainer>
