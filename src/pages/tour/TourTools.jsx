@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -16,6 +15,7 @@ import { getToolImage } from './tour.utils'
 
 import { TourLayout } from './TourLayout'
 import { ForceGraph } from '../game/ForceGraph'
+import { StyledContainer, StyledParagraph, StyledGraphAndButtonContainer, StyledLink } from './Tour.styles'
 
 const AccordionDetailWithImage = ({ text, image }) => (
   <StyledAccordionDetails>
@@ -159,23 +159,6 @@ export const TourTools = () => {
   )
 }
 
-const StyledContainer = styled.div`
-  position: relative;
-  width: 100%;
-`
-const StyledParagraph = styled.div`
-  margin-top: 1rem;
-`
-const StyledGraphAndButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2rem;
-`
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-`
 const StyledOptionsContainer = styled.div`
   display: flex;
   flex-direction: column;

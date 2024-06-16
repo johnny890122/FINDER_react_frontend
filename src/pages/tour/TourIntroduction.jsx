@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 import { API_ROOT } from '../../api.config'
@@ -7,6 +6,7 @@ import { Button } from '../../components'
 
 import { TourLayout } from './TourLayout'
 import { ForceGraph } from '../game/ForceGraph'
+import { StyledContainer, StyledParagraph, StyledGraphAndButtonContainer, StyledLink } from './Tour.styles'
 
 export const TourIntroduction = () => {
   const { width: viewportWidth, height: viewportHeight } = getViewport()
@@ -60,7 +60,7 @@ export const TourIntroduction = () => {
           width={graphWidth}
           height={graphHeight}
         />
-        <StyledLink to="/tour/tools">
+        <StyledLink to="/tour/calculation">
           <Button width="10rem">下一步</Button>
         </StyledLink>
       </StyledGraphAndButtonContainer>
@@ -68,23 +68,7 @@ export const TourIntroduction = () => {
   )
 }
 
-const StyledContainer = styled.div`
-  position: relative;
-`
-const StyledParagraph = styled.div`
-  margin-top: 1rem;
-`
 const StyledOl = styled.ol`
   padding-left: 1.5rem;
   margin-top: 0.25rem;
-`
-const StyledGraphAndButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2rem;
-`
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
 `

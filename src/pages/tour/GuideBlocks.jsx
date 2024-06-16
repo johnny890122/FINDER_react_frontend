@@ -2,21 +2,19 @@ import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Box, Paper, Slide } from '@mui/material'
 import { color } from '../../styles'
-import { nodeIdsToBeRemoved } from './tourActions.config'
 
-export const GuideBlocks = ({ step }) => (
+export const GuideBlocks = ({ step, config }) => (
   <StyledSlideContainer>
-    {Object.values(nodeIdsToBeRemoved).map(({ id: nodeId }, index) => (
-      <Slide key={nodeId} direction="up" in={step >= index} mountOnEnter unmountOnExit>
-        <StyledGuideBlock>
-          任務 {index + 1}：移除編號 #{nodeId} 的點
-        </StyledGuideBlock>
+    {Object.values(config).map(({ id, text }, index) => (
+      <Slide key={id} direction="up" in={step >= index} mountOnEnter unmountOnExit>
+        <StyledGuideBlock>{text}</StyledGuideBlock>
       </Slide>
     ))}
   </StyledSlideContainer>
 )
 GuideBlocks.propTypes = {
   step: PropTypes.number.isRequired,
+  config: PropTypes.object.isRequired,
 }
 
 const StyledSlideContainer = styled(Box)`

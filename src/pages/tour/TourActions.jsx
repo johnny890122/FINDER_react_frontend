@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
-import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
 import { useContextData } from '../../DataContext'
@@ -10,11 +9,12 @@ import { selectRealGraphData, updateGraphRanking, updateRealGraphData, resetGame
 import { getViewport } from '../../utils'
 import { removeNodeAndRelatedLinksFromGraphData } from '../game/game.utils'
 import { filterDisabledNodeIds } from './tour.utils'
-import { nodeIdsToBeRemoved } from './tourActions.config'
+import { tourActionsStepsConfig } from './tourActions.config'
 import { ForceGraph } from '../game/ForceGraph'
 import { TourLayout } from './TourLayout'
 import { GuideBlocks } from './GuideBlocks'
 import { HintDialog } from './HintDialog'
+import { StyledContainer, StyledParagraph, StyledGraphAndButtonContainer } from './Tour.styles'
 
 export const TourActions = () => {
   const navigate = useNavigate()
@@ -120,7 +120,7 @@ export const TourActions = () => {
           <br />
           將游標停在一個點上，會提示您和它連接的點，此時按下該點就可以將它從網絡上移除。
         </StyledParagraph>
-        <GuideBlocks step={step} />
+        <GuideBlocks step={step} config={tourActionsStepsConfig} />
       </StyledContainer>
       <StyledGraphAndButtonContainer>
         <ForceGraph
@@ -134,7 +134,7 @@ export const TourActions = () => {
           }}
           disabledNodeIds={filterDisabledNodeIds({
             graphData: realGraphData,
-            nodeIdToBeRemoved: nodeIdsToBeRemoved[step]?.id,
+            nodeIdToBeRemoved: tourActionsStepsConfig[step]?.nodeIdToBeRemoved,
           })}
           width={graphWidth}
           height={graphHeight}
@@ -143,19 +143,3 @@ export const TourActions = () => {
     </TourLayout>
   )
 }
-
-const StyledContainer = styled.div`
-  position: relative;
-`
-const StyledParagraph = styled.div`
-  margin-top: 1rem;
-  @media screen and (max-width: 767px) {
-    margin-bottom: 1rem;
-  }
-`
-const StyledGraphAndButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2rem;
-`
