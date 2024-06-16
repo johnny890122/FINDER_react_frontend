@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useSelector, useDispatch } from 'react-redux'
-import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
 import { useContextData } from '../../DataContext'
@@ -15,6 +14,7 @@ import { ForceGraph } from '../game/ForceGraph'
 import { TourLayout } from './TourLayout'
 import { GuideBlocks } from './GuideBlocks'
 import { HintDialog } from './HintDialog'
+import { StyledContainer, StyledParagraph, StyledGraphAndButtonContainer } from './Tour.styles'
 
 export const TourActions = () => {
   const navigate = useNavigate()
@@ -143,19 +143,3 @@ export const TourActions = () => {
     </TourLayout>
   )
 }
-
-const StyledContainer = styled.div`
-  position: relative;
-`
-const StyledParagraph = styled.div`
-  margin-top: 1rem;
-  @media screen and (max-width: 767px) {
-    margin-bottom: 1rem;
-  }
-`
-const StyledGraphAndButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2rem;
-`
