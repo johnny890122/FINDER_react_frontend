@@ -4,7 +4,7 @@ import { TourLayout } from './TourLayout'
 import { Button } from '../../components'
 import { ForceGraph } from '../game/ForceGraph'
 
-import { GuideBlocksForCalculation } from './GuideBlocksForCalculation'
+import { GuideBlocks } from './GuideBlocks'
 import { filterDisabledNodeIds } from './tour.utils'
 import { example1GraphData, example1StepsConfig } from './tourCalculation.config'
 import { StyledContainer, StyledParagraph, StyledGraphAndButtonContainer, StyledLink } from './Tour.styles'
@@ -36,7 +36,7 @@ export const TourCalculation = () => {
           我們會為您的表現評分，分數的計算原則如下：每一次所移除的點以及相連的線，若是越能讓人物彼此之間越多斷聯，分數越高！
         </StyledParagraph>
         <StyledParagraph>現在就來用以下的例子嘗試看看吧！</StyledParagraph>
-        <GuideBlocksForCalculation step={step} />
+        <GuideBlocks step={step} config={example1StepsConfig} />
         {isFinalHintShown && (
           <StyledParagraph>
             這個例子顯示，移除編號 #5 的點比起移除編號 #8 的點，會讓其他點彼此之間斷連的程度比較高，也因此移除編號 #5

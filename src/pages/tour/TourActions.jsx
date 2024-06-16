@@ -9,7 +9,7 @@ import { selectRealGraphData, updateGraphRanking, updateRealGraphData, resetGame
 import { getViewport } from '../../utils'
 import { removeNodeAndRelatedLinksFromGraphData } from '../game/game.utils'
 import { filterDisabledNodeIds } from './tour.utils'
-import { nodeIdsToBeRemoved } from './tourActions.config'
+import { tourActionsStepsConfig } from './tourActions.config'
 import { ForceGraph } from '../game/ForceGraph'
 import { TourLayout } from './TourLayout'
 import { GuideBlocks } from './GuideBlocks'
@@ -120,7 +120,7 @@ export const TourActions = () => {
           <br />
           將游標停在一個點上，會提示您和它連接的點，此時按下該點就可以將它從網絡上移除。
         </StyledParagraph>
-        <GuideBlocks step={step} />
+        <GuideBlocks step={step} config={tourActionsStepsConfig} />
       </StyledContainer>
       <StyledGraphAndButtonContainer>
         <ForceGraph
@@ -134,7 +134,7 @@ export const TourActions = () => {
           }}
           disabledNodeIds={filterDisabledNodeIds({
             graphData: realGraphData,
-            nodeIdToBeRemoved: nodeIdsToBeRemoved[step]?.id,
+            nodeIdToBeRemoved: tourActionsStepsConfig[step]?.nodeIdToBeRemoved,
           })}
           width={graphWidth}
           height={graphHeight}
