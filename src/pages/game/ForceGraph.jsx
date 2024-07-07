@@ -128,9 +128,10 @@ export const ForceGraph = ({
           }
         }}
         minZoom={1}
-        linkWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 5 : 1)}
+        linkWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 6 : 4)}
+        linkColor={() => '#A1AEB1'}
         linkDirectionalParticles={4}
-        linkDirectionalParticleWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 4 : 0)}
+        linkDirectionalParticleWidth={link => (hoveredLink === link || neighborLinks.includes(link) ? 8 : 0)}
         onNodeHover={handleNodeHover}
         onLinkHover={handleLinkHover}
         onNodeClick={handleNodeClick}
