@@ -35,8 +35,11 @@ export const NetworkIntroduction = () => {
 
   return (
     <StyledContainer>
-      <StyledPageTitle>請查看各網絡的介紹</StyledPageTitle>
-      <StyledPageSubtitle>查看完各網絡的介紹後，按下開始遊玩，系統將會隨機挑選一個網絡給您</StyledPageSubtitle>
+      <StyledPageTitle>犯罪網絡介紹</StyledPageTitle>
+      <StyledPageSubtitle>
+        在正式實驗遊戲前，我們先邀請您瞭解一下您要「破獲」的這些犯罪組織的大致背景。查看完各網絡的介紹後，按下開始遊玩，系統將會隨機挑選一個網絡給您
+      </StyledPageSubtitle>
+      <StyledPageSubtitle>以下請勾選方格，來閱讀網絡的介紹。</StyledPageSubtitle>
 
       <StyledOptionsContainer>
         {Object.keys(networksAvailable).map(networkKey => {
