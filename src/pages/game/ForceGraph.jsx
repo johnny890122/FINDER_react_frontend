@@ -16,6 +16,7 @@ export const ForceGraph = ({
   withAction = true,
   loading,
   isNodeRankingOrPayoffLoading,
+  isAbleToSelectNodeHintShown,
   graphData,
   selectedTool,
   disabledNodeIds,
@@ -101,6 +102,9 @@ export const ForceGraph = ({
   return (
     <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
       {isNodeRankingOrPayoffLoading && <StyledTipContainer>請選擇輔助工具或稍等排名計算中...</StyledTipContainer>}
+      {isAbleToSelectNodeHintShown && !isNodeRankingOrPayoffLoading && (
+        <StyledTipContainer>現在您可以檢選要移除的節點（人物）了</StyledTipContainer>
+      )}
       <ForceGraph2D
         ref={graphRef}
         graphData={graphData}
@@ -156,6 +160,7 @@ ForceGraph.propTypes = {
   withAction: PropTypes.bool,
   loading: PropTypes.bool,
   isNodeRankingOrPayoffLoading: PropTypes.bool,
+  isAbleToSelectNodeHintShown: PropTypes.bool,
   graphData: PropTypes.oneOfType([PropTypes.object, PropTypes.oneOf([null, undefined])]),
   selectedTool: PropTypes.object,
   disabledNodeIds: PropTypes.array,
@@ -171,6 +176,7 @@ ForceGraph.defaultProps = {
   withAction: true,
   loading: false,
   isNodeRankingOrPayoffLoading: false,
+  isAbleToSelectNodeHintShown: false,
   graphData: null,
   selectedTool: {},
   disabledNodeIds: [],

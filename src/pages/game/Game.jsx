@@ -194,6 +194,7 @@ export const GamePage = () => {
         <ForceGraph
           loading={!isGameEndDialogOpen && isGraphDataLoading}
           isNodeRankingOrPayoffLoading={!selectedTool.length || isNodeRankingLoading || isPayoffLoading}
+          isAbleToSelectNodeHintShown
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}
