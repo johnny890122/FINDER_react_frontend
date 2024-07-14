@@ -43,6 +43,13 @@ export const TourCalculation = () => {
             的分數會比移除編號 #8 來得高
           </StyledParagraph>
         )}
+        {isFinalHintShown && (
+          <StyledLink to="/tour/tools">
+            <Button width="10rem" disabled={!isFinalHintShown}>
+              下一步
+            </Button>
+          </StyledLink>
+        )}
       </StyledContainer>
       <StyledGraphAndButtonContainer>
         <ForceGraph
@@ -57,11 +64,6 @@ export const TourCalculation = () => {
           width={graphWidth}
           height={graphHeight}
         />
-        <StyledLink to="/tour/tools">
-          <Button width="10rem" disabled={!isFinalHintShown}>
-            下一步
-          </Button>
-        </StyledLink>
       </StyledGraphAndButtonContainer>
     </TourLayout>
   )
