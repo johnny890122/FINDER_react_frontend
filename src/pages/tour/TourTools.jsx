@@ -139,6 +139,11 @@ export const TourTools = () => {
             )
           })}
         </StyledOptionsContainer>
+        <StyledLink to="/tour/actions">
+          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
+            下一步
+          </Button>
+        </StyledLink>
       </StyledContainer>
       <StyledGraphAndButtonContainer>
         <ForceGraph
@@ -149,11 +154,6 @@ export const TourTools = () => {
           width={graphWidth}
           height={graphHeight}
         />
-        <StyledLink to="/tour/actions">
-          <Button width="10rem" disabled={checkedTools.length !== Object.keys(toolsAvailableWithoutNoHelp).length}>
-            下一步
-          </Button>
-        </StyledLink>
       </StyledGraphAndButtonContainer>
     </TourLayout>
   )

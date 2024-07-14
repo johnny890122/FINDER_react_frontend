@@ -4,19 +4,13 @@ import styled from '@emotion/styled'
 import PropTypes from 'prop-types'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
-import { useContextData } from '../../../DataContext'
 import { color } from '../../../styles'
 import { Chip, HoverTooltip, Button } from '../../../components'
 import { selectSelectedTool, selectRound } from '../game.slice'
 import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow } from './styles'
 
-export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoundTool }) => {
-  const contextData = useContextData()
-  const {
-    data: { toolsAvailable = {} },
-  } = contextData
-
+export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoundTool, shuffledToolsAvailable }) => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const [expandedTool, setExpandedTool] = useState(null)
@@ -31,7 +25,7 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
         <StyledRow>
           <Chip label="請選擇本回合輔助指標" />
           <StyledOptionsContainer>
-            {Object.values(toolsAvailable).map(tool => (
+            {shuffledToolsAvailable.map(tool => (
               <StyledOptionContainer key={tool.code}>
                 <StyledAccordion
                   expanded={(expandedTool?.code ?? '') === tool.code}
@@ -70,6 +64,7 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
 GameInformationBlock.propTypes = {
   isReadyGetNextRoundTool: PropTypes.bool.isRequired,
   onSelectNextRoundTool: PropTypes.func.isRequired,
+  shuffledToolsAvailable: PropTypes.array.isRequired,
 }
 
 const StyledOptionsContainer = styled.div`

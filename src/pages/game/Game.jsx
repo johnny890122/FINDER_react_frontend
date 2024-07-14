@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import styled from '@emotion/styled'
 
 import { API_ROOT, postHeaders } from '../../api.config'
+import { useContextData } from '../../DataContext'
 import { Button } from '../../components'
 import {
   selectSelectedTool,
@@ -30,6 +31,10 @@ export const GamePage = () => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const realGraphData = useSelector(selectRealGraphData)
+  const contextData = useContextData()
+  const {
+    data: { toolsAvailable = {} },
+  } = contextData
 
   const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
@@ -38,6 +43,11 @@ export const GamePage = () => {
   const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
   const [isPayoffLoading, setIsPayoffLoading] = useState(false)
   const [removedNodeIds, setRemovedNodeIds] = useState([])
+
+  const shuffledToolsAvailable = useMemo(
+    () => Object.values(toolsAvailable).sort(() => Math.random() - 0.5),
+    [toolsAvailable, round],
+  )
 
   useEffect(() => {
     const gameId = uuidv4()
@@ -178,11 +188,13 @@ export const GamePage = () => {
           <GameInformationBlock
             isReadyGetNextRoundTool={isReadyGetNextRoundTool}
             onSelectNextRoundTool={onSelectTool}
+            shuffledToolsAvailable={shuffledToolsAvailable}
           />
         </StyledInformationBlocksContainer>
         <ForceGraph
           loading={!isGameEndDialogOpen && isGraphDataLoading}
           isNodeRankingOrPayoffLoading={!selectedTool.length || isNodeRankingLoading || isPayoffLoading}
+          isAbleToSelectNodeHintShown
           graphData={graphData}
           selectedTool={selectedTool[selectedTool.length - 1]}
           removedNodeIds={removedNodeIds}

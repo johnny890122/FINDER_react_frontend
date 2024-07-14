@@ -20,4 +20,7 @@ export const StyledGraphAndButtonContainer = styled.div`
 export const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
+  & .MuiButtonBase-root {
+    margin: 2rem 0;
+  }
 `

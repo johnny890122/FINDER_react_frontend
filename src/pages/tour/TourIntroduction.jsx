@@ -51,6 +51,9 @@ export const TourIntroduction = () => {
             <li>能用越少的次數（回合數）移除所有的網絡關係，分數越高！</li>
           </StyledOl>
         </StyledParagraph>
+        <StyledLink to="/tour/calculation">
+          <Button width="10rem">下一步</Button>
+        </StyledLink>
       </StyledContainer>
       <StyledGraphAndButtonContainer>
         <ForceGraph
@@ -60,9 +63,6 @@ export const TourIntroduction = () => {
           width={graphWidth}
           height={graphHeight}
         />
-        <StyledLink to="/tour/calculation">
-          <Button width="10rem">下一步</Button>
-        </StyledLink>
       </StyledGraphAndButtonContainer>
     </TourLayout>
   )
