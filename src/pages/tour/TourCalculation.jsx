@@ -58,7 +58,7 @@ export const TourCalculation = () => {
           </StyledParagraph>
         )}
         {isFinalHintShown && (
-          <StyledLink to="/tour/tools">
+          <StyledLink to="/tour/calculation2">
             <Button width="10rem" disabled={!isFinalHintShown}>
               下一步
             </Button>
@@ -72,7 +72,7 @@ export const TourCalculation = () => {
           setRemovedNodeIds={setRemovedNodeIds}
           disabledNodeIds={filterDisabledNodeIds({
             graphData: example1GraphData,
-            nodeIdToBeRemoved: example1StepsConfig[step].nodeIdToBeRemoved,
+            nodeIdToBeRemoved: example1StepsConfig[step].nodeIdsToBeRemoved[0],
           })}
           onNodeRemoved={onNodeRemoved}
           width={graphWidth}
