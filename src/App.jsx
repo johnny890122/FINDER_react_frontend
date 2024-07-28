@@ -3,6 +3,7 @@ import { DataContextProvider } from './DataContext'
 import { Home } from './pages/Home'
 import { TourIntroduction } from './pages/tour/TourIntroduction'
 import { TourCalculation } from './pages/tour/TourCalculation'
+import { TourCalculation2 } from './pages/tour/TourCalculation2'
 import { TourTools } from './pages/tour/TourTools'
 import { TourActions } from './pages/tour/TourActions'
 import { NetworkIntroduction } from './pages/game/NetworkIntroduction'
@@ -15,6 +16,7 @@ const App = () => (
       <Route path="/" element={<Home />} />
       <Route path="/tour/introduction" element={<TourIntroduction />} />
       <Route path="/tour/calculation" element={<TourCalculation />} />
+      <Route path="/tour/calculation2" element={<TourCalculation2 />} />
       <Route path="/tour/tools" element={<TourTools />} />
       <Route path="/tour/actions" element={<TourActions />} />
       <Route path="/network-selection" element={<NetworkIntroduction />} />

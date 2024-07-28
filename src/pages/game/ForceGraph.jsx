@@ -71,7 +71,7 @@ export const ForceGraph = ({
     setIsReadyGetPayoff(true)
     setNeighborLinks([])
     setNeighborNodeIds([])
-    onNodeRemoved()
+    onNodeRemoved(node)
   }
 
   useEffect(() => {
