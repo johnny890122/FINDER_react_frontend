@@ -8,12 +8,12 @@ import { tourActionsStepsConfig } from './tourActions.config'
 export const HintDialog = ({ open, onConfirm, step }) => (
   <Dialog
     open={open}
-    title={`成功移除編號為 #${tourActionsStepsConfig[step]?.nodeIdToBeRemoved} 的點！`}
+    title={`成功移除編號為 #${tourActionsStepsConfig[step]?.nodeIdsToBeRemoved[0]} 的點！`}
     type={DialogTypes.CONFIRM}
     confirmText={step === 2 ? '準備好了，開始遊戲！' : '繼續移除下一個點'}
     onConfirm={onConfirm}
   >
-    您已成功移除編號為 #{tourActionsStepsConfig[step]?.nodeIdToBeRemoved} 的點，您可以觀察到它從網絡中消失了！
+    您已成功移除編號為 #{tourActionsStepsConfig[step]?.nodeIdsToBeRemoved[0]} 的點，您可以觀察到它從網絡中消失了！
     <StyledImagesContainer>
       <StyledImage src={tourActionsStepsConfig[step]?.beforeImage} alt="before" />
       <EastIcon />

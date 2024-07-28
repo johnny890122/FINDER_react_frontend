@@ -134,7 +134,7 @@ export const TourActions = () => {
           }}
           disabledNodeIds={filterDisabledNodeIds({
             graphData: realGraphData,
-            nodeIdToBeRemoved: tourActionsStepsConfig[step]?.nodeIdToBeRemoved,
+            nodeIdToBeRemoved: tourActionsStepsConfig[step]?.nodeIdsToBeRemoved[0],
           })}
           width={graphWidth}
           height={graphHeight}
