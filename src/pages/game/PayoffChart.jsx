@@ -23,15 +23,27 @@ export const PayoffChart = ({ width, height }) => {
 
   return (
     <LineChart width={width} height={height} data={data} overflow="visible">
-      <Line name="AI FINDER 的成績" type="monotone" dataKey="payoffFinder" stroke={color.neutralsColor600} strokeOpacity={opacity.payoffFinder} />
       <Line
-        name="一直遵守 AI FINDER 的成績"
+        name="AI FINDER 的成績"
+        type="monotone"
+        dataKey="payoffFinder"
+        stroke={color.neutralsColor600}
+        strokeOpacity={opacity.payoffFinder}
+      />
+      <Line
+        name="後續皆遵守 AI FINDER 的成績"
         type="monotone"
         dataKey="payoffInstantFinder"
         stroke={color.neutralsColor800}
         strokeOpacity={opacity.payoffInstantFinder}
       />
-      <Line name="您的成績" type="monotone" dataKey="payoffHuman" stroke={color.primaryColor600} strokeOpacity={opacity.payoffHuman} />
+      <Line
+        name="您的成績"
+        type="monotone"
+        dataKey="payoffHuman"
+        stroke={color.primaryColor600}
+        strokeOpacity={opacity.payoffHuman}
+      />
       <CartesianGrid stroke={color.neutralsColor400} />
       <XAxis dataKey="name" label={{ value: '回合', position: 'insideBottom', offset: -15 }} interval={0} />
       <YAxis
