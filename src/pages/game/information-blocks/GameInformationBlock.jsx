@@ -59,7 +59,13 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
       {round > 1 && (
         <>
           <StyledRow>
-            <Chip label="累積報酬" />
+            <Chip label="累積分數(滿分為100分)" />
+            <HoverTooltip
+              tooltip="
+              AI Finder的成績，是指若您完全遵守 AI FINDER 的策略，您可獲得的分數。
+              後續皆遵守 AI FINDER 的成績是指若您從本回合開始，皆遵守 AI FINDER 的策略，您可獲得的分數。
+            "
+            />
           </StyledRow>
           <PayoffChart />
         </>
