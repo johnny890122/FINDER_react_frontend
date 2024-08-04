@@ -6,13 +6,16 @@ import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
 import { color } from '../../../styles'
 import { Chip, HoverTooltip, Button } from '../../../components'
-import { selectSelectedTool, selectRound } from '../game.slice'
+import { selectSelectedTool, selectRound, selectPayoff } from '../game.slice'
+import { parsePayoffDataForChart } from '../game.utils'
 import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow } from './styles'
 
 export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoundTool, shuffledToolsAvailable }) => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
+  const payoffRawData = useSelector(selectPayoff)
+  const data = parsePayoffDataForChart({ payoffRawData })
   const [expandedTool, setExpandedTool] = useState(null)
 
   return (
@@ -61,7 +64,9 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
             "
             />
           </StyledRow>
-          <PayoffChart />
+          <div>這回合，您得到 {data[round - 2].payoffHuman.toFixed(6)} 分</div>
+          <div>下圖顯示您目前的累計分數。我們同時也給您參考，若是您採用AI的建議的話，可以獲得的分數。</div>
+          <PayoffChart data={data} />
         </>
       )}
     </StyledCard>

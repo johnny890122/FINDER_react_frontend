@@ -1,16 +1,10 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Legend } from 'recharts'
 import PropTypes from 'prop-types'
 
 import { color } from '../../styles'
-import { selectPayoff } from './game.slice'
-import { parsePayoffDataForChart } from './game.utils'
 
-export const PayoffChart = ({ width, height }) => {
-  const payoffRawData = useSelector(selectPayoff)
-  const data = parsePayoffDataForChart({ payoffRawData })
-
+export const PayoffChart = ({ data }) => {
   const [opacity, setOpacity] = useState({ payoffFinder: 1, payoffInstantFinder: 1, payoffHuman: 1 })
 
   const handleMouseEnter = ({ dataKey }) => {
@@ -22,7 +16,7 @@ export const PayoffChart = ({ width, height }) => {
   }
 
   return (
-    <LineChart width={width} height={height} data={data} overflow="visible">
+    <LineChart width={400} height={300} data={data} overflow="visible">
       <Line
         name="AI FINDER 的成績"
         type="monotone"
@@ -58,10 +52,5 @@ export const PayoffChart = ({ width, height }) => {
 }
 
 PayoffChart.propTypes = {
-  width: PropTypes.number,
-  height: PropTypes.number,
-}
-PayoffChart.defaultProps = {
-  width: 400,
-  height: 300,
+  data: PropTypes.array.isRequired,
 }
