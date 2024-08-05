@@ -1,5 +1,6 @@
-// Reference: 'Deep Purple 200~900' colors in https://materialui.co/colors/
+// Reference: 'Deep Purple 50~900' colors in https://materialui.co/colors/
 const primaryColor = {
+  primaryColor50: '#EDE7F6',
   primaryColor100: '#B39DDB',
   primaryColor200: '#9575CD',
   primaryColor300: '#7E57C2',

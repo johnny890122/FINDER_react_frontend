@@ -48,7 +48,7 @@ export const TourCalculation2 = () => {
           </StyledParagraph>
         )}
         {isFinalHintShown && (
-          <StyledLink to="/tour/tools">
+          <StyledLink to="/tour/quiz">
             <Button width="10rem" disabled={!isFinalHintShown}>
               下一步
             </Button>
