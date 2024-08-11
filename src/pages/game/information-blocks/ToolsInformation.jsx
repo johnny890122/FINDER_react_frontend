@@ -1,22 +1,27 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
-import { selectRound } from '../game.slice'
+import { selectRound, selectStepStatus, updateStepStatus, updateSelectedTool } from '../game.slice'
 import { Chip, Button, HoverTooltip } from '../../../components'
 import { color } from '../../../styles'
 import { StyledRow, StyledChipAndTooltip } from './styles'
 
-export const ToolsInformation = ({
-  stepStatus,
-  selectedTool,
-  onGotoNextRound,
-  onSelectNextRoundTool,
-  shuffledToolsAvailable,
-}) => {
+export const ToolsInformation = ({ selectedTool, shuffledToolsAvailable }) => {
   const [expandedTool, setExpandedTool] = useState(null)
   const round = useSelector(selectRound)
+  const stepStatus = useSelector(selectStepStatus)
+  const dispatch = useDispatch()
+
+  const onGotoNextRound = () => {
+    dispatch(updateStepStatus('READY_FOR_SELECT_TOOL'))
+  }
+
+  const onSelectTool = tool => {
+    dispatch(updateStepStatus('READY_TO_GET_NODE_RANKING'))
+    dispatch(updateSelectedTool(tool))
+  }
 
   if (stepStatus === 'READY_FOR_SELECT_TOOL') {
     return (
@@ -34,7 +39,7 @@ export const ToolsInformation = ({
               </StyledAccordion>
             </StyledOptionContainer>
           ))}
-          <Button disabled={!expandedTool} onClick={() => onSelectNextRoundTool(expandedTool)}>
+          <Button disabled={!expandedTool} onClick={() => onSelectTool(expandedTool)}>
             選擇
           </Button>
         </StyledOptionsContainer>
@@ -58,10 +63,7 @@ export const ToolsInformation = ({
   )
 }
 ToolsInformation.propTypes = {
-  stepStatus: PropTypes.string.isRequired,
   selectedTool: PropTypes.array.isRequired,
-  onSelectNextRoundTool: PropTypes.func.isRequired,
-  onGotoNextRound: PropTypes.func.isRequired,
   shuffledToolsAvailable: PropTypes.array.isRequired,
 }
 
