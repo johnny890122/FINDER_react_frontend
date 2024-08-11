@@ -9,8 +9,7 @@ import { color } from '../../../styles'
 import { StyledRow, StyledChipAndTooltip } from './styles'
 
 export const ToolsInformation = ({
-  isReadyGetNextRoundTool,
-  isOptionsShown,
+  stepStatus,
   selectedTool,
   onGotoNextRound,
   onSelectNextRoundTool,
@@ -19,7 +18,7 @@ export const ToolsInformation = ({
   const [expandedTool, setExpandedTool] = useState(null)
   const round = useSelector(selectRound)
 
-  if (isOptionsShown) {
+  if (stepStatus === 'READY_FOR_SELECT_TOOL') {
     return (
       <StyledRow>
         <Chip label="請選擇本回合輔助指標" />
@@ -50,7 +49,7 @@ export const ToolsInformation = ({
       {selectedTool[selectedTool.length - 1]?.introduction && (
         <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
       )}
-      {isReadyGetNextRoundTool && (
+      {stepStatus === 'READY_FOR_NEXT_ROUND' && (
         <StyledGotoNextRoundButton onClick={onGotoNextRound}>
           {round === 1 ? '進入第一回合' : '進入下一回合'}
         </StyledGotoNextRoundButton>
@@ -59,8 +58,7 @@ export const ToolsInformation = ({
   )
 }
 ToolsInformation.propTypes = {
-  isReadyGetNextRoundTool: PropTypes.bool.isRequired,
-  isOptionsShown: PropTypes.bool.isRequired,
+  stepStatus: PropTypes.string.isRequired,
   selectedTool: PropTypes.array.isRequired,
   onSelectNextRoundTool: PropTypes.func.isRequired,
   onGotoNextRound: PropTypes.func.isRequired,

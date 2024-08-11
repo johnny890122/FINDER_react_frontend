@@ -10,8 +10,7 @@ import { StyledCard, StyledRow, StyledChipAndTooltip } from './styles'
 import { ToolsInformation } from './ToolsInformation'
 
 export const GameInformationBlock = ({
-  isReadyGetNextRoundTool,
-  isOptionsShown,
+  stepStatus,
   onGotoNextRound,
   onSelectNextRoundTool,
   shuffledToolsAvailable,
@@ -28,8 +27,7 @@ export const GameInformationBlock = ({
         <div>{round}</div>
       </StyledRow>
       <ToolsInformation
-        isReadyGetNextRoundTool={isReadyGetNextRoundTool}
-        isOptionsShown={isOptionsShown}
+        stepStatus={stepStatus}
         selectedTool={selectedTool}
         onGotoNextRound={onGotoNextRound}
         onSelectNextRoundTool={onSelectNextRoundTool}
@@ -52,8 +50,7 @@ export const GameInformationBlock = ({
   )
 }
 GameInformationBlock.propTypes = {
-  isReadyGetNextRoundTool: PropTypes.bool.isRequired,
-  isOptionsShown: PropTypes.bool.isRequired,
+  stepStatus: PropTypes.string.isRequired,
   onGotoNextRound: PropTypes.func.isRequired,
   onSelectNextRoundTool: PropTypes.func.isRequired,
   shuffledToolsAvailable: PropTypes.array.isRequired,

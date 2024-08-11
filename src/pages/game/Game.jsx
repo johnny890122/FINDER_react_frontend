@@ -36,8 +36,7 @@ export const GamePage = () => {
     data: { toolsAvailable = {} },
   } = contextData
 
-  const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
-  const [isOptionsShown, setIsOptionsShown] = useState(false)
+  const [stepStatus, setStepStatus] = useState('')
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
@@ -77,7 +76,7 @@ export const GamePage = () => {
       return response.json()
     },
     onSuccess: () => {
-      setIsReadyGetNextRoundTool(true)
+      setStepStatus('READY_FOR_NEXT_ROUND')
     },
   })
 
@@ -140,7 +139,7 @@ export const GamePage = () => {
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
-        setIsReadyGetNextRoundTool(true)
+        setStepStatus('READY_FOR_NEXT_ROUND')
         dispatch(updateGraphRanking(null))
       }
     },
@@ -159,12 +158,11 @@ export const GamePage = () => {
   })
 
   const onGotoNextRound = () => {
-    setIsReadyGetNextRoundTool(false)
-    setIsOptionsShown(true)
+    setStepStatus('READY_FOR_SELECT_TOOL')
   }
 
   const onSelectTool = tool => {
-    setIsOptionsShown(false)
+    setStepStatus('SETTLED')
     dispatch(updateSelectedTool(tool))
     setIsReadyGetNodeRanking(true)
   }
@@ -192,8 +190,7 @@ export const GamePage = () => {
         <StyledInformationBlocksContainer>
           <NetworkInformationBlock />
           <GameInformationBlock
-            isReadyGetNextRoundTool={isReadyGetNextRoundTool}
-            isOptionsShown={isOptionsShown}
+            stepStatus={stepStatus}
             onGotoNextRound={onGotoNextRound}
             onSelectNextRoundTool={onSelectTool}
             shuffledToolsAvailable={shuffledToolsAvailable}
