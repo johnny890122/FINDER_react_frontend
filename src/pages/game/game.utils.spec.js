@@ -6,6 +6,7 @@ import {
   getRandomNumber,
   removeNodeAndRelatedLinksFromGraphData,
   deepCloneGraphData,
+  determineForceGraphHint,
 } from './game.utils'
 
 describe('getNodeValue', () => {
@@ -160,5 +161,25 @@ describe('deepCloneGraphData', () => {
       ],
     }
     expect(deepCloneGraphData({ graphData })).toEqual(expectClonedGraphData)
+  })
+})
+
+describe('determineForceGraphHint', () => {
+  it('if status is "READY_FOR_SELECT_TOOL", return "請選擇輔助工具"', () => {
+    expect(determineForceGraphHint({ stepStatus: 'READY_FOR_SELECT_TOOL' })).toBe('請選擇輔助工具')
+  })
+  it('if status is "READY_FOR_NEXT_ROUND" and round is 1, return "請開始遊戲"', () => {
+    expect(determineForceGraphHint({ stepStatus: 'READY_FOR_NEXT_ROUND', round: 1 })).toBe('請開始遊戲')
+  })
+  it('if status is "READY_FOR_NEXT_ROUND", return "請查看您本回合的分數"', () => {
+    expect(determineForceGraphHint({ stepStatus: 'READY_FOR_NEXT_ROUND' })).toBe('請查看您本回合的分數')
+  })
+  it('if node ranking or payoff loading, return "請稍等計算該指標的排名"', () => {
+    expect(determineForceGraphHint({ isNodeRankingOrPayoffLoading: true })).toBe('請稍等計算該指標的排名')
+  })
+  it('if node ranking or payoff not loading, return "現在您可以檢選要移除的節點（人物）了"', () => {
+    expect(determineForceGraphHint({ isNodeRankingOrPayoffLoading: false })).toBe(
+      '現在您可以檢選要移除的節點（人物）了',
+    )
   })
 })

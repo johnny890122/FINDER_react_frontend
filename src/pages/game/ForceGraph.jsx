@@ -9,8 +9,14 @@ import { LibraryAddCheckOutlined } from '@mui/icons-material'
 import { getViewport } from '../../utils'
 import { Button, Progress } from '../../components'
 import { color } from '../../styles'
-import { getNodeValue, getNeighborNodeIds, getNeighborLinks, deepCloneGraphData } from './game.utils'
-import { selectGraphRanking, updateRealGraphData } from './game.slice'
+import {
+  getNodeValue,
+  getNeighborNodeIds,
+  getNeighborLinks,
+  deepCloneGraphData,
+  determineForceGraphHint,
+} from './game.utils'
+import { selectGraphRanking, selectStepStatus, selectRound, updateRealGraphData } from './game.slice'
 
 export const ForceGraph = ({
   withAction = true,
@@ -32,6 +38,8 @@ export const ForceGraph = ({
   const dispatch = useDispatch()
   const { width: viewportWidth, height: viewportHeight } = getViewport()
   const graphRanking = useSelector(selectGraphRanking)
+  const stepStatus = useSelector(selectStepStatus)
+  const round = useSelector(selectRound)
 
   const [hoveredNode, setHoveredNode] = useState(null)
   const [hoveredLink, setHoveredLink] = useState(null)
@@ -41,6 +49,8 @@ export const ForceGraph = ({
 
   const graphWidth = width || (viewportWidth > 768 ? viewportWidth - 8 * 14 - 470 : viewportWidth - 28)
   const graphHeight = height || (viewportWidth > 768 ? viewportHeight - 8 * 14 : viewportHeight - 12 * 14)
+
+  const forceGraphHint = determineForceGraphHint({ stepStatus, isNodeRankingOrPayoffLoading, round })
 
   const handleNodeHover = node => {
     setHoveredNode(node || null)
@@ -101,10 +111,7 @@ export const ForceGraph = ({
 
   return (
     <StyledForceGraphContainer width={graphWidth} height={graphHeight}>
-      {isNodeRankingOrPayoffLoading && <StyledTipContainer>請選擇輔助工具或稍等排名計算中...</StyledTipContainer>}
-      {isAbleToSelectNodeHintShown && !isNodeRankingOrPayoffLoading && (
-        <StyledTipContainer>現在您可以檢選要移除的節點（人物）了</StyledTipContainer>
-      )}
+      {isAbleToSelectNodeHintShown && <StyledTipContainer>{forceGraphHint}</StyledTipContainer>}
       <ForceGraph2D
         ref={graphRef}
         graphData={graphData}
