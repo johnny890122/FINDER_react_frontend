@@ -9,7 +9,13 @@ import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow, StyledChipAndTooltip } from './styles'
 import { ToolsInformation } from './ToolsInformation'
 
-export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoundTool, shuffledToolsAvailable }) => {
+export const GameInformationBlock = ({
+  isReadyGetNextRoundTool,
+  isOptionsShown,
+  onGotoNextRound,
+  onSelectNextRoundTool,
+  shuffledToolsAvailable,
+}) => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const payoffRawData = useSelector(selectPayoff)
@@ -23,7 +29,9 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
       </StyledRow>
       <ToolsInformation
         isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+        isOptionsShown={isOptionsShown}
         selectedTool={selectedTool}
+        onGotoNextRound={onGotoNextRound}
         onSelectNextRoundTool={onSelectNextRoundTool}
         shuffledToolsAvailable={shuffledToolsAvailable}
       />
@@ -45,6 +53,8 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
 }
 GameInformationBlock.propTypes = {
   isReadyGetNextRoundTool: PropTypes.bool.isRequired,
+  isOptionsShown: PropTypes.bool.isRequired,
+  onGotoNextRound: PropTypes.func.isRequired,
   onSelectNextRoundTool: PropTypes.func.isRequired,
   shuffledToolsAvailable: PropTypes.array.isRequired,
 }

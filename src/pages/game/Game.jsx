@@ -37,6 +37,7 @@ export const GamePage = () => {
   } = contextData
 
   const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
+  const [isOptionsShown, setIsOptionsShown] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
   const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
@@ -157,8 +158,13 @@ export const GamePage = () => {
     },
   })
 
-  const onSelectTool = tool => {
+  const onGotoNextRound = () => {
     setIsReadyGetNextRoundTool(false)
+    setIsOptionsShown(true)
+  }
+
+  const onSelectTool = tool => {
+    setIsOptionsShown(false)
     dispatch(updateSelectedTool(tool))
     setIsReadyGetNodeRanking(true)
   }
@@ -187,6 +193,8 @@ export const GamePage = () => {
           <NetworkInformationBlock />
           <GameInformationBlock
             isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+            isOptionsShown={isOptionsShown}
+            onGotoNextRound={onGotoNextRound}
             onSelectNextRoundTool={onSelectTool}
             shuffledToolsAvailable={shuffledToolsAvailable}
           />

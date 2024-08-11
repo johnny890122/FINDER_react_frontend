@@ -1,20 +1,25 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import styled from '@emotion/styled'
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
+import { selectRound } from '../game.slice'
 import { Chip, Button, HoverTooltip } from '../../../components'
 import { color } from '../../../styles'
 import { StyledRow, StyledChipAndTooltip } from './styles'
 
 export const ToolsInformation = ({
   isReadyGetNextRoundTool,
+  isOptionsShown,
   selectedTool,
+  onGotoNextRound,
   onSelectNextRoundTool,
   shuffledToolsAvailable,
 }) => {
   const [expandedTool, setExpandedTool] = useState(null)
+  const round = useSelector(selectRound)
 
-  if (isReadyGetNextRoundTool) {
+  if (isOptionsShown) {
     return (
       <StyledRow>
         <Chip label="請選擇本回合輔助指標" />
@@ -45,13 +50,20 @@ export const ToolsInformation = ({
       {selectedTool[selectedTool.length - 1]?.introduction && (
         <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
       )}
+      {isReadyGetNextRoundTool && (
+        <StyledGotoNextRoundButton onClick={onGotoNextRound}>
+          {round === 1 ? '進入第一回合' : '進入下一回合'}
+        </StyledGotoNextRoundButton>
+      )}
     </StyledChipAndTooltip>
   )
 }
 ToolsInformation.propTypes = {
   isReadyGetNextRoundTool: PropTypes.bool.isRequired,
+  isOptionsShown: PropTypes.bool.isRequired,
   selectedTool: PropTypes.array.isRequired,
   onSelectNextRoundTool: PropTypes.func.isRequired,
+  onGotoNextRound: PropTypes.func.isRequired,
   shuffledToolsAvailable: PropTypes.array.isRequired,
 }
 
@@ -80,4 +92,9 @@ const StyledAccordionDetails = styled(AccordionDetails)`
   flex-direction: column;
   gap: 0.25rem;
   font-size: 0.75rem;
+`
+const StyledGotoNextRoundButton = styled(Button)`
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `
