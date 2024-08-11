@@ -7,6 +7,7 @@ const initialState = {
   graphRanking: null,
   selectedTool: [],
   payoff: null,
+  stepStatus: '',
 }
 
 const gameSlice = createSlice({
@@ -33,6 +34,10 @@ const gameSlice = createSlice({
       }
     },
 
+    updateStepStatus: (state, action) => {
+      state.stepStatus = action.payload
+    },
+
     resetGameData: state => {
       state.gameStage = GameStages.NETWORK_SELECTION
       state.networkCode = null
@@ -43,8 +48,14 @@ const gameSlice = createSlice({
   },
 })
 
-export const { updateRealGraphData, updateGraphRanking, updateSelectedTool, updatePayoff, resetGameData } =
-  gameSlice.actions
+export const {
+  updateRealGraphData,
+  updateGraphRanking,
+  updateSelectedTool,
+  updatePayoff,
+  resetGameData,
+  updateStepStatus,
+} = gameSlice.actions
 export default gameSlice.reducer
 
 export const selectRealGraphData = state => state.gameReducer.realGraphData
@@ -52,3 +63,4 @@ export const selectGraphRanking = state => state.gameReducer.graphRanking
 export const selectSelectedTool = state => state.gameReducer.selectedTool
 export const selectPayoff = state => state.gameReducer.payoff
 export const selectRound = state => (state.gameReducer.payoff?.payoffHuman ?? []).length + 1
+export const selectStepStatus = state => state.gameReducer.stepStatus

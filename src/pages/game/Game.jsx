@@ -12,11 +12,12 @@ import {
   selectSelectedTool,
   selectRound,
   selectRealGraphData,
+  selectStepStatus,
   updateGraphRanking,
-  updateSelectedTool,
   updatePayoff,
   updateRealGraphData,
   resetGameData,
+  updateStepStatus,
 } from './game.slice'
 import { removeNodeAndRelatedLinksFromGraphData } from './game.utils'
 import { GameInformationBlock, NetworkInformationBlock } from './information-blocks'
@@ -31,15 +32,14 @@ export const GamePage = () => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const realGraphData = useSelector(selectRealGraphData)
+  const stepStatus = useSelector(selectStepStatus)
   const contextData = useContextData()
   const {
     data: { toolsAvailable = {} },
   } = contextData
 
-  const [isReadyGetNextRoundTool, setIsReadyGetNextRoundTool] = useState(false)
   const [isGameEndDialogOpen, setIsGameEndDialogOpen] = useState(false)
   const [isQuitGameDialogOpen, setIsQuitGameDialogOpen] = useState(false)
-  const [isReadyGetNodeRanking, setIsReadyGetNodeRanking] = useState(false)
   const [isReadyGetPayoff, setIsReadyGetPayoff] = useState(false)
   const [isPayoffLoading, setIsPayoffLoading] = useState(false)
   const [removedNodeIds, setRemovedNodeIds] = useState([])
@@ -76,12 +76,12 @@ export const GamePage = () => {
       return response.json()
     },
     onSuccess: () => {
-      setIsReadyGetNextRoundTool(true)
+      dispatch(updateStepStatus('READY_FOR_NEXT_ROUND'))
     },
   })
 
   const { isLoading: isNodeRankingLoading } = useQuery({
-    enabled: isReadyGetNodeRanking,
+    enabled: stepStatus === 'READY_TO_GET_NODE_RANKING',
     queryKey: ['nodeRanking', round],
     queryFn: async () => {
       const response = await fetch(`${API_ROOT}/node_ranking/`, {
@@ -98,7 +98,7 @@ export const GamePage = () => {
       if (!response.ok) {
         throw new Error('Failed to get node ranking')
       }
-      setIsReadyGetNodeRanking(false)
+      dispatch(updateStepStatus('SETTLED'))
 
       return response.json()
     },
@@ -139,7 +139,7 @@ export const GamePage = () => {
       if (payoffResponse?.isEnd) {
         setIsGameEndDialogOpen(true)
       } else {
-        setIsReadyGetNextRoundTool(true)
+        dispatch(updateStepStatus('READY_FOR_NEXT_ROUND'))
         dispatch(updateGraphRanking(null))
       }
     },
@@ -156,12 +156,6 @@ export const GamePage = () => {
       )
     },
   })
-
-  const onSelectTool = tool => {
-    setIsReadyGetNextRoundTool(false)
-    dispatch(updateSelectedTool(tool))
-    setIsReadyGetNodeRanking(true)
-  }
 
   return (
     <StyledGamePageContainer>
@@ -185,11 +179,7 @@ export const GamePage = () => {
       <StyledGameContainer>
         <StyledInformationBlocksContainer>
           <NetworkInformationBlock />
-          <GameInformationBlock
-            isReadyGetNextRoundTool={isReadyGetNextRoundTool}
-            onSelectNextRoundTool={onSelectTool}
-            shuffledToolsAvailable={shuffledToolsAvailable}
-          />
+          <GameInformationBlock shuffledToolsAvailable={shuffledToolsAvailable} />
         </StyledInformationBlocksContainer>
         <ForceGraph
           loading={!isGameEndDialogOpen && isGraphDataLoading}

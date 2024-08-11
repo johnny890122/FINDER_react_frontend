@@ -87,3 +87,14 @@ export const deepCloneGraphData = ({ graphData }) => {
   }
   return clonedGraphData
 }
+
+export const determineForceGraphHint = ({ stepStatus, isNodeRankingOrPayoffLoading, round }) => {
+  if (stepStatus === 'READY_FOR_SELECT_TOOL') return '請選擇輔助工具'
+  if (stepStatus === 'READY_FOR_NEXT_ROUND') {
+    if (round === 1) return '請開始遊戲'
+    return '請查看您本回合的分數'
+  }
+  if (isNodeRankingOrPayoffLoading) return '請稍等計算該指標的排名'
+  if (!isNodeRankingOrPayoffLoading) return '現在您可以檢選要移除的節點（人物）了'
+  return '請查看您本回合的分數'
+}
