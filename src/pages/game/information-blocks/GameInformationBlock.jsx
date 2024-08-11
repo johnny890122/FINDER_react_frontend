@@ -1,22 +1,19 @@
-import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import PropTypes from 'prop-types'
-import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material'
 
-import { color } from '../../../styles'
-import { Chip, HoverTooltip, Button } from '../../../components'
+import { Chip, HoverTooltip } from '../../../components'
 import { selectSelectedTool, selectRound, selectPayoff } from '../game.slice'
 import { parsePayoffDataForChart } from '../game.utils'
 import { PayoffChart } from '../PayoffChart'
 import { StyledCard, StyledRow, StyledChipAndTooltip } from './styles'
+import { ToolsInformation } from './ToolsInformation'
 
 export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoundTool, shuffledToolsAvailable }) => {
   const selectedTool = useSelector(selectSelectedTool)
   const round = useSelector(selectRound)
   const payoffRawData = useSelector(selectPayoff)
   const data = parsePayoffDataForChart({ payoffRawData })
-  const [expandedTool, setExpandedTool] = useState(null)
 
   return (
     <StyledCard>
@@ -24,35 +21,12 @@ export const GameInformationBlock = ({ isReadyGetNextRoundTool, onSelectNextRoun
         <Chip label="回合" />
         <div>{round}</div>
       </StyledRow>
-      {isReadyGetNextRoundTool ? (
-        <StyledRow>
-          <Chip label="請選擇本回合輔助指標" />
-          <StyledOptionsContainer>
-            {shuffledToolsAvailable.map(tool => (
-              <StyledOptionContainer key={tool.code}>
-                <StyledAccordion
-                  expanded={(expandedTool?.code ?? '') === tool.code}
-                  onChange={() => setExpandedTool(tool)}
-                >
-                  <AccordionSummary>{tool.displayName}</AccordionSummary>
-                  <StyledAccordionDetails>{tool.introduction}</StyledAccordionDetails>
-                </StyledAccordion>
-              </StyledOptionContainer>
-            ))}
-            <StyledConfirmButton disabled={!expandedTool} onClick={() => onSelectNextRoundTool(expandedTool)}>
-              選擇
-            </StyledConfirmButton>
-          </StyledOptionsContainer>
-        </StyledRow>
-      ) : (
-        <StyledChipAndTooltip>
-          <Chip label="本回合輔助指標" />
-          <div>{selectedTool[selectedTool.length - 1]?.displayName ?? ''}</div>
-          {selectedTool[selectedTool.length - 1]?.introduction && (
-            <HoverTooltip tooltip={selectedTool[selectedTool.length - 1]?.introduction} />
-          )}
-        </StyledChipAndTooltip>
-      )}
+      <ToolsInformation
+        isReadyGetNextRoundTool={isReadyGetNextRoundTool}
+        selectedTool={selectedTool}
+        onSelectNextRoundTool={onSelectNextRoundTool}
+        shuffledToolsAvailable={shuffledToolsAvailable}
+      />
       {round > 1 && (
         <>
           <StyledChipAndTooltip>
@@ -75,33 +49,6 @@ GameInformationBlock.propTypes = {
   shuffledToolsAvailable: PropTypes.array.isRequired,
 }
 
-const StyledOptionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
-  width: 100%;
-`
-const StyledOptionContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`
-const StyledAccordion = styled(Accordion)`
-  background-color: ${props => props.expanded && color.primaryColor400};
-  color: ${props => props.expanded && color.neutralsColor0};
-  width: 17rem;
-  @media screen and (max-width: 767px) {
-    width: auto;
-  }
-`
-const StyledAccordionDetails = styled(AccordionDetails)`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-`
-const StyledConfirmButton = styled(Button)``
 const StyledPayoffDescription = styled.div`
   margin-left: 1rem;
   font-size: 0.875rem;
